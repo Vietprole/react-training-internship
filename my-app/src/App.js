@@ -23,6 +23,8 @@ import './App.css';
 // }
 
 import { useState } from 'react';
+
+import { getImageUrl } from './util';
 function ThinkingInReact() {
   return (
     <>
@@ -214,12 +216,97 @@ function JavaScriptInJSXWithCurlyBraces() {
   );
 }
 
+function Profile() {
+  return (
+    <img
+      src="https://i.imgur.com/MK3eW3As.jpg"
+      alt="Katherine Johnson"
+    />
+  );
+}
+
+function YourFirstComponent(){
+  return (
+    <section>
+      <h2>Amazing scientists</h2>
+      <Profile />
+      <Profile />
+      <Profile />
+    </section>
+  );
+}
+
+function Avatar({ person, size = 100 }) {
+  return (
+    <img
+      className="avatar"
+      src={getImageUrl(person)}
+      alt={person.name}
+      width={size}
+      height={size}
+    />
+  );
+}
+
+function Card({ children }) {
+  // The children prop is all children passed to the component.
+  return (
+    <div className="card">
+      {children}
+    </div>
+  );
+}
+
+function PassingPropsToAComponent(props) {
+  return (
+    <div>
+      <h1>Passing Props to a Component</h1>
+      <Avatar
+        // If no size prop or undefined, the default size is 100.
+        // size={undefined}
+        person={{ 
+          name: 'Katsuko Saruhashi', 
+          imageId: 'YfeOqp2'
+        }}
+      />
+      <Avatar
+        size={80}
+        person={{
+          name: 'Aklilu Lemma', 
+          imageId: 'OKS67lh'
+        }}
+      />
+      <Avatar
+        size={50}
+        person={{ 
+          name: 'Lin Lanying',
+          imageId: '1bX5QH6'
+        }}
+      />
+      <Avatar {...props} 
+      // Passing all props to Avatar component using spread operator.
+      />
+      <Card>
+        <Avatar {...props} />
+      </Card>
+    </div>
+  );
+}
+
 export default function App() {
   return (
     <>
     <ThinkingInReact/>
     <WritingMarkupWithJSX/>
     <JavaScriptInJSXWithCurlyBraces/>
+    <YourFirstComponent/>
+    <PassingPropsToAComponent
+      size={150}
+      person={{
+        name: 'Katherine Johnson',
+        imageId: 'MK3eW3A'
+      }}
+    />
     </>
   );
 }
