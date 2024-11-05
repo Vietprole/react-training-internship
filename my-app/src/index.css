@@ -22,3 +22,11 @@ code {
   display: flex;
   gap: 10px;
 }
+
+button{
+  margin: 5px;
+}
+
+li {
+  margin: 5px;
+}

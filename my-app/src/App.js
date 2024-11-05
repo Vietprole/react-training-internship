@@ -421,7 +421,7 @@ function SynchronizingWithEffects() {
   );
 }
 
-function SyncedInput({text, onChange}) {
+function SyncedInput({ text, onChange }) {
   return (
     <input
       style={{ display: "block", margin: "5px" }}
@@ -437,7 +437,7 @@ function SharingStateBetweenComponents() {
   // Step 1: Move the shared state to their common parent component.
   const [text, setText] = useState("");
 
-  function handleChange(e){
+  function handleChange(e) {
     setText(e.target.value);
   }
 
@@ -451,11 +451,99 @@ function SharingStateBetweenComponents() {
         // Step 3: Pass the event handlers down so that the children can change the parent's state.
         onChange={handleChange}
       />
-      <SyncedInput
-        text={text}
-        onChange={handleChange}
-      />
+      <SyncedInput text={text} onChange={handleChange} />
     </>
+  );
+}
+
+function Button({ onClick, children }) {
+  return <button onClick={onClick}>{children}</button>;
+}
+
+function ToolBar({ stopEventPropagation }) {
+  return (
+    <div onClick={() => alert("You clicked on the container!")}>
+      <h3>
+        {stopEventPropagation
+          ? "Toolbar without Event Propagation"
+          : "Toolbar with Event Propagation"}
+      </h3>
+      <Button
+        onClick={(e) => {
+          if (stopEventPropagation) e.stopPropagation();
+          alert("This button uses Inline event handler!");
+        }}
+      >
+        Inline event handler
+      </Button>
+      <Button
+        onClick={(e) => {
+          if (stopEventPropagation) e.stopPropagation();
+          alert("Playing!");
+        }}
+      >
+        Play Movie
+      </Button>
+      <Button
+        onClick={(e) => {
+          if (stopEventPropagation) e.stopPropagation();
+          alert("Playing!");
+        }}
+      >
+        Upload Image
+      </Button>
+    </div>
+  );
+}
+
+function RespondingToEvents() {
+  return (
+    <>
+      <h2>Responding to Events</h2>
+      <ToolBar stopEventPropagation={false} />
+      <ToolBar stopEventPropagation={true} />
+    </>
+  );
+}
+
+function Item({ isDone, isPrioritized, isHighLighted, name }) {
+  // Using if-else statement to conditionally render JSX.
+  let itemContent = name;
+  // Conditionally assigning JSX to a variable.
+  if (isDone) {
+    itemContent = "✅ " + name;
+    //Using ternary operator ?: and logical "and" operator && to conditionally render JSX.
+    return <li style={isHighLighted ? {backgroundColor: 'yellow'} : {backgroundColor: 'grey'}}>{itemContent}{isPrioritized && ' ⭐'}</li>;
+  }
+  return <li style={isHighLighted ? {backgroundColor: 'yellow'} : {backgroundColor: 'grey'}}>{'❌ '+itemContent}</li>;
+}
+
+function ConditionalRendering() {
+  return (
+    <section>
+      <h2>Conditional Rendering</h2>
+      <h3>Sally Ride's To Do List</h3>
+      <ul>
+        <Item 
+          isDone={true}
+          isPrioritized={true}
+          isHighLighted={false}
+          name="Space suit" 
+        />
+        <Item 
+          isDone={true}
+          isPrioritized={false}
+          isHighLighted={true}
+          name="Helmet with a golden leaf" 
+        />
+        <Item 
+          isDone={false}
+          isPrioritized={true}
+          isHighLighted={true}
+          name="Photo of Tam" 
+        />
+      </ul>
+    </section>
   );
 }
 
@@ -476,6 +564,8 @@ export default function App() {
       <StateAComponentsMemory />
       <SynchronizingWithEffects />
       <SharingStateBetweenComponents />
+      <RespondingToEvents />
+      <ConditionalRendering />
     </>
   );
 }
