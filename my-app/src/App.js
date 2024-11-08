@@ -200,7 +200,7 @@ function JavaScriptInJSXWithCurlyBraces() {
           color: "pink",
         }}
       >
-        <h1>{person.name}'s Todos</h1>
+        <h2>{person.name}'s Todos</h2>
         <img
           // pass string with quotes or double quotes
           className="avatar"
@@ -252,7 +252,7 @@ function Card({ children }) {
 function PassingPropsToAComponent(props) {
   return (
     <div>
-      <h1>Passing Props to a Component</h1>
+      <h2>Passing Props to a Component</h2>
       <Avatar
         // If no size prop or undefined, the default size is 100.
         // size={undefined}
@@ -334,6 +334,84 @@ function Gallery() {
   );
 }
 
+function ReplaceObjectAndArrayInState() {
+  // Objects and Arrays in state is read-only.
+  // So you have to replace them with a new object or array.
+  const [form, setForm] = useState({
+    firstName: 'Barbara',
+    lastName: 'Hepworth',
+    email: 'bhepworth@sculpture.com',
+    nested_info: {
+      other_info: 'other info',
+      age: 89,
+    },
+  });
+
+  return (
+    <div>
+      <h2>Replace Object and Array in State</h2>
+      <label>
+        First name:
+        <input
+          value={form.firstName}
+          onChange={e => {
+            setForm({
+              ...form,
+              firstName: e.target.value
+            });
+          }}
+        />
+      </label>
+      <label>
+        Last name:
+        <input
+          value={form.lastName}
+          onChange={e => {
+            setForm({
+              ...form,
+              lastName: e.target.value
+            });
+          }}
+        />
+      </label>
+      <label>
+        Email:
+        <input
+          value={form.email}
+          onChange={e => {
+            setForm({
+              ...form,
+              email: e.target.value
+            });
+          }}
+        />
+      </label>
+      <label>
+        Age (nested_info):
+        <input
+          value={form.nested_info.age}
+          onChange={e => {
+            setForm({
+              ...form,
+              nested_info: {
+                ...form.nested_info, // other_info disappears if commented out
+                age: e.target.value
+              }
+            });
+          }}
+        />
+      </label>
+      <p>
+        {form.firstName}{' '}
+        {form.lastName}{' Age: '}
+        {form.nested_info.age} {' '}
+        ({form.email}){' '}
+        other_info: {form.nested_info.other_info}
+      </p>
+    </div>
+  );
+}
+
 function StateAComponentsMemory() {
   return (
     <>
@@ -343,6 +421,7 @@ function StateAComponentsMemory() {
         <Gallery />
         <Gallery />
       </div>
+      <ReplaceObjectAndArrayInState />
     </>
   );
 }
@@ -400,7 +479,7 @@ function Playground() {
         What to log:{" "}
         <input value={text} onChange={(e) => setText(e.target.value)} />
       </label>
-      <h1>{text}</h1>
+      <h2>{text}</h2>
     </>
   );
 }
@@ -549,6 +628,23 @@ function ConditionalRendering() {
   );
 }
 
+function ManipulatingDOMWithRef() {
+  const inputRef = useRef(null);
+
+  function handleClick() {
+    inputRef.current.focus();
+  }
+
+  return (
+    <>
+      <input ref={inputRef} />
+      <button onClick={handleClick}>
+        Focus the input
+      </button>
+    </>
+  );
+}
+
 function UseRef() {
   const [startTime, setStartTime] = useState(null);
   const [now, setNow] = useState(null);
@@ -575,13 +671,20 @@ function UseRef() {
 
   return (
     <>
-      <h1>Time passed: {secondsPassed.toFixed(3)}</h1>
-      <button onClick={handleStart}>
-        Start
-      </button>
-      <button onClick={handleStop}>
-        Stop
-      </button>
+      <div>
+        <h2>useRef</h2>
+        <h2>Time passed: {secondsPassed.toFixed(3)}</h2>
+        <button onClick={handleStart}>
+          Start
+        </button>
+        <button onClick={handleStop}>
+          Stop
+        </button>
+      </div>
+      <div>
+        <h2>Focus the input</h2>
+        <ManipulatingDOMWithRef />
+      </div>
     </>
   );
 }
