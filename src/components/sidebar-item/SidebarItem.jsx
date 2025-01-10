@@ -1,5 +1,5 @@
 import HoverIcon from "../../assets/hover-icon.svg";
-import "./Sidebar-item.css";
+import "./SidebarItem.css";
 import PropTypes from 'prop-types';
 import { useState } from "react";
 

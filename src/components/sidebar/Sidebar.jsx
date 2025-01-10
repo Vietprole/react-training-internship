@@ -4,7 +4,7 @@ import HomeIcon from "../../assets/home-icon.svg";
 import PlusIcon from "../../assets/plus-icon.svg";
 import LogoutIcon from "../../assets/logout-icon.svg";
 import "./Sidebar.css";
-import SidebarItem from "../sidebar-item/Sidebar-item";
+import SidebarItem from "../sidebar-item/SidebarItem";
 
 function Sidebar() {
   return (
