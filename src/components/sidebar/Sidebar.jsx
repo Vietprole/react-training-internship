@@ -8,7 +8,7 @@ import SidebarItem from "../sidebar-item/SidebarItem";
 
 function Sidebar() {
   return (
-    <div className="sidebar">
+    <nav className="sidebar">
       <Logo src={LogoSrc}/>
       <div className="sidebar-items-container">
         <SidebarItem icon={HomeIcon} alt="Home icon" hasSelectedState={true}/>
@@ -17,7 +17,7 @@ function Sidebar() {
       <button className="logout-button" type="button">
         <img src={LogoutIcon} alt="Logout icon" />
       </button>
-    </div>
+    </nav>
   );
 }
 

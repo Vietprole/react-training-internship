@@ -3,3 +3,29 @@
   border: 1px solid black;
   display: flex;
 }
+
+.main {
+  padding: 40px 112px;
+  flex: 1 1 auto;
+}
+
+h1 {
+  font-family: var(--font-primary);
+  font-size: var(--heading-size-md);
+  font-weight: var(--font-weight-regular);
+  color: black;
+  margin: 0 0 7px 0;
+}
+
+.name {
+  font-weight: var(--font-weight-bold);
+}
+
+.description {
+  font-family: var(--font-primary);
+  font-size: var(--body-size-lg);
+  color: var(--text-primary-color);
+  padding: 0;
+  margin: 0 0 63px 0;
+  /* line-height: 39px; */
+}
