@@ -1,5 +1,5 @@
 import Logo from './Logo';
-import LogoSrc from "../../assets/logo.svg";
+import LogoSrc from "/assets/logo.svg";
 
 export default {
   title: 'Logo',

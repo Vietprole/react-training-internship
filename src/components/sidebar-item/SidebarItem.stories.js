@@ -1,6 +1,6 @@
 import SidebarItem from './SidebarItem';
-import HomeIcon from "../../assets/home-icon.svg";
-import PlusIcon from "../../assets/plus-icon.svg";
+import HomeIcon from "/assets/home-icon.svg";
+import PlusIcon from "/assets/plus-icon.svg";
 
 export default {
   title: 'SidebarItem',
