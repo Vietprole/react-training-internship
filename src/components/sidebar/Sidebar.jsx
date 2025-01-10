@@ -3,7 +3,7 @@ import LogoSrc from "/assets/logo.svg";
 import HomeIcon from "/assets/home-icon.svg";
 import PlusIcon from "/assets/plus-icon.svg";
 import LogoutIcon from "/assets/logout-icon.svg";
-import "./Sidebar.css";
+import "./sidebar.css";
 import SidebarItem from "../sidebar-item/SidebarItem";
 
 function Sidebar() {

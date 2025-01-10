@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import "./Logo.css";
+import "./logo.css";
 
 function Logo({src = "https://via.placeholder.com/48", alt = "Logo"}) {
   return (
