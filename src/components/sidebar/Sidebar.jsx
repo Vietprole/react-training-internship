@@ -11,8 +11,8 @@ function Sidebar() {
     <div className="sidebar">
       <Logo src={LogoSrc}/>
       <div className="sidebar-items-container">
-        <SidebarItem icon={HomeIcon} alt="Home icon" />
-        <SidebarItem icon={PlusIcon} alt="Plus icon" />
+        <SidebarItem icon={HomeIcon} alt="Home icon" hasSelectedState={true}/>
+        <SidebarItem icon={PlusIcon} alt="Plus icon" hasSelectedState={false}/>
       </div>
       <button className="logout-button" type="button">
         <img src={LogoutIcon} alt="Logout icon" />

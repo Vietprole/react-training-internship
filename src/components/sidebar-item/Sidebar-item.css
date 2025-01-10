@@ -8,6 +8,26 @@
   background-color: var(--sidebar-color);
 }
 
+.hover-icon {
+  transition: visibility 0.3s, opacity 0.3s ease-in-out;
+}
+
+.sidebar-item:hover .hover-icon {
+  visibility: visible;
+  opacity: 1;
+}
+
 .sidebar-item:hover{
-  background-color: rgba(var(--text-secondary-color), 0.5);
+  background-color: var(--sidebar-hover-color);
+  cursor: pointer;
+}
+
+.visible {
+  visibility: visible;
+  opacity: 1;
+}
+
+.hidden {
+  visibility: hidden;
+  opacity: 0;
 }

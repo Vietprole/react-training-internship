@@ -22,3 +22,7 @@
   border: none;
   background-color: transparent;
 }
+
+.logout-button:hover {
+  cursor: pointer;
+}

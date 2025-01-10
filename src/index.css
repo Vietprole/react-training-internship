@@ -1,4 +1,4 @@
-@import 'node_modules/modern-normalize/modern-normalize.css';
+@import "../node_modules/modern-normalize/modern-normalize.css";
 
 :root {
   --heading-size-md: 32px;
@@ -23,6 +23,7 @@
   --text-secondary-color: #808080;
 
   --sidebar-color: #FFFDFA;
+  --sidebar-hover-color: #80808020;
 }
 
 html, body {
@@ -37,4 +38,5 @@ html, body {
 #root {
   height: 100%;
 }
+
 
