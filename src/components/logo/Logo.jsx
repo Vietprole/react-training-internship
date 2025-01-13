@@ -1,25 +1,15 @@
 import PropTypes from "prop-types";
 import "./logo.css";
 
-const Logo = ({src, alt, brandName}) => {
+function Logo({src = "https://via.placeholder.com/48", alt = "Logo"}) {
   return (
-    <div className="logo">
-      <img className="logo-image" src={src} alt={alt} />
-      <h1 className="logo-brand">{brandName}</h1>
-    </div>
+    <img className="logo" src={src} alt={alt} />
 	);
 };
 
 Logo.propTypes = {
-	src: PropTypes.string.isRequired,
-	alt: PropTypes.string.isRequired,
-	brandName: PropTypes.string.isRequired
-};
-
-Logo.defaultProps = {
-	src: "https://via.placeholder.com/80",
-	alt: "Logo",
-	brandName: "Brand Name"
+	src: PropTypes.string,
+	alt: PropTypes.string,
 };
 
 export default Logo;

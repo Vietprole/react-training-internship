@@ -1,0 +1,38 @@
+.sidebar-item{
+  display: flex;
+  align-items: center;
+  gap: 36px;
+  width: 100%;
+  padding: 0;
+  border: none;
+  background-color: var(--sidebar-color);
+}
+
+.sidebar-item-icon {
+  width: 32px;
+  height: 32px;
+}
+
+.hover-icon {
+  transition: visibility 0.3s, opacity 0.3s ease-in-out;
+}
+
+.sidebar-item:hover .hover-icon {
+  visibility: visible;
+  opacity: 1;
+}
+
+.sidebar-item:hover{
+  background-color: var(--sidebar-hover-color);
+  cursor: pointer;
+}
+
+.visible {
+  visibility: visible;
+  opacity: 1;
+}
+
+.hidden {
+  visibility: hidden;
+  opacity: 0;
+}
