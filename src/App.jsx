@@ -68,17 +68,6 @@ function App() {
               onContentChange={(content) => handleNoteChange(note.id, content)}
             />
           ))}
-          <NoteBox />
-          <NoteBox
-            content="This is how a Note on Note.me looks like! Very simple, clean and asthetic! 😍"
-            createdAt={new Date("2025-01-13T01:43:59.140Z")}
-            variant="secondary"
-          />
-          <NoteBox
-            content="This is a very long line of text that should make 5 lines in the note box. This is a very long note. Let's see if it works! 🤞🏼. Make this note even longer. Even longer note. Even longer note."
-            createdAt={new Date("2025-01-13T01:43:59.140Z")}
-            variant="tertiary"
-          />
         </div>
       </div>
     </div>
