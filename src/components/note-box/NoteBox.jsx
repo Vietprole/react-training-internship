@@ -1,6 +1,7 @@
 import PropTypes from "prop-types";
 import "./note-box.css";
 import TrashIcon from "/assets/trash-icon.svg";
+import { formatDate } from "../../utils/utils";
 // import { useState } from "react";
 
 function NoteBox({
@@ -16,13 +17,6 @@ function NoteBox({
   // const handleBlur = () => {
   //   setIsEditing(false);
   // };
-
-  const formatDate = (date) => {
-    const month = new Intl.DateTimeFormat('en', { month: 'short' }).format(date);
-    const day = date.getDate();
-    const year = date.getFullYear();
-    return `${month}, ${day} ${year}`;
-  };
 
   return (
     <div className={`note-box ${variant}`}>
