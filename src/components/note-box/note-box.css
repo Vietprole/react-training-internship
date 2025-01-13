@@ -10,13 +10,20 @@
 }
 
 .note{
-  --number-of-lines: 5;
   font-family: var(--font-primary);
   font-size: var(--body-size-lg);
   font-weight: var(--font-weight-medium);
   line-height: 30px;
   min-height: 167px;
   color: var(--text-default-color);
+}
+
+.note::placeholder{
+  font-family: var(--font-primary);
+  font-size: var(--body-size-lg);
+  font-weight: var(--font-weight-medium);
+  line-height: 30px;
+  color: var(--text-secondary-color);
 }
 
 .footer{

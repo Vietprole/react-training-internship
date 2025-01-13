@@ -2,25 +2,21 @@ import PropTypes from "prop-types";
 import "./note-box.css";
 import TrashIcon from "/assets/trash-icon.svg";
 import { formatDate } from "../../utils/utils";
-// import { useState } from "react";
 
 function NoteBox({
   variant = "primary",
   content = "This is how a Note on Note.me looks like! Very simple, clean and asthetic! 😍",
   createdAt = new Date(),
+  onContentChange,
 }) {
-  // const [isEditing, setIsEditing] = useState(false);
-  // const handleDoubleClick = () => {
-  //   setIsEditing(true);
-  // };
 
-  // const handleBlur = () => {
-  //   setIsEditing(false);
-  // };
+  const handleChange = (event) => {
+    onContentChange(event.target.value);
+  }
 
   return (
     <div className={`note-box ${variant}`}>
-      <p className="note">{content}</p>
+      <textarea className="note" placeholder="Type your note..." onChange={handleChange}>{content}</textarea>
       <div className="footer">
         <p className="note-date">{formatDate(createdAt)}</p>
         <img src={TrashIcon} alt="Delete icon" />
@@ -33,6 +29,7 @@ NoteBox.propTypes = {
   variant: PropTypes.oneOf(["primary", "secondary", "tertiary"]),
   content: PropTypes.string,
   createdAt: PropTypes.instanceOf(Date),
+  onContentChange: PropTypes.func,
 };
 
 export default NoteBox;

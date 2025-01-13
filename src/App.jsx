@@ -4,30 +4,70 @@ import NoteBox from "./components/note-box/NoteBox";
 import { useState, useEffect } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
-function App() {
-  const [notes, setNotes] = useState([]);
+const VARIANTS = ["primary", "secondary", "tertiary"];
 
-  // Load notes from localStorage
-  useEffect(() => {
-    const storedNotes = localStorage.getItem('notes');
-    if (storedNotes) {
-      setNotes(JSON.parse(storedNotes));
-    }
-  }, []);
+function getRandomVariant(prevVariant) {
+  const availableVariants = VARIANTS.filter(variant => variant !== prevVariant);
+  const randomIndex = Math.floor(Math.random() * availableVariants.length);
+  return availableVariants[randomIndex];
+}
+
+function getNotes(){
+  const storedNotes = localStorage.getItem('notes');
+  if (!storedNotes) return [];
+
+  const parsedNotes = JSON.parse(storedNotes);
+  // Convert string back to Date object
+  return parsedNotes.map(note => ({
+    ...note,
+    createdAt: new Date(note.createdAt)
+  }));
+}
+
+function App() {
+  const [notes, setNotes] = useState(getNotes());
 
   // Save notes to localStorage
   useEffect(() => {
     localStorage.setItem('notes', JSON.stringify(notes));
   }, [notes]);
 
+  const handleCreateNote = () => {
+    const prevNote = notes[notes.length - 1];
+    const prevVariant = prevNote?.variant;
+
+    const newNote = {
+      id: uuidv4(),
+      content: '',
+      createdAt: new Date(),
+      variant: getRandomVariant(prevVariant),
+    };
+    setNotes([...notes, newNote]);
+  }
+
+  const handleNoteChange = (id, newContent) => {
+    setNotes(notes.map(note =>
+      note.id === id ? { ...note, content: newContent } : note
+    ));
+  };
+
   return (
     <div className="App">
-      <Sidebar />
+      <Sidebar handleCreateNote={handleCreateNote}/>
       <div className="main">
         <div>TODO: Implement search bar</div>
         <h1><span>Hello, </span><span className="name">Ruy</span>! 👋🏼</h1>
         <p className="description">All your notes are here, in one place!</p>
         <div className="notes-container">
+          {notes.map((note) => (
+            <NoteBox
+              key={note.id}
+              content={note.content}
+              createdAt={note.createdAt}
+              variant={note.variant}
+              onContentChange={(content) => handleNoteChange(note.id, content)}
+            />
+          ))}
           <NoteBox />
           <NoteBox
             content="This is how a Note on Note.me looks like! Very simple, clean and asthetic! 😍"
