@@ -1,0 +1,16 @@
+.logo {
+    width: 400px;
+    display: flex;
+    align-items: center;
+
+}
+
+.logo-image {
+    width: 80px;
+    height: 80px;
+    margin-right: 35px;
+}
+
+.logo-brand {
+
+}
