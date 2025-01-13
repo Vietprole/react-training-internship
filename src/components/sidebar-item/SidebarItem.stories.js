@@ -15,7 +15,7 @@ export const Create = {
   args: {
     icon: PlusIcon,
     alt: 'PlusIcon',
-    hasSelectedState: false,
+    isSelected: false,
   },
 };
 
@@ -23,6 +23,6 @@ export const Home = {
   args: {
     icon: HomeIcon,
     alt: 'HomeIcon',
-    hasSelectedState: true,
+    isSelected: true,
   },
 };
