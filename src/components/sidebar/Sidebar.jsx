@@ -5,14 +5,34 @@ import PlusIcon from "/assets/plus-icon.svg";
 import LogoutIcon from "/assets/logout-icon.svg";
 import "./sidebar.css";
 import SidebarItem from "../sidebar-item/SidebarItem";
+import { useState } from "react";
 
 function Sidebar() {
+  const [selectedIndex, setSelectedIndex] = useState(null);
+  const handleItemClick = (index, isSelectable) => {
+    console.log(`Item ${index}, ${isSelectable} clicked`);
+    if (isSelectable) {
+      setSelectedIndex(index);
+    }
+    console.log(`Selected index: ${selectedIndex}`);
+  };
+
   return (
     <div className="sidebar">
-      <Logo src={LogoSrc}/>
+      <Logo src={LogoSrc} />
       <div className="sidebar-items-container">
-        <SidebarItem icon={HomeIcon} alt="Home icon" hasSelectedState={true}/>
-        <SidebarItem icon={PlusIcon} alt="Plus icon" hasSelectedState={false}/>
+        <SidebarItem
+          icon={HomeIcon}
+          alt="Home icon"
+          isSelected={selectedIndex === 0}
+          onClick={() => handleItemClick(0, true)}
+        />
+        <SidebarItem
+          icon={PlusIcon}
+          alt="Plus icon"
+          isSelected={selectedIndex === 1}
+          onClick={() => handleItemClick(1, false)}
+        />
       </div>
       <button className="logout-button" type="button">
         <img src={LogoutIcon} alt="Logout icon" />

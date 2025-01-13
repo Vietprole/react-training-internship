@@ -1,20 +1,16 @@
 import HoverIcon from "/assets/hover-icon.svg";
 import "./sidebar-item.css";
-import PropTypes from 'prop-types';
-import { useState } from "react";
+import PropTypes from "prop-types";
 
-function SidebarItem({icon, alt, hasSelectedState}) {
-  const [isSelected, setIsSelected] = useState(false);
-  const handleClick = () => {
-    if (hasSelectedState){
-      setIsSelected(!isSelected);
-    }
-  }
-
+function SidebarItem({ icon, alt, isSelected, onClick }) {
   return (
-    <button className="sidebar-item" type="button" onClick={handleClick}>
-      <img src={HoverIcon} alt="Hover icon" className={`${isSelected ? 'visible' : 'hidden'} hover-icon`}/>
-      <img src={icon} alt={alt} className="sidebar-item-icon"/>
+    <button className="sidebar-item" type="button" onClick={onClick}>
+      <img
+        src={HoverIcon}
+        alt="Hover icon"
+        className={`${isSelected ? "visible" : "hidden"} hover-icon`}
+      />
+      <img src={icon} alt={alt} className="sidebar-item-icon" />
     </button>
   );
 }
@@ -22,7 +18,8 @@ function SidebarItem({icon, alt, hasSelectedState}) {
 SidebarItem.propTypes = {
   icon: PropTypes.string.isRequired,
   alt: PropTypes.string.isRequired,
-  hasSelectedState: PropTypes.bool,
+  isSelected: PropTypes.bool,
+  onClick: PropTypes.func,
 };
 
 export default SidebarItem;

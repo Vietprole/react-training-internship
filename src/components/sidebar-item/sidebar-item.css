@@ -8,6 +8,11 @@
   background-color: var(--sidebar-color);
 }
 
+.sidebar-item-icon {
+  width: 32px;
+  height: 32px;
+}
+
 .hover-icon {
   transition: visibility 0.3s, opacity 0.3s ease-in-out;
 }
