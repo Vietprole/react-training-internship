@@ -4,15 +4,19 @@
   max-width: fit-content;
   padding: 25px 25px 20px 25px;
   border-radius: var(--border-radius-md);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .note{
+  --number-of-lines: 5;
   font-family: var(--font-primary);
   font-size: var(--body-size-lg);
   font-weight: var(--font-weight-medium);
   line-height: 30px;
+  min-height: 167px;
   color: var(--text-default-color);
-  height: 167px;
 }
 
 .footer{
