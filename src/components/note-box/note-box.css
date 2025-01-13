@@ -1,0 +1,45 @@
+.note-box {
+  min-width: 264px;
+  min-height: 240px;
+  max-width: fit-content;
+  padding: 25px 25px 20px 25px;
+  border-radius: var(--border-radius-md);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.note{
+  --number-of-lines: 5;
+  font-family: var(--font-primary);
+  font-size: var(--body-size-lg);
+  font-weight: var(--font-weight-medium);
+  line-height: 30px;
+  min-height: 167px;
+  color: var(--text-default-color);
+}
+
+.footer{
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.note-date{
+  font-family: var(--font-secondary);
+  font-size: var(--body-size-sm);
+  font-weight: var(--font-weight-medium);
+  color: var(--text-default-color);
+}
+
+.primary {
+  background-color: var(--note-primary-color);
+}
+
+.secondary {
+  background-color: var(--note-secondary-color);
+}
+
+.tertiary {
+  background-color: var(--note-tertiary-color);
+}

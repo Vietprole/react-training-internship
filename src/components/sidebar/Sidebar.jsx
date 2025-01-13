@@ -15,9 +15,13 @@ function Sidebar() {
     }
   };
 
+  const handleClickLogoutButton = () => {
+    alert("Logout");
+  }
+
   return (
-    <div className="sidebar">
-      <Logo src={LogoSrc} />
+    <nav className="sidebar">
+      <Logo src={LogoSrc}/>
       <div className="sidebar-items-container">
         <SidebarItem
           icon={HomeIcon}
@@ -32,10 +36,10 @@ function Sidebar() {
           onClick={() => handleItemClick(1, false)}
         />
       </div>
-      <button className="logout-button" type="button">
+      <button className="logout-button" type="button" onClick={handleClickLogoutButton}>
         <img src={LogoutIcon} alt="Logout icon" />
       </button>
-    </div>
+    </nav>
   );
 }
 
