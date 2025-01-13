@@ -10,11 +10,9 @@ import { useState } from "react";
 function Sidebar() {
   const [selectedIndex, setSelectedIndex] = useState(null);
   const handleItemClick = (index, isSelectable) => {
-    console.log(`Item ${index}, ${isSelectable} clicked`);
     if (isSelectable) {
       setSelectedIndex(index);
     }
-    console.log(`Selected index: ${selectedIndex}`);
   };
 
   return (
