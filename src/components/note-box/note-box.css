@@ -16,6 +16,9 @@
   line-height: 30px;
   min-height: 167px;
   color: var(--text-default-color);
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
 }
 
 .note::placeholder{
@@ -24,6 +27,22 @@
   font-weight: var(--font-weight-medium);
   line-height: 30px;
   color: var(--text-secondary-color);
+}
+
+.save-button {
+  width: 20px;
+  height: 20px;
+  margin-left: auto;
+  cursor: pointer;
+}
+
+.save-button img {
+  width: 20px;
+  height: 20px;
+}
+
+.hidden {
+  display: none;
 }
 
 .footer{

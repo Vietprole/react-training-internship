@@ -46,6 +46,7 @@ function App() {
   }
 
   const handleNoteChange = (id, newContent) => {
+    console.log(id, newContent);
     setNotes(notes.map(note =>
       note.id === id ? { ...note, content: newContent } : note
     ));
@@ -65,7 +66,7 @@ function App() {
               content={note.content}
               createdAt={note.createdAt}
               variant={note.variant}
-              onContentChange={(content) => handleNoteChange(note.id, content)}
+              onSaveChanges={(content) => handleNoteChange(note.id, content)}
             />
           ))}
         </div>
