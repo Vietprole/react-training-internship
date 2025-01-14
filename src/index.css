@@ -27,19 +27,16 @@
 
   --sidebar-color: #FFFDFA;
   --sidebar-hover-color: #80808020;
+
+  --overlay-color: #00000080;
 }
 
 html, body {
-  height: 100%;
   margin: 0;
   padding: 0;
   font-family: var(--font-family-base);
   color: var(--text-default-color);
   background-color: var(--background-color);
-}
-
-#root {
-  height: 100%;
 }
 
 /***

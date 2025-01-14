@@ -6,8 +6,9 @@ import LogoutIcon from "/assets/logout-icon.svg";
 import "./sidebar.css";
 import SidebarItem from "../sidebar-item/SidebarItem";
 import { useState } from "react";
+import PropTypes from "prop-types";
 
-function Sidebar() {
+function Sidebar({ handleCreateNote }) {
   const [selectedIndex, setSelectedIndex] = useState(null);
   const handleItemClick = (index, isSelectable) => {
     if (isSelectable) {
@@ -15,7 +16,7 @@ function Sidebar() {
     }
   };
 
-  const handleClickLogoutButton = () => {
+  const handleLogout = () => {
     alert("Logout");
   }
 
@@ -33,14 +34,18 @@ function Sidebar() {
           icon={PlusIcon}
           alt="Plus icon"
           isSelected={selectedIndex === 1}
-          onClick={() => handleItemClick(1, false)}
+          onClick={handleCreateNote}
         />
       </div>
-      <button className="logout-button" type="button" onClick={handleClickLogoutButton}>
+      <button className="logout-button" type="button" onClick={handleLogout}>
         <img src={LogoutIcon} alt="Logout icon" />
       </button>
     </nav>
   );
 }
+
+Sidebar.propTypes = {
+  handleCreateNote: PropTypes.func,
+};
 
 export default Sidebar;
