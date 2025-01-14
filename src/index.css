@@ -27,6 +27,8 @@
 
   --sidebar-color: #FFFDFA;
   --sidebar-hover-color: #80808020;
+
+  --overlay-color: #00000080;
 }
 
 html, body {
