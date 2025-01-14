@@ -51,6 +51,10 @@ function App() {
     ));
   };
 
+  const handleDeleteNote = (id) => {
+    setNotes(notes.filter(note => note.id !== id));
+  }
+
   return (
     <div className="App">
       <Sidebar handleCreateNote={handleCreateNote}/>
@@ -65,7 +69,8 @@ function App() {
               content={note.content}
               createdAt={note.createdAt}
               variant={note.variant}
-              onContentChange={(content) => handleNoteChange(note.id, content)}
+              onSaveChanges={(content) => handleNoteChange(note.id, content)}
+              handleEmptyNote={() => handleDeleteNote(note.id)}
             />
           ))}
         </div>
