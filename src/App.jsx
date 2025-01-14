@@ -51,17 +51,19 @@ function App() {
       variant: getRandomVariant(prevVariant),
     };
 
-    setNotes([...notes, newNote]);
+    setNotes((prevNotes) => [...prevNotes, newNote]);
   };
 
   const handleNoteChange = (id, newContent) => {
-    setNotes(notes.map((note) =>
-      note.id === id ? { ...note, content: newContent } : note
-    ))
+    setNotes((prevNotes) =>
+      prevNotes.map((note) =>
+        note.id === id ? { ...note, content: newContent } : note
+      )
+    );
   };
 
   const handleDeleteNote = (id) => {
-    setNotes(notes.filter((note) => note.id !== id));
+    setNotes((prevNotes) => prevNotes.filter((note) => note.id !== id));
   };
 
   return (
