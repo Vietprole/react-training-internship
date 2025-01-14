@@ -1,25 +1,19 @@
 import SearchIcon from "/assets/search-icon.svg";
 import PropTypes from "prop-types";
-
-function debounce(func, timeout = 3000){
-  let timer;
-  return (...args) => {
-    clearTimeout(timer);
-    timer = setTimeout(() => { func.apply(this, args); }, timeout);
-  };
-}
+import "./search-bar.css";
 
 function SearchBar({ onChange }) {
+
   return (
-    <div>
-      <img src={SearchIcon} alt="Search icon" />
-      <input type="text" placeholder="Search Notes" onChange={(e) => onChange(e.target.value)}/>
+    <div className="search-bar">
+      <img src={SearchIcon} alt="Search icon" className="search-icon"/>
+      <input type="text" className="search-input" placeholder="Search Notes" onChange={(e) => onChange(e.target.value)}/>
     </div>
   );
 }
 
 SearchBar.propTypes = {
-  handleSearch: PropTypes.func.isRequired,
+  onChange: PropTypes.func.isRequired,
 };
 
 export default SearchBar;

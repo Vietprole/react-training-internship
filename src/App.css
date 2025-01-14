@@ -7,6 +7,13 @@
   flex: 1 1 auto;
 }
 
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 52px;
+}
+
 h1 {
   font-family: var(--font-primary);
   font-size: var(--heading-size-md);
