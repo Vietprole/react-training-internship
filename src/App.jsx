@@ -1,6 +1,7 @@
 import "./App.css";
 import Sidebar from "./components/sidebar/Sidebar";
 import NoteBox from "./components/note-box/NoteBox";
+import SearchBar from "./components/search-bar/SearchBar";
 import { useState, useEffect } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -54,12 +55,16 @@ function App() {
   const handleDeleteNote = (id) => {
     setNotes(notes.filter(note => note.id !== id));
   }
+  
+  const handleSearch = (searchPhrase) => {
+    setNotes(notes.filter(note => note.content.includes(searchPhrase)));
+  }
 
   return (
     <div className="App">
       <Sidebar handleCreateNote={handleCreateNote}/>
       <div className="main">
-        <div>TODO: Implement search bar</div>
+        <SearchBar onChange={handleSearch}/>
         <h1><span>Hello, </span><span className="name">Ruy</span>! 👋🏼</h1>
         <p className="description">All your notes are here, in one place!</p>
         <div className="notes-container">
