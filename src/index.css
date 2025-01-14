@@ -4,6 +4,7 @@
   --font-primary: 'Ubuntu', sans-serif;
   --font-secondary: 'Inter', sans-serif;
 
+  --heading-size-sm: 18px;
   --heading-size-md: 32px;
   --body-size-sm: 14px;
   --body-size-md: 18px;
@@ -14,6 +15,7 @@
   --font-weight-bold: 700;
 
   --border-radius-md: 10px;
+  --border-radius-lg: 50px;
 
   --background-color: #FFFFFF;
 
@@ -29,6 +31,8 @@
   --sidebar-hover-color: #80808020;
 
   --overlay-color: #00000080;
+
+  --danger-color: #FF3737;
 }
 
 html, body {

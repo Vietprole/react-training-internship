@@ -3,6 +3,7 @@ import Sidebar from "./components/sidebar/Sidebar";
 import NoteBox from "./components/note-box/NoteBox";
 import SearchBar from "./components/search-bar/SearchBar";
 import DarkModeIcon from "/assets/dark-mode-icon.svg";
+import DeleteConfirmationModal from "./components/delete-confirmation-modal/DeleteConfirmationModal";
 import { useState, useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
 
@@ -31,6 +32,8 @@ function getNotes() {
 function App() {
   const [notes, setNotes] = useState(getNotes());
   const [searchPhrase, setSearchPhrase] = useState("");
+  const [isDeleteConfirmationModalDisplayed, setIsDeleteConfirmationModalDisplayed] = useState(false);
+  const [modalPosition, setModalPosition] = useState({ x: 0, y: 0 });
   const filteredNotes = notes.filter((note) =>
     note.content.includes(searchPhrase)
   );
@@ -64,6 +67,11 @@ function App() {
     setNotes(notes.filter((note) => note.id !== id));
   };
 
+  const showDeleteConfirmationModal = (id) => {
+    setModalPosition({ x: event.clientX, y: event.clientY });
+    setIsDeleteConfirmationModalDisplayed(true);
+  }
+
   return (
     <div className="App">
       <Sidebar handleCreateNote={handleCreateNote} />
@@ -90,10 +98,12 @@ function App() {
               variant={note.variant}
               onSaveChanges={(content) => handleNoteChange(note.id, content)}
               handleEmptyNote={() => handleDeleteNote(note.id)}
+              onDeleteButtonClick={() => showDeleteConfirmationModal(note.id)}
             />
           ))}
         </div>
       </div>
+      <DeleteConfirmationModal isDisplayed={isDeleteConfirmationModalDisplayed} position={modalPosition}/>
     </div>
   );
 }
