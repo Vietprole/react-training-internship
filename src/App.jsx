@@ -1,7 +1,9 @@
 import "./App.css";
 import Sidebar from "./components/sidebar/Sidebar";
 import NoteBox from "./components/note-box/NoteBox";
-import { useState, useEffect } from 'react';
+import SearchBar from "./components/search-bar/SearchBar";
+import DarkModeIcon from "/assets/dark-mode-icon.svg";
+import { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
 
 const VARIANTS = ["primary", "secondary", "tertiary"];
@@ -27,10 +29,9 @@ function getNotes(){
 function App() {
   const [notes, setNotes] = useState(getNotes());
 
-  // Save notes to localStorage
-  useEffect(() => {
+  const saveNoteToLocalStorage = (notes) => {
     localStorage.setItem('notes', JSON.stringify(notes));
-  }, [notes]);
+  }
 
   const handleCreateNote = () => {
     const prevNote = notes[notes.length - 1];
@@ -42,24 +43,45 @@ function App() {
       createdAt: new Date(),
       variant: getRandomVariant(prevVariant),
     };
-    setNotes([...notes, newNote]);
+
+    const newNotes = [...notes, newNote];
+    setNotes(newNotes);
+    // Since state update is async, we need to pass the new notes to saveNoteToLocalStorage
+    saveNoteToLocalStorage(newNotes);
   }
 
   const handleNoteChange = (id, newContent) => {
-    setNotes(notes.map(note =>
+    const updatedNotes = notes.map(note =>
       note.id === id ? { ...note, content: newContent } : note
-    ));
+    );
+    setNotes(updatedNotes);
+    // Since state update is async, we need to pass the updated notes to saveNoteToLocalStorage
+    saveNoteToLocalStorage(updatedNotes);
   };
 
   const handleDeleteNote = (id) => {
-    setNotes(notes.filter(note => note.id !== id));
+    const notesAfterDelete = notes.filter(note => note.id !== id);
+    setNotes(notesAfterDelete);
+    // Since state update is async, we need to pass the notes after delete to saveNoteToLocalStorage
+    saveNoteToLocalStorage(notesAfterDelete);
+  }
+
+  const handleSearch = (searchPhrase) => {
+    if (searchPhrase === '') {
+      setNotes(getNotes());
+      return;
+    }
+    setNotes(notes.filter(note => note.content.includes(searchPhrase)));
   }
 
   return (
     <div className="App">
       <Sidebar handleCreateNote={handleCreateNote}/>
       <div className="main">
-        <div>TODO: Implement search bar</div>
+        <div className="header">
+          <SearchBar onChange={handleSearch}/>
+          <img src={DarkModeIcon} alt="Dark mode icon" className="dark-mode-icon"/>
+        </div>
         <h1><span>Hello, </span><span className="name">Ruy</span>! 👋🏼</h1>
         <p className="description">All your notes are here, in one place!</p>
         <div className="notes-container">
