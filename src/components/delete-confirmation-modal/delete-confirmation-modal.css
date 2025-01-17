@@ -1,0 +1,58 @@
+.delete-confirmation-modal {
+  font-family: var(--font-primary);
+  font-weight: var(--font-weight-bold);
+}
+
+.delete-confirmation-modal.hidden {
+  display: none;
+}
+
+.modal-content{
+  width: 176px;
+  height: 152px;
+  border-radius: var(--border-radius-md);
+  padding: 15px;
+  background-color: var(--sidebar-color);
+  box-shadow: 0px 6px 10px var(--text-default-color);
+}
+
+.delete-confirmation-modal h2 {
+  font-size: var(--heading-size-sm);
+  margin-bottom: 6px;
+}
+
+.delete-confirmation-modal p {
+  font-size: var(--body-size-sm);
+  margin-bottom: 25px;
+}
+
+.button-container {
+  display: flex;
+  justify-content: space-between;
+}
+
+.cancel-button {
+  font-weight: var(--font-weight-regular);
+  font-size: var(--body-size-sm);
+  color: white;
+  background-color: var(--text-default-color);
+  border-radius: var(--border-radius-lg);
+  padding: 7px 9px;
+  cursor: pointer;
+}
+
+.button-container .delete-button {
+  font-weight: var(--font-weight-regular);
+  font-size: var(--body-size-sm);
+  color: white;
+  background-color: var(--danger-color);
+  border-radius: var(--border-radius-lg);
+  padding: 7px 9px;
+  cursor: pointer;
+}
+
+.arrow-icon{
+  position: relative;
+  bottom: 8px;
+  left: 150px;
+}
