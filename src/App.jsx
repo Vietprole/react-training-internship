@@ -80,7 +80,15 @@ function App() {
 
   const handleDeleteNote = (id) => {
     setNotes((prevNotes) => prevNotes.filter((note) => note.id !== id));
+    // Close the modal if the note being deleted is the one that triggered it
+    if (id === noteIdToDelete) setIsDeleteConfirmationModalDisplayed(false);
   };
+
+  const showDeleteConfirmationModal = (id) => {
+    setModalPosition(calculateModalPosition(event.clientX, event.clientY));
+    setNoteIdToDelete(id);
+    setIsDeleteConfirmationModalDisplayed(true);
+  }
 
   return (
     <div className="App">
