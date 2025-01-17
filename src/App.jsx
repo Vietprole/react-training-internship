@@ -43,6 +43,14 @@ function App() {
     note.content.includes(searchPhrase)
   );
 
+  const handleClickOutside = (event) => {
+    if (isDeleteConfirmationModalDisplayed && !event.target.closest('.delete-confirmation-modal')) {
+      setIsDeleteConfirmationModalDisplayed(false);
+    }
+  };
+
+  document.addEventListener('mousedown', handleClickOutside);
+
   // Sync notes to localStorage
   useEffect(() => {
     localStorage.setItem("notes", JSON.stringify(notes));

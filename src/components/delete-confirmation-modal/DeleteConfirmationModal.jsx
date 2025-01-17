@@ -3,7 +3,6 @@ import "./delete-confirmation-modal.css";
 import PropTypes from "prop-types";
 
 function DeleteConfirmationModal({ isDisplayed, position, onDeleteButtonClick, onCancelButtonClick }) {
-  console.log(isDisplayed, position);
   return (
     <div
       className={`delete-confirmation-modal ${isDisplayed ? "" : "hidden"}`}
