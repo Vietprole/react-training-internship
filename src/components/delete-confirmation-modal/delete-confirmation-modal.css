@@ -38,6 +38,7 @@
   background-color: var(--text-default-color);
   border-radius: var(--border-radius-lg);
   padding: 7px 9px;
+  cursor: pointer;
 }
 
 .button-container .delete-button {
@@ -47,6 +48,7 @@
   background-color: var(--danger-color);
   border-radius: var(--border-radius-lg);
   padding: 7px 9px;
+  cursor: pointer;
 }
 
 .arrow-icon{

@@ -2,7 +2,8 @@ import ArrowIcon from "/assets/arrow-icon.svg";
 import "./delete-confirmation-modal.css";
 import PropTypes from "prop-types";
 
-function DeleteConfirmationModal({ isDisplayed, position }) {
+function DeleteConfirmationModal({ isDisplayed, position, onDeleteButtonClick, onCancelButtonClick }) {
+  console.log(isDisplayed, position);
   return (
     <div
       className={`delete-confirmation-modal ${isDisplayed ? "" : "hidden"}`}
@@ -12,8 +13,8 @@ function DeleteConfirmationModal({ isDisplayed, position }) {
         <h2>Confirm deletion</h2>
         <p>Are you sure you want to delete this note?</p>
         <div className="button-container">
-          <button className="cancel-button">Cancel</button>
-          <button className="delete-button">Delete</button>
+          <button className="cancel-button" onClick={onCancelButtonClick}>Cancel</button>
+          <button className="delete-button" onClick={onDeleteButtonClick}>Delete</button>
         </div>
       </div>
       <img src={ArrowIcon} alt="Arrow icon" className="arrow-icon" />
@@ -27,6 +28,8 @@ DeleteConfirmationModal.propTypes = {
     x: PropTypes.number,
     y: PropTypes.number,
   }),
+  onDeleteButtonClick: PropTypes.func.isRequired,
+  onCancelButtonClick: PropTypes.func.isRequired,
 };
 
 export default DeleteConfirmationModal;

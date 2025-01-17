@@ -6,6 +6,7 @@ import DarkModeIcon from "/assets/dark-mode-icon.svg";
 import DeleteConfirmationModal from "./components/delete-confirmation-modal/DeleteConfirmationModal";
 import { useState, useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
+import { calculateModalPosition } from "./utils/utils";
 
 const VARIANTS = ["primary", "secondary", "tertiary"];
 
@@ -32,8 +33,12 @@ function getNotes() {
 function App() {
   const [notes, setNotes] = useState(getNotes());
   const [searchPhrase, setSearchPhrase] = useState("");
-  const [isDeleteConfirmationModalDisplayed, setIsDeleteConfirmationModalDisplayed] = useState(false);
+  const [
+    isDeleteConfirmationModalDisplayed,
+    setIsDeleteConfirmationModalDisplayed,
+  ] = useState(false);
   const [modalPosition, setModalPosition] = useState({ x: 0, y: 0 });
+  const [noteIdToDelete, setNoteIdToDelete] = useState(null);
   const filteredNotes = notes.filter((note) =>
     note.content.includes(searchPhrase)
   );
@@ -58,19 +63,24 @@ function App() {
   };
 
   const handleNoteChange = (id, newContent) => {
-    setNotes(notes.map((note) =>
-      note.id === id ? { ...note, content: newContent } : note
-    ))
+    setNotes(
+      notes.map((note) =>
+        note.id === id ? { ...note, content: newContent } : note
+      )
+    );
   };
 
   const handleDeleteNote = (id) => {
     setNotes(notes.filter((note) => note.id !== id));
+    // Close the modal if the note being deleted is the one that triggered it
+    if (id === noteIdToDelete) setIsDeleteConfirmationModalDisplayed(false);
   };
 
   const showDeleteConfirmationModal = (id) => {
-    setModalPosition({ x: event.clientX, y: event.clientY });
+    setModalPosition(calculateModalPosition(event.clientX, event.clientY));
+    setNoteIdToDelete(id);
     setIsDeleteConfirmationModalDisplayed(true);
-  }
+  };
 
   return (
     <div className="App">
@@ -103,7 +113,12 @@ function App() {
           ))}
         </div>
       </div>
-      <DeleteConfirmationModal isDisplayed={isDeleteConfirmationModalDisplayed} position={modalPosition}/>
+      <DeleteConfirmationModal
+        isDisplayed={isDeleteConfirmationModalDisplayed}
+        position={modalPosition}
+        onDeleteButtonClick={() => handleDeleteNote(noteIdToDelete)}
+        onCancelButtonClick={() => setIsDeleteConfirmationModalDisplayed(false)}
+      />
     </div>
   );
 }
