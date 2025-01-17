@@ -67,27 +67,19 @@ function App() {
       variant: getRandomVariant(prevVariant),
     };
 
-    setNotes([...notes, newNote]);
+    setNotes((prevNotes) => [...prevNotes, newNote]);
   };
 
   const handleNoteChange = (id, newContent) => {
-    setNotes(
-      notes.map((note) =>
+    setNotes((prevNotes) =>
+      prevNotes.map((note) =>
         note.id === id ? { ...note, content: newContent } : note
       )
     );
   };
 
   const handleDeleteNote = (id) => {
-    setNotes(notes.filter((note) => note.id !== id));
-    // Close the modal if the note being deleted is the one that triggered it
-    if (id === noteIdToDelete) setIsDeleteConfirmationModalDisplayed(false);
-  };
-
-  const showDeleteConfirmationModal = (id) => {
-    setModalPosition(calculateModalPosition(event.clientX, event.clientY));
-    setNoteIdToDelete(id);
-    setIsDeleteConfirmationModalDisplayed(true);
+    setNotes((prevNotes) => prevNotes.filter((note) => note.id !== id));
   };
 
   return (
