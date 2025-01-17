@@ -26,11 +26,11 @@
   overflow-wrap: break-word;
 }
 
-.note:hover{
+.note:hover {
   cursor: text;
 }
 
-.note::placeholder{
+.note::placeholder {
   font-family: var(--font-primary);
   font-size: var(--body-size-lg);
   font-weight: var(--font-weight-medium);
@@ -54,17 +54,23 @@
   display: none;
 }
 
-.footer{
+.footer {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
 
-.note-date{
+.note-date {
   font-family: var(--font-secondary);
   font-size: var(--body-size-sm);
   font-weight: var(--font-weight-medium);
   color: var(--text-default-color);
+}
+
+.delete-modal-open-button {
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
 }
 
 .primary {

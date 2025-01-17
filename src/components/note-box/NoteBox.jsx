@@ -11,6 +11,7 @@ function NoteBox({
   createdAt,
   onSaveChanges,
   handleEmptyNote,
+  onDeleteButtonClick,
 }) {
   const [isEditing, setIsEditing] = useState(content === "" ? true : false);
   const [currentContent, setCurrentContent] = useState(content);
@@ -73,7 +74,7 @@ function NoteBox({
       />
       <div className="footer">
         <p className="note-date">{formatDate(createdAt)}</p>
-        <button>
+        <button onClick={onDeleteButtonClick} type="button" className="delete-modal-open-button">
           <img src={TrashIcon} alt="Delete icon" />
         </button>
       </div>
