@@ -1,36 +1,110 @@
-import logo from "./logo.svg";
-import "./App.css";
+/* eslint-disable react/no-unescaped-entities */
+import { useEffect, useState, useRef } from "react";
+import PropTypes from "prop-types";
 
-// function App() {
-//   return (
-//     <div className="App">
-//       <header className="App-header">
-//         <img src={logo} className="App-logo" alt="logo" />
-//         <p>
-//           Edit <code>src/App.js</code> and save to reload.
-//         </p>
-//         <a
-//           className="App-link"
-//           href="https://reactjs.org"
-//           target="_blank"
-//           rel="noopener noreferrer"
-//         >
-//           Learn React
-//         </a>
-//       </header>
-//     </div>
-//   );
-// }
+const sculptureList = [
+  {
+    name: "Homenaje a la Neurocirugía",
+    artist: "Marta Colvin Andrade",
+    description:
+      "Although Colvin is predominantly known for abstract themes that allude to pre-Hispanic symbols, this gigantic sculpture, an homage to neurosurgery, is one of her most recognizable public art pieces.",
+    url: "https://i.imgur.com/Mx7dA2Y.jpg",
+    alt: "A bronze statue of two crossed hands delicately holding a human brain in their fingertips.",
+  },
+  {
+    name: "Floralis Genérica",
+    artist: "Eduardo Catalano",
+    description:
+      "This enormous (75 ft. or 23m) silver flower is located in Buenos Aires. It is designed to move, closing its petals in the evening or when strong winds blow and opening them in the morning.",
+    url: "https://i.imgur.com/ZF6s192m.jpg",
+    alt: "A gigantic metallic flower sculpture with reflective mirror-like petals and strong stamens.",
+  },
+  {
+    name: "Eternal Presence",
+    artist: "John Woodrow Wilson",
+    description:
+      'Wilson was known for his preoccupation with equality, social justice, as well as the essential and spiritual qualities of humankind. This massive (7ft. or 2,13m) bronze represents what he described as "a symbolic Black presence infused with a sense of universal humanity."',
+    url: "https://i.imgur.com/aTtVpES.jpg",
+    alt: "The sculpture depicting a human head seems ever-present and solemn. It radiates calm and serenity.",
+  },
+  {
+    name: "Moai",
+    artist: "Unknown Artist",
+    description:
+      "Located on the Easter Island, there are 1,000 moai, or extant monumental statues, created by the early Rapa Nui people, which some believe represented deified ancestors.",
+    url: "https://i.imgur.com/RCwLEoQm.jpg",
+    alt: "Three monumental stone busts with the heads that are disproportionately large with somber faces.",
+  },
+  {
+    name: "Blue Nana",
+    artist: "Niki de Saint Phalle",
+    description:
+      "The Nanas are triumphant creatures, symbols of femininity and maternity. Initially, Saint Phalle used fabric and found objects for the Nanas, and later on introduced polyester to achieve a more vibrant effect.",
+    url: "https://i.imgur.com/Sd1AgUOm.jpg",
+    alt: "A large mosaic sculpture of a whimsical dancing female figure in a colorful costume emanating joy.",
+  },
+  {
+    name: "Ultimate Form",
+    artist: "Barbara Hepworth",
+    description:
+      "This abstract bronze sculpture is a part of The Family of Man series located at Yorkshire Sculpture Park. Hepworth chose not to create literal representations of the world but developed abstract forms inspired by people and landscapes.",
+    url: "https://i.imgur.com/2heNQDcm.jpg",
+    alt: "A tall sculpture made of three elements stacked on each other reminding of a human figure.",
+  },
+  {
+    name: "Cavaliere",
+    artist: "Lamidi Olonade Fakeye",
+    description:
+      "Descended from four generations of woodcarvers, Fakeye's work blended traditional and contemporary Yoruba themes.",
+    url: "https://i.imgur.com/wIdGuZwm.png",
+    alt: "An intricate wood sculpture of a warrior with a focused face on a horse adorned with patterns.",
+  },
+  {
+    name: "Big Bellies",
+    artist: "Alina Szapocznikow",
+    description:
+      "Szapocznikow is known for her sculptures of the fragmented body as a metaphor for the fragility and impermanence of youth and beauty. This sculpture depicts two very realistic large bellies stacked on top of each other, each around five feet (1,5m) tall.",
+    url: "https://i.imgur.com/AlHTAdDm.jpg",
+    alt: "The sculpture reminds a cascade of folds, quite different from bellies in classical sculptures.",
+  },
+  {
+    name: "Terracotta Army",
+    artist: "Unknown Artist",
+    description:
+      "The Terracotta Army is a collection of terracotta sculptures depicting the armies of Qin Shi Huang, the first Emperor of China. The army consisted of more than 8,000 soldiers, 130 chariots with 520 horses, and 150 cavalry horses.",
+    url: "https://i.imgur.com/HMFmH6m.jpg",
+    alt: "12 terracotta sculptures of solemn warriors, each with a unique facial expression and armor.",
+  },
+  {
+    name: "Lunar Landscape",
+    artist: "Louise Nevelson",
+    description:
+      "Nevelson was known for scavenging objects from New York City debris, which she would later assemble into monumental constructions. In this one, she used disparate parts like a bedpost, juggling pin, and seat fragment, nailing and gluing them into boxes that reflect the influence of Cubism’s geometric abstraction of space and form.",
+    url: "https://i.imgur.com/rN7hY6om.jpg",
+    alt: "A black matte sculpture where the individual elements are initially indistinguishable.",
+  },
+  {
+    name: "Aureole",
+    artist: "Ranjani Shettar",
+    description:
+      'Shettar merges the traditional and the modern, the natural and the industrial. Her art focuses on the relationship between man and nature. Her work was described as compelling both abstractly and figuratively, gravity defying, and a "fine synthesis of unlikely materials."',
+    url: "https://i.imgur.com/okTpbHhm.jpg",
+    alt: "A pale wire-like sculpture mounted on concrete wall and descending on the floor. It appears light.",
+  },
+  {
+    name: "Hippos",
+    artist: "Taipei Zoo",
+    description:
+      "The Taipei Zoo commissioned a Hippo Square featuring submerged hippos at play.",
+    url: "https://i.imgur.com/6o5Vuyu.jpg",
+    alt: "A group of bronze hippo sculptures emerging from the sett sidewalk as if they were swimming.",
+  },
+];
 
-import { useState } from "react";
+function getImageUrl(person, size = "s") {
+  return "https://i.imgur.com/" + person.imageId + size + ".jpg";
+}
 
-import { getImageUrl } from "./util";
-
-import { sculptureList } from "./data.js";
-
-import { useEffect } from "react";
-
-import { useRef } from "react";
 function ThinkingInReact() {
   return (
     <>
@@ -61,6 +135,17 @@ function FilterableProductTable({ products }) {
   );
 }
 
+FilterableProductTable.propTypes = {
+    products: PropTypes.arrayOf(
+        PropTypes.shape({
+            category: PropTypes.string.isRequired,
+            price: PropTypes.string.isRequired,
+            stocked: PropTypes.bool.isRequired,
+            name: PropTypes.string.isRequired,
+        })
+    ).isRequired,
+};
+
 function ProductCategoryRow({ category }) {
   return (
     <tr>
@@ -68,6 +153,10 @@ function ProductCategoryRow({ category }) {
     </tr>
   );
 }
+
+ProductCategoryRow.propTypes = {
+  category: PropTypes.string.isRequired,
+};
 
 function ProductRow({ product }) {
   const name = product.stocked ? (
@@ -83,6 +172,15 @@ function ProductRow({ product }) {
     </tr>
   );
 }
+
+ProductRow.propTypes = {
+  product: PropTypes.shape({
+    category: PropTypes.string.isRequired,
+    price: PropTypes.string.isRequired,
+    stocked: PropTypes.bool.isRequired,
+    name: PropTypes.string.isRequired,
+  }).isRequired,
+};
 
 function ProductTable({ products, filterText, inStockOnly }) {
   const rows = [];
@@ -120,6 +218,19 @@ function ProductTable({ products, filterText, inStockOnly }) {
   );
 }
 
+ProductTable.propTypes = {
+  products: PropTypes.arrayOf(
+    PropTypes.shape({
+      category: PropTypes.string.isRequired,
+      price: PropTypes.string.isRequired,
+      stocked: PropTypes.bool.isRequired,
+      name: PropTypes.string.isRequired,
+    })
+  ).isRequired,
+  filterText: PropTypes.string.isRequired,
+  inStockOnly: PropTypes.bool.isRequired,
+};
+
 function SearchBar({
   filterText,
   inStockOnly,
@@ -145,6 +256,13 @@ function SearchBar({
     </form>
   );
 }
+
+SearchBar.propTypes = {
+  filterText: PropTypes.string.isRequired,
+  inStockOnly: PropTypes.bool.isRequired,
+  onFilterTextChange: PropTypes.func.isRequired,
+  onInStockOnlyChange: PropTypes.func.isRequired,
+};
 
 const PRODUCTS = [
   { category: "Fruits", price: "$1", stocked: true, name: "Apple" },
@@ -244,10 +362,22 @@ function Avatar({ person, size = 100 }) {
   );
 }
 
+Avatar.propTypes = {
+  person: PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    imageId: PropTypes.string,
+  }).isRequired,
+  size: PropTypes.number,
+};
+
 function Card({ children }) {
   // The children prop is all children passed to the component.
   return <div className="card">{children}</div>;
 }
+
+Card.propTypes = {
+  children: PropTypes.node,
+};
 
 function PassingPropsToAComponent(props) {
   return (
@@ -285,6 +415,14 @@ function PassingPropsToAComponent(props) {
     </div>
   );
 }
+
+PassingPropsToAComponent.propTypes = {
+  size: PropTypes.number,
+  person: PropTypes.shape({
+    name: PropTypes.string.isRequired,
+    imageId: PropTypes.string,
+  }).isRequired,
+};
 
 function Gallery() {
   const [index, setIndex] = useState(0);
@@ -338,11 +476,11 @@ function ReplaceObjectAndArrayInState() {
   // Objects and Arrays in state is read-only.
   // So you have to replace them with a new object or array.
   const [form, setForm] = useState({
-    firstName: 'Barbara',
-    lastName: 'Hepworth',
-    email: 'bhepworth@sculpture.com',
+    firstName: "Barbara",
+    lastName: "Hepworth",
+    email: "bhepworth@sculpture.com",
     nested_info: {
-      other_info: 'other info',
+      other_info: "other info",
       age: 89,
     },
   });
@@ -354,10 +492,10 @@ function ReplaceObjectAndArrayInState() {
         First name:
         <input
           value={form.firstName}
-          onChange={e => {
+          onChange={(e) => {
             setForm({
               ...form,
-              firstName: e.target.value
+              firstName: e.target.value,
             });
           }}
         />
@@ -366,10 +504,10 @@ function ReplaceObjectAndArrayInState() {
         Last name:
         <input
           value={form.lastName}
-          onChange={e => {
+          onChange={(e) => {
             setForm({
               ...form,
-              lastName: e.target.value
+              lastName: e.target.value,
             });
           }}
         />
@@ -378,10 +516,10 @@ function ReplaceObjectAndArrayInState() {
         Email:
         <input
           value={form.email}
-          onChange={e => {
+          onChange={(e) => {
             setForm({
               ...form,
-              email: e.target.value
+              email: e.target.value,
             });
           }}
         />
@@ -390,23 +528,22 @@ function ReplaceObjectAndArrayInState() {
         Age (nested_info):
         <input
           value={form.nested_info.age}
-          onChange={e => {
+          onChange={(e) => {
             setForm({
               ...form,
               nested_info: {
                 ...form.nested_info, // other_info disappears if commented out
-                age: e.target.value
-              }
+                age: e.target.value,
+              },
             });
           }}
         />
       </label>
       <p>
-        {form.firstName}{' '}
-        {form.lastName}{' Age: '}
-        {form.nested_info.age} {' '}
-        ({form.email}){' '}
-        other_info: {form.nested_info.other_info}
+        {form.firstName} {form.lastName}
+        {" Age: "}
+        {form.nested_info.age} ({form.email}) other_info:{" "}
+        {form.nested_info.other_info}
       </p>
     </div>
   );
@@ -513,6 +650,11 @@ function SyncedInput({ text, onChange }) {
   );
 }
 
+SyncedInput.propTypes = {
+  text: PropTypes.string.isRequired,
+  onChange: PropTypes.func.isRequired,
+};
+
 function SharingStateBetweenComponents() {
   // To share state between components
   // Step 1: Move the shared state to their common parent component.
@@ -540,6 +682,11 @@ function SharingStateBetweenComponents() {
 function Button({ onClick, children }) {
   return <button onClick={onClick}>{children}</button>;
 }
+
+Button.propTypes = {
+  onClick: PropTypes.func.isRequired,
+  children: PropTypes.node.isRequired,
+};
 
 function ToolBar({ stopEventPropagation }) {
   return (
@@ -577,6 +724,10 @@ function ToolBar({ stopEventPropagation }) {
   );
 }
 
+ToolBar.propTypes = {
+  stopEventPropagation: PropTypes.bool.isRequired,
+};
+
 function RespondingToEvents() {
   return (
     <>
@@ -594,34 +745,62 @@ function Item({ isDone, isPrioritized, isHighLighted, name }) {
   if (isDone) {
     itemContent = "✅ " + name;
     //Using ternary operator ?: and logical "and" operator && to conditionally render JSX.
-    return <li style={isHighLighted ? {backgroundColor: 'yellow'} : {backgroundColor: 'grey'}}>{itemContent}{isPrioritized && ' ⭐'}</li>;
+    return (
+      <li
+        style={
+          isHighLighted
+            ? { backgroundColor: "yellow" }
+            : { backgroundColor: "grey" }
+        }
+      >
+        {itemContent}
+        {isPrioritized && " ⭐"}
+      </li>
+    );
   }
-  return <li style={isHighLighted ? {backgroundColor: 'yellow'} : {backgroundColor: 'grey'}}>{'❌ '+itemContent}</li>;
+  return (
+    <li
+      style={
+        isHighLighted
+          ? { backgroundColor: "yellow" }
+          : { backgroundColor: "grey" }
+      }
+    >
+      {"❌ " + itemContent}
+    </li>
+  );
 }
+
+Item.propTypes = {
+  isDone: PropTypes.bool.isRequired,
+  isPrioritized: PropTypes.bool.isRequired,
+  isHighLighted: PropTypes.bool.isRequired,
+  name: PropTypes.string.isRequired,
+};
 
 function ConditionalRendering() {
   return (
     <section>
       <h2>Conditional Rendering</h2>
-      <h3>Sally Ride's To Do List</h3>
+      <h3>{"Sally Ride's To Do List"}</h3>
       <ul>
-        <Item 
+        <Item
           isDone={true}
           isPrioritized={true}
           isHighLighted={false}
-          name="Space suit" 
+          name="Space suit"
         />
-        <Item 
+        <Item
           isDone={true}
           isPrioritized={false}
           isHighLighted={true}
-          name="Helmet with a golden leaf" 
+          name="Helmet with a golden leaf"
         />
-        <Item 
+        <Item
           isDone={false}
           isPrioritized={true}
           isHighLighted={true}
-          name="Photo of Tam" 
+          name="Photo of Tam"
         />
       </ul>
     </section>
@@ -638,9 +817,7 @@ function ManipulatingDOMWithRef() {
   return (
     <>
       <input ref={inputRef} />
-      <button onClick={handleClick}>
-        Focus the input
-      </button>
+      <button onClick={handleClick}>Focus the input</button>
     </>
   );
 }
@@ -674,12 +851,8 @@ function UseRef() {
       <div>
         <h2>useRef</h2>
         <h2>Time passed: {secondsPassed.toFixed(3)}</h2>
-        <button onClick={handleStart}>
-          Start
-        </button>
-        <button onClick={handleStop}>
-          Stop
-        </button>
+        <button onClick={handleStart}>Start</button>
+        <button onClick={handleStop}>Stop</button>
       </div>
       <div>
         <h2>Focus the input</h2>
@@ -689,7 +862,7 @@ function UseRef() {
   );
 }
 
-export default function App() {
+function Basic() {
   return (
     <>
       <ThinkingInReact />
@@ -713,4 +886,4 @@ export default function App() {
   );
 }
 
-// export default App;
+export default Basic;
