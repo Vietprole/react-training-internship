@@ -11,6 +11,7 @@ import { createPortal } from "react-dom";
 
 const VARIANTS = ["primary", "secondary", "tertiary"];
 
+//
 function getRandomVariant(prevVariant) {
   const availableVariants = VARIANTS.filter(
     (variant) => variant !== prevVariant
@@ -135,3 +136,4 @@ function App() {
 }
 
 export default App;
+// tach 
