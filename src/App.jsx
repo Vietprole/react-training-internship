@@ -142,7 +142,7 @@ function App() {
       <h2>Uncontrolled Components</h2>
       <form method="post" onSubmit={handleSubmit}>
         <label>
-          Text input: <input name="myInput" defaultValue="Init value" />
+          Text input: <input id="text-input" name="myInput" defaultValue="Init value" />
         </label>
         <label>
           Checkbox:{" "}
