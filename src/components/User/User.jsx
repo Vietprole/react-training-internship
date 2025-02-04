@@ -30,3 +30,4 @@ export default function User(props) {
 User.propTypes = {
   id: PropTypes.string.isRequired,
 };
+
