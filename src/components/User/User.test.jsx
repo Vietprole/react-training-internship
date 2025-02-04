@@ -1,6 +1,10 @@
 import { vi } from "vitest";
-import { test, act, render, expect } from "vitest";
+import { test, expect } from "vitest";
+import { render } from "@testing-library/react";
+import { act } from "react";
 import User from "./User";
+
+window.fetch = vi.fn()
 
 test("renders user data", async () => {
   const fakeUser = {
@@ -8,7 +12,8 @@ test("renders user data", async () => {
     age: "32",
     address: "123, Charming Avenue"
   };
-  vi.spyOn(User, "fetch").mockImplementation(() =>
+
+  fetch.mockImplementation(() =>
     Promise.resolve({
       json: () => Promise.resolve(fakeUser)
     })
@@ -16,13 +21,13 @@ test("renders user data", async () => {
 
   // Use the asynchronous version of act to apply resolved promises
   await act(async () => {
-    render(<User id="123" />, document);
+    render(<User id="123" />);
   });
 
   expect(document.querySelector("summary").textContent).toBe(fakeUser.name);
   expect(document.querySelector("strong").textContent).toBe(fakeUser.age);
-  expect(document.textContent).toContain(fakeUser.address);
+  expect(document.body.textContent).toContain(fakeUser.address);
 
   // remove the mock to ensure tests are completely isolated
-  User.fetch.mockRestore();
+  fetch.mockRestore();
 });

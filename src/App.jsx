@@ -3,6 +3,11 @@ import Loading from "./components/Loading/Loading";
 import Basic from "./components/Basic/Basic";
 import ContextDemo from "./components/ContextDemo/ContextDemo";
 import ErrorBoundary from "./components/ErrorBoundary";
+import Hello from "./components/Hello/Hello";
+import User from "./components/User/User";
+import Toggle from "./components/Toggle/Toggle";
+import Contact from "./components/Contact/Contact";
+import Card from "./components/Card/Card";
 
 // Artificial delay
 async function delayForDemo(promise, timeToDelay = 2000) {
@@ -60,10 +65,10 @@ function handleSubmit(e) {
 function createConnection(serverUrl) {
   return {
     connect() {
-      alert('✅ Connecting to room at ' + serverUrl + '...');
+      alert("✅ Connecting to room at " + serverUrl + "...");
     },
     disconnect() {
-      alert('❌ Disconnected from room at ' + serverUrl + '');
+      alert("❌ Disconnected from room at " + serverUrl + "");
     },
   };
 }
@@ -76,13 +81,12 @@ function useChatRoom(serverUrl) {
   }, [serverUrl]);
 }
 
-
 function App() {
   const [showDelayedDiv, setShowDelayedDiv] = useState(false);
   const [showBasic, setShowBasic] = useState(false);
   const [showError, setShowError] = useState(false);
 
-  const [serverUrl, setServerUrl] = useState('https://localhost:1234');
+  const [serverUrl, setServerUrl] = useState("https://localhost:1234");
   useChatRoom(serverUrl);
 
   return (
@@ -142,7 +146,8 @@ function App() {
       <h2>Uncontrolled Components</h2>
       <form method="post" onSubmit={handleSubmit}>
         <label>
-          Text input: <input id="text-input" name="myInput" defaultValue="Init value" />
+          Text input:{" "}
+          <input id="text-input" name="myInput" defaultValue="Init value" />
         </label>
         <label>
           Checkbox:{" "}
@@ -191,8 +196,23 @@ function App() {
       <h2>Reusing Logic with Custom Hooks</h2>
       <label>
         Server URL:
-        <input value={serverUrl} onChange={e => setServerUrl(e.target.value)} />
+        <input
+          value={serverUrl}
+          onChange={(e) => setServerUrl(e.target.value)}
+        />
       </label>
+      <hr />
+      <h1>Unit Testing</h1>
+      <Hello />
+      <User id="1" />
+      <Toggle />
+      <Contact
+        name="Joni Baez"
+        email="test@example.com"
+        site="http://test.com"
+        center={{ lat: 0, long: 0 }}
+      />
+      <Card/>
     </>
   );
 }

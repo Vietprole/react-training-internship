@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
 import PropTypes from "prop-types";
 
-export default function Fetch(props) {
+export default function User(props) {
   const [user, setUser] = useState(null);
 
   async function fetchUserData(id) {
-    const response = await fetch("/" + id);
+    const response = await fetch("https://api.example.com/users/" + id);
     setUser(await response.json());
   }
 
@@ -27,6 +27,6 @@ export default function Fetch(props) {
   );
 }
 
-Fetch.propTypes = {
+User.propTypes = {
   id: PropTypes.string.isRequired,
 };
