@@ -1,10 +1,10 @@
 import PropTypes from "prop-types";
-import "./logo.css";
+import styles from "./Logo.module.css";
 
 function Logo({src = "https://via.placeholder.com/48", alt = "Logo"}) {
   return (
-    <img className="logo" src={src} alt={alt} />
-	);
+    <img className={styles.logo} src={src} alt={alt} />
+  );
 };
 
 Logo.propTypes = {

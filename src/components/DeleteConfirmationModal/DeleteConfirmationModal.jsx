@@ -1,22 +1,22 @@
 import ArrowIcon from "/assets/arrow-icon.svg";
-import "./delete-confirmation-modal.css";
+import styles from "./DeleteConfirmationModal.module.css";
 import PropTypes from "prop-types";
 
 function DeleteConfirmationModal({ isDisplayed, position, onDeleteButtonClick, onCancelButtonClick }) {
   return (
     <div
-      className={`delete-confirmation-modal ${isDisplayed ? "" : "hidden"}`}
+      className={`${styles.deleteConfirmationModal} ${isDisplayed ? "" : styles.hidden}`}
       style={{ top: position.y, left: position.x, position: "absolute" }}
     >
-      <div className="modal-content">
+      <div className={styles.modalContent}>
         <h2>Confirm deletion</h2>
         <p>Are you sure you want to delete this note?</p>
-        <div className="button-container">
-          <button className="cancel-button" onClick={onCancelButtonClick}>Cancel</button>
-          <button className="delete-button" onClick={onDeleteButtonClick}>Delete</button>
+        <div className={styles.buttonContainer}>
+          <button className={styles.cancelButton} onClick={onCancelButtonClick}>Cancel</button>
+          <button className={styles.deleteButton} onClick={onDeleteButtonClick}>Delete</button>
         </div>
       </div>
-      <img src={ArrowIcon} alt="Arrow icon" className="arrow-icon" />
+      <img src={ArrowIcon} alt="Arrow icon" className={styles.arrowIcon} />
     </div>
   );
 }

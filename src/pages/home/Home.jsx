@@ -1,4 +1,4 @@
-import "./home.css";
+import styles from "./Home.module.css";
 import Sidebar from "../../components/sidebar/Sidebar";
 import NoteBox from "../../components/note-box/NoteBox";
 import SearchBar from "../../components/search-bar/SearchBar";
@@ -91,10 +91,10 @@ function Home() {
   }
 
   return (
-    <div className="Home">
+    <div className={styles.container}>
       <Sidebar handleCreateNote={handleCreateNote} />
-      <div className="main">
-        <div className="header">
+      <div className={styles.main}>
+        <div className={styles.header}>
           <SearchBar setSearchPhrase={setSearchPhrase} />
           <img
             src={DarkModeIcon}
@@ -102,12 +102,12 @@ function Home() {
             className="dark-mode-icon"
           />
         </div>
-        <h1>
+        <h1 className={styles.title}>
           <span>Hello, </span>
-          <span className="name">Ruy</span>! 👋🏼
+          <span className={styles.name}>Ruy</span>! 👋🏼
         </h1>
-        <p className="description">All your notes are here, in one place!</p>
-        <div className="notes-container">
+        <p className={styles.description}>All your notes are here, in one place!</p>
+        <div className={styles.notesContainer}>
           {filteredNotes.map((note) => (
             <NoteBox
               key={note.id}

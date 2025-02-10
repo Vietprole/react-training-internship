@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import "./note-box.css";
+import styles from "./NoteBox.module.css";
 import TrashIcon from "/assets/trash-icon.svg";
 import SaveIcon from "/assets/save-icon.svg";
 import { formatDate } from "../../utils/utils";
@@ -52,19 +52,18 @@ function NoteBox({
 
   return (
     <>
-    <div className={`overlay ${isEditing ? 'visible' : ''}`} />
-    <div className={`note-box ${variant} ${isEditing ? "editing" : ""}`}>
+    <div className={`${styles.overlay} ${isEditing ? styles.visible : ''}`} />
+    <div className={`${styles.noteBox} ${styles[variant]} ${isEditing ? styles.editing : ""}`}>
       <button
-        className={`save-button ${isEditing ? "" : "hidden"}`}
+        className={`${styles.saveButton} ${isEditing ? "" : styles.hidden}`}
         type="button"
         onMouseDown={handleSave}
       >
-        {/* onMouseDown allow event of this button to fire before onBlur take effect */}
         <img src={SaveIcon} alt="Save icon" />
       </button>
       <textarea
         ref={textareaRef}
-        className="note"
+        className={styles.note}
         placeholder="Type your note..."
         onDoubleClick={handleDoubleClick}
         onBlur={handleBlur}
@@ -72,9 +71,9 @@ function NoteBox({
         value={currentContent}
         onChange={(e) => setCurrentContent(e.target.value)}
       />
-      <div className="footer">
-        <p className="note-date">{formatDate(createdAt)}</p>
-        <button onClick={onDeleteButtonClick} type="button" className="delete-modal-open-button">
+      <div className={styles.footer}>
+        <p className={styles.noteDate}>{formatDate(createdAt)}</p>
+        <button onClick={onDeleteButtonClick} type="button" className={styles.deleteModalOpenButton}>
           <img src={TrashIcon} alt="Delete icon" />
         </button>
       </div>
@@ -89,6 +88,7 @@ NoteBox.propTypes = {
   createdAt: PropTypes.instanceOf(Date),
   onSaveChanges: PropTypes.func,
   handleEmptyNote: PropTypes.func,
+  onDeleteButtonClick: PropTypes.func,
 };
 
 export default NoteBox;

@@ -1,0 +1,14 @@
+.container{
+  display: flex;
+}
+
+.leftSection{
+
+}
+
+h1 {
+  font-family: var(--font-primary);
+  font-weight: var(--font-weight-bold);
+  font-size: var(--heading-size-lg);
+  color: black;
+}
