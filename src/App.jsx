@@ -7,9 +7,11 @@ import DeleteConfirmationModal from "./components/delete-confirmation-modal/Dele
 import { useState, useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { calculateModalPosition } from "./utils/utils";
+import { createPortal } from "react-dom";
 
 const VARIANTS = ["primary", "secondary", "tertiary"];
 
+//
 function getRandomVariant(prevVariant) {
   const availableVariants = VARIANTS.filter(
     (variant) => variant !== prevVariant
@@ -120,14 +122,18 @@ function App() {
           ))}
         </div>
       </div>
-      <DeleteConfirmationModal
-        isDisplayed={noteIdToDelete !== null}
-        position={modalPosition}
-        onDeleteButtonClick={() => handleDeleteNote(noteIdToDelete)}
-        onCancelButtonClick={() => setNoteIdToDelete(null)}
-      />
+      {noteIdToDelete != null && createPortal(
+        <DeleteConfirmationModal
+          isDisplayed={noteIdToDelete !== null}
+          position={modalPosition}
+          onDeleteButtonClick={() => handleDeleteNote(noteIdToDelete)}
+          onCancelButtonClick={() => setNoteIdToDelete(null)}
+        />,
+        document.body
+      )}
     </div>
   );
 }
 
 export default App;
+// tach 
