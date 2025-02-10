@@ -10,7 +10,7 @@ function Login() {
   return (
     <div className={styles.container}>
       <div className={styles.leftSection}>
-        <img src={ManImage} alt="Man image" />
+        <img className={styles.manImage}src={ManImage} alt="Man image" />
         <h1>Keep life simple</h1>
         <p>
           Store all your notes in a simple and intuitive app that helps you

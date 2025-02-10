@@ -1,10 +1,10 @@
-import Logo from "../logo/Logo";
+import Logo from "../Logo/Logo";
 import LogoSrc from "/assets/logo.svg";
 import HomeIcon from "/assets/home-icon.svg";
 import PlusIcon from "/assets/plus-icon.svg";
 import LogoutIcon from "/assets/logout-icon.svg";
 import styles from "./Sidebar.module.css";
-import SidebarItem from "../sidebar-item/SidebarItem";
+import SidebarItem from "../SidebarItem/SidebarItem";
 import { useState } from "react";
 import PropTypes from "prop-types";
 

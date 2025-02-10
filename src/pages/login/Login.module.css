@@ -3,12 +3,26 @@
 }
 
 .leftSection{
+  width: 676px;
+}
 
+.manImage{
+  max-width: 369px;
+  max-height: 300px;
 }
 
 h1 {
   font-family: var(--font-primary);
   font-weight: var(--font-weight-bold);
   font-size: var(--heading-size-lg);
+  line-height: 42px;
   color: black;
+}
+
+p{
+  font-family: var(--font-primary);
+  font-weight: var(--font-weight-regular);
+  font-size: var(--body-size-xl);
+  line-height: 32px;
+  color: var(--text-secondary-color);
 }

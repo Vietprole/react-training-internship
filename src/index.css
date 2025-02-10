@@ -10,6 +10,7 @@
   --body-size-sm: 14px;
   --body-size-md: 18px;
   --body-size-lg: 20px;
+  --body-size-xl: 24px;
 
   --font-weight-regular: 400;
   --font-weight-medium: 500;
@@ -29,7 +30,7 @@
   --text-secondary-color: #808080;
 
   --sidebar-color: #FFFDFA;
-  --sidebar-hover-color: #80808020;
+  --sidebar-hover-color: #3a1d1d20;
 
   --overlay-color: #00000080;
 

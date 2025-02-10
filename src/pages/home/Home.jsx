@@ -1,9 +1,9 @@
 import styles from "./Home.module.css";
-import Sidebar from "../../components/sidebar/Sidebar";
-import NoteBox from "../../components/note-box/NoteBox";
-import SearchBar from "../../components/search-bar/SearchBar";
+import Sidebar from "../../components/Sidebar/Sidebar";
+import NoteBox from "../../components/NoteBox/NoteBox";
+import SearchBar from "../../components/SearchBar/SearchBar";
 import DarkModeIcon from "/assets/dark-mode-icon.svg";
-import DeleteConfirmationModal from "../../components/delete-confirmation-modal/DeleteConfirmationModal";
+import DeleteConfirmationModal from "../../components/DeleteConfirmationModal/DeleteConfirmationModal";
 import { useState, useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { calculateModalPosition } from "../../utils/utils";
