@@ -1,0 +1,120 @@
+.container {
+  display: flex;
+  height: 100vh;
+  font-family: var(--font-primary);
+}
+
+.leftSection {
+  width: 676px;
+  padding: 140px 118px 0 112px;
+}
+
+.manImage {
+  display: block;
+  max-width: 369px;
+  max-height: 300px;
+  margin: 0 auto 80px;
+}
+
+h1 {
+  font-weight: var(--font-weight-bold);
+  font-size: var(--heading-size-lg);
+  line-height: 42px;
+  margin-bottom: 21px;
+  color: black;
+}
+
+p {
+  font-weight: var(--font-weight-regular);
+  font-size: var(--body-size-xxl);
+  line-height: 32px;
+  color: var(--text-secondary-color);
+}
+
+.rightSection {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--sidebar-color);
+}
+
+.logoContainer {
+  display: flex;
+  align-items: center;
+  margin-bottom: 75px;
+}
+
+.appNameIcon{
+  margin-left: 20px;
+}
+
+.logo {
+  margin-right: 20px;
+}
+
+h2 {
+  width: 320px;
+  font-weight: var(--font-weight-bold);
+  font-size: var(--heading-size-lg);
+  margin-bottom: 16px;
+  color: black;
+}
+
+.username,
+.password {
+  display: block;
+  width: 320px;
+  border: var(--input-color) 1px solid;
+  border-radius: var(--border-radius-sm);
+  padding: 16px;
+  font-size: var(--body-size-md);
+  color: var(--text-default-color);
+}
+
+.username::placeholder,
+.password::placeholder {
+  color: var(--input-color);
+}
+
+.username {
+  margin-bottom: 10px;
+}
+
+.password {
+  margin-bottom: 30px;
+}
+
+.signUpButton {
+  display: flex;
+  width: 320px;
+  height: 50px;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  border-radius: var(--border-radius-sm);
+  cursor: pointer;
+}
+
+.signUpButton {
+  background-color: var(--success-color);
+  margin-bottom: 20px;
+}
+
+.separator {
+  display: flex;
+  width: 320px;
+  align-items: center;
+  text-align: center;
+  color: var(--input-color);
+  margin-bottom: 20px;
+}
+
+.submitIcon {
+  width: 20px;
+  height: 20px;
+  margin-right: 8px;
+}
+
+

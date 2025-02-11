@@ -1,3 +1,4 @@
+import { useNavigate } from "react-router";
 import AppNameIcon from "/assets/app-name-icon.svg";
 import LogoIcon from "/assets/logo.svg";
 import ManImage from "/assets/man-image.svg";
@@ -7,6 +8,12 @@ import Logo from "../../components/Logo/Logo";
 import styles from "./Login.module.css";
 
 function Login() {
+  const navigate = useNavigate();
+  
+  function handleSignUpButtonClick() {
+    navigate('/signup');
+  }
+
   return (
     <div className={styles.container}>
       <div className={styles.leftSection}>
@@ -45,7 +52,7 @@ function Login() {
           Sign in note.me
         </button>
         <div className={styles.separator}>or sign up here</div>
-        <button className={styles.signUpButton} type="button">
+        <button className={styles.signUpButton} type="button" onClick={handleSignUpButtonClick}>
           <img
             className={styles.signUpIcon}
             src={SignUpIcon}
