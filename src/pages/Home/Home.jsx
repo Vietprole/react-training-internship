@@ -42,14 +42,14 @@ function Home() {
 
   useEffect(() => {
     const handleClickOutside = (event) => {
-      if (!event.target.closest('.delete-confirmation-modal')) {
+      if (!event.target.closest(".delete-confirmation-modal")) {
         setNoteIdToDelete(null);
       }
     };
-    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
     // Cleanup event listener to prevent memory leak
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, []);
 
@@ -88,48 +88,48 @@ function Home() {
   const showDeleteConfirmationModal = (id) => {
     setModalPosition(calculateModalPosition(event.clientX, event.clientY));
     setNoteIdToDelete(id);
-  }
+  };
 
   return (
     <div className={styles.container}>
-      <Sidebar handleCreateNote={handleCreateNote} />
-      <div className={styles.main}>
-        <div className={styles.header}>
-          <SearchBar setSearchPhrase={setSearchPhrase} />
-          <img
-            src={DarkModeIcon}
-            alt="Dark mode icon"
-            className="dark-mode-icon"
-          />
-        </div>
-        <h1 className={styles.title}>
-          <span>Hello, </span>
-          <span className={styles.name}>Ruy</span>! 👋🏼
-        </h1>
-        <p className={styles.description}>All your notes are here, in one place!</p>
-        <div className={styles.notesContainer}>
-          {filteredNotes.map((note) => (
-            <NoteBox
-              key={note.id}
-              content={note.content}
-              createdAt={note.createdAt}
-              variant={note.variant}
-              onSaveChanges={(content) => handleNoteChange(note.id, content)}
-              handleEmptyNote={() => handleDeleteNote(note.id)}
-              onDeleteButtonClick={() => showDeleteConfirmationModal(note.id)}
-            />
-          ))}
-        </div>
+      <div className={styles.header}>
+        <SearchBar setSearchPhrase={setSearchPhrase} />
+        <img
+          src={DarkModeIcon}
+          alt="Dark mode icon"
+          className="dark-mode-icon"
+        />
       </div>
-      {noteIdToDelete != null && createPortal(
-        <DeleteConfirmationModal
-          isDisplayed={noteIdToDelete !== null}
-          position={modalPosition}
-          onDeleteButtonClick={() => handleDeleteNote(noteIdToDelete)}
-          onCancelButtonClick={() => setNoteIdToDelete(null)}
-        />,
-        document.body
-      )}
+      <h1 className={styles.title}>
+        <span>Hello, </span>
+        <span className={styles.name}>Ruy</span>! 👋🏼
+      </h1>
+      <p className={styles.description}>
+        All your notes are here, in one place!
+      </p>
+      <div className={styles.notesContainer}>
+        {filteredNotes.map((note) => (
+          <NoteBox
+            key={note.id}
+            content={note.content}
+            createdAt={note.createdAt}
+            variant={note.variant}
+            onSaveChanges={(content) => handleNoteChange(note.id, content)}
+            handleEmptyNote={() => handleDeleteNote(note.id)}
+            onDeleteButtonClick={() => showDeleteConfirmationModal(note.id)}
+          />
+        ))}
+      </div>
+      {noteIdToDelete != null &&
+        createPortal(
+          <DeleteConfirmationModal
+            isDisplayed={noteIdToDelete !== null}
+            position={modalPosition}
+            onDeleteButtonClick={() => handleDeleteNote(noteIdToDelete)}
+            onCancelButtonClick={() => setNoteIdToDelete(null)}
+          />,
+          document.body
+        )}
     </div>
   );
 }
