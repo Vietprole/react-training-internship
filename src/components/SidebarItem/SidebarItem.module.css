@@ -1,4 +1,4 @@
-.sidebar-item{
+.item {
   display: flex;
   align-items: center;
   gap: 36px;
@@ -8,21 +8,21 @@
   background-color: var(--sidebar-color);
 }
 
-.sidebar-item-icon {
+.icon {
   width: 32px;
   height: 32px;
 }
 
-.hover-icon {
+.hoverIcon {
   transition: visibility 0.3s, opacity 0.3s ease-in-out;
 }
 
-.sidebar-item:hover .hover-icon {
+.item:hover .hoverIcon {
   visibility: visible;
   opacity: 1;
 }
 
-.sidebar-item:hover{
+.item:hover {
   background-color: var(--sidebar-hover-color);
   cursor: pointer;
 }

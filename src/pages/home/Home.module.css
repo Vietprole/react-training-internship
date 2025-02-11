@@ -1,0 +1,41 @@
+.container {
+  display: flex;
+}
+
+.main {
+  padding: 40px 112px;
+  flex: 1 1 auto;
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 52px;
+}
+
+.title {
+  font-family: var(--font-primary);
+  font-size: var(--heading-size-md);
+  font-weight: var(--font-weight-regular);
+  color: black;
+  margin: 0 0 7px 0;
+}
+
+.name {
+  font-weight: var(--font-weight-bold);
+}
+
+.description {
+  font-family: var(--font-primary);
+  font-size: var(--body-size-xxl);
+  color: var(--text-primary-color);
+  padding: 0;
+  margin: 0 0 63px 0;
+}
+
+.notesContainer {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(264px, 1fr));
+  gap: 36px;
+}

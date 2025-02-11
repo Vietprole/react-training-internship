@@ -1,4 +1,4 @@
-import Logo from './Logo';
+import Logo from "./Logo/Logo";
 import LogoSrc from "/assets/logo.svg";
 
 export default {

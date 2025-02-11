@@ -1,20 +1,20 @@
-.search-bar {
+.searchBar {
   display: flex;
   align-items: center;
 }
 
-.search-icon {
+.icon {
   width: 18px;
   height: 18px;
   margin-right: 11px;
 }
 
-.search-input{
+.input {
   font-family: var(--font-primary);
-  font-size: var(--body-size-md);
+  font-size: var(--body-size-xxl);
   color: var(--text-default-color);
 }
 
-.search-input::placeholder {
+.input::placeholder {
   color: var(--text-secondary-color);
 }
