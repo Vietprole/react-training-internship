@@ -18,11 +18,11 @@ function Sidebar({ handleCreateNote }) {
 
   const handleLogout = () => {
     alert("Logout");
-  }
+  };
 
   return (
     <nav className={styles.sidebar}>
-      <Logo src={LogoSrc}/>
+      <Logo src={LogoSrc} />
       <div className={styles.itemsContainer}>
         <SidebarItem
           icon={HomeIcon}
@@ -37,7 +37,11 @@ function Sidebar({ handleCreateNote }) {
           onClick={handleCreateNote}
         />
       </div>
-      <button className={styles.logoutButton} type="button" onClick={handleLogout}>
+      <button
+        className={styles.logoutButton}
+        type="button"
+        onClick={handleLogout}
+      >
         <img src={LogoutIcon} alt="Logout icon" />
       </button>
     </nav>

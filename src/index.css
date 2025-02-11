@@ -8,14 +8,16 @@
   --heading-size-md: 32px;
   --heading-size-lg: 40px;
   --body-size-sm: 14px;
-  --body-size-md: 18px;
-  --body-size-lg: 20px;
-  --body-size-xl: 24px;
+  --body-size-md: 16px;
+  --body-size-lg: 18px;
+  --body-size-xl: 20px;
+  --body-size-xxl: 24px;
 
   --font-weight-regular: 400;
   --font-weight-medium: 500;
   --font-weight-bold: 700;
 
+  --border-radius-sm: 8px;
   --border-radius-md: 10px;
   --border-radius-lg: 50px;
 
@@ -34,7 +36,10 @@
 
   --overlay-color: #00000080;
 
-  --danger-color: #FF3737;
+  --success-color: #30C58D;
+  --danger-color: #F7685C;
+
+  --input-color: #A8A8B3;
 }
 
 html, body {

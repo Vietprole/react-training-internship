@@ -16,7 +16,7 @@
 
 .note {
   font-family: var(--font-primary);
-  font-size: var(--body-size-lg);
+  font-size: var(--body-size-xxl);
   font-weight: var(--font-weight-medium);
   line-height: 30px;
   min-height: 167px;
@@ -32,7 +32,7 @@
 
 .note::placeholder {
   font-family: var(--font-primary);
-  font-size: var(--body-size-lg);
+  font-size: var(--body-size-xxl);
   font-weight: var(--font-weight-medium);
   line-height: 30px;
   color: var(--text-secondary-color);

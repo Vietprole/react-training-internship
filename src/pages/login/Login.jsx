@@ -10,7 +10,7 @@ function Login() {
   return (
     <div className={styles.container}>
       <div className={styles.leftSection}>
-        <img className={styles.manImage}src={ManImage} alt="Man image" />
+        <img className={styles.manImage} src={ManImage} alt="Man image" />
         <h1>Keep life simple</h1>
         <p>
           Store all your notes in a simple and intuitive app that helps you
@@ -18,20 +18,40 @@ function Login() {
         </p>
       </div>
       <div className={styles.rightSection}>
-        <div>
-          <Logo src={LogoIcon}/>
-          <img src={AppNameIcon} alt="App name icon" />
+        <div className={styles.logoContainer}>
+          <Logo src={LogoIcon} variant="large"/>
+          <img
+            className={styles.appNameIcon}
+            src={AppNameIcon}
+            alt="App name icon"
+          />
         </div>
-        <input type="text" />
-        <input type="password" />
-        <button type="submit">
-          <img src={SubmitIcon} alt="Submit icon" />
+        <input
+          className={styles.username}
+          type="text"
+          placeholder="Type your username"
+        />
+        <input
+          className={styles.password}
+          type="password"
+          placeholder="Type your password"
+        />
+        <button className={styles.signInButton} type="submit">
+          <img
+            className={styles.submitIcon}
+            src={SubmitIcon}
+            alt="Submit icon"
+          />
           Sign in note.me
         </button>
-        <div>or sign up here</div>
-        <button type="button">
-          <img src={SignUpIcon} alt="Sign up icon" />
-          Sign in note.me
+        <div className={styles.separator}>or sign up here</div>
+        <button className={styles.signUpButton} type="button">
+          <img
+            className={styles.signUpIcon}
+            src={SignUpIcon}
+            alt="Sign up icon"
+          />
+          Sign up
         </button>
       </div>
     </div>
