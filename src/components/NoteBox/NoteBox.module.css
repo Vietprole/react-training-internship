@@ -1,4 +1,4 @@
-.note-box {
+.noteBox {
   min-width: 264px;
   min-height: 240px;
   max-width: fit-content;
@@ -9,14 +9,14 @@
   justify-content: space-between;
 }
 
-.note-box.editing {
+.noteBox.editing {
   position: relative;
   z-index: 2;
 }
 
 .note {
   font-family: var(--font-primary);
-  font-size: var(--body-size-lg);
+  font-size: var(--body-size-xxl);
   font-weight: var(--font-weight-medium);
   line-height: 30px;
   min-height: 167px;
@@ -32,25 +32,25 @@
 
 .note::placeholder {
   font-family: var(--font-primary);
-  font-size: var(--body-size-lg);
+  font-size: var(--body-size-xxl);
   font-weight: var(--font-weight-medium);
   line-height: 30px;
   color: var(--text-secondary-color);
 }
 
-.save-button {
+.saveButton {
   width: 20px;
   height: 20px;
   margin-left: auto;
   cursor: pointer;
 }
 
-.save-button img {
+.saveButton img {
   width: 20px;
   height: 20px;
 }
 
-.savebutton.hidden {
+.saveButton.hidden {
   display: none;
 }
 
@@ -60,14 +60,14 @@
   align-items: center;
 }
 
-.note-date {
+.noteDate {
   font-family: var(--font-secondary);
   font-size: var(--body-size-sm);
   font-weight: var(--font-weight-medium);
   color: var(--text-default-color);
 }
 
-.delete-modal-open-button {
+.deleteModalOpenButton {
   width: 24px;
   height: 24px;
   cursor: pointer;

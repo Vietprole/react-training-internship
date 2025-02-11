@@ -1,0 +1,32 @@
+.container {
+  display: flex;
+  height: 100vh;
+  font-family: var(--font-primary);
+}
+
+.introduction {
+  width: 676px;
+  padding: 140px 118px 0 112px;
+}
+
+.manImage {
+  display: block;
+  max-width: 369px;
+  max-height: 300px;
+  margin: 0 auto 80px;
+}
+
+h1 {
+  font-weight: var(--font-weight-bold);
+  font-size: var(--heading-size-lg);
+  line-height: 42px;
+  margin-bottom: 21px;
+  color: black;
+}
+
+p {
+  font-weight: var(--font-weight-regular);
+  font-size: var(--body-size-xxl);
+  line-height: 32px;
+  color: var(--text-secondary-color);
+}

@@ -1,6 +1,6 @@
 .sidebar {
   width: 112px;
-  flex-shrink: 0; /* Prevent shrinking */
+  flex-shrink: 0;
   position: sticky;
   top: 0;
   display: flex;
@@ -10,22 +10,22 @@
   align-items: center;
   padding: 30px 0;
   background-color: var(--sidebar-color);
-  box-shadow: 60px 0 60px rgba(0, 0, 0, 0.05); /* Right shadow with blur */
+  box-shadow: 60px 0 60px rgba(0, 0, 0, 0.05);
 }
 
-.sidebar-items-container {
+.itemsContainer {
   width: 100%;
   display: flex;
   flex-direction: column;
   gap: 40px;
 }
 
-.logout-button {
+.logoutButton {
   padding: 0;
   border: none;
   background-color: transparent;
 }
 
-.logout-button:hover {
+.logoutButton:hover {
   cursor: pointer;
 }

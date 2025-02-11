@@ -1,10 +1,10 @@
-import Logo from "../logo/Logo";
+import Logo from "../Logo/Logo";
 import LogoSrc from "/assets/logo.svg";
 import HomeIcon from "/assets/home-icon.svg";
 import PlusIcon from "/assets/plus-icon.svg";
 import LogoutIcon from "/assets/logout-icon.svg";
-import "./sidebar.css";
-import SidebarItem from "../sidebar-item/SidebarItem";
+import styles from "./Sidebar.module.css";
+import SidebarItem from "../SidebarItem/SidebarItem";
 import { useState } from "react";
 import PropTypes from "prop-types";
 
@@ -18,12 +18,12 @@ function Sidebar({ handleCreateNote }) {
 
   const handleLogout = () => {
     alert("Logout");
-  }
+  };
 
   return (
-    <nav className="sidebar">
-      <Logo src={LogoSrc}/>
-      <div className="sidebar-items-container">
+    <nav className={styles.sidebar}>
+      <Logo src={LogoSrc} />
+      <div className={styles.itemsContainer}>
         <SidebarItem
           icon={HomeIcon}
           alt="Home icon"
@@ -37,7 +37,11 @@ function Sidebar({ handleCreateNote }) {
           onClick={handleCreateNote}
         />
       </div>
-      <button className="logout-button" type="button" onClick={handleLogout}>
+      <button
+        className={styles.logoutButton}
+        type="button"
+        onClick={handleLogout}
+      >
         <img src={LogoutIcon} alt="Logout icon" />
       </button>
     </nav>

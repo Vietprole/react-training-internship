@@ -1,16 +1,16 @@
 import HoverIcon from "/assets/hover-icon.svg";
-import "./sidebar-item.css";
+import styles from "./SidebarItem.module.css";
 import PropTypes from "prop-types";
 
 function SidebarItem({ icon, alt, isSelected, onClick }) {
   return (
-    <button className="sidebar-item" type="button" onClick={onClick}>
+    <button className={styles.item} type="button" onClick={onClick}>
       <img
         src={HoverIcon}
         alt="Hover icon"
-        className={`${isSelected ? "visible" : "hidden"} hover-icon`}
+        className={`${isSelected ? styles.visible : styles.hidden} ${styles.hoverIcon}`}
       />
-      <img src={icon} alt={alt} className="sidebar-item-icon" />
+      <img src={icon} alt={alt} className={styles.icon} />
     </button>
   );
 }

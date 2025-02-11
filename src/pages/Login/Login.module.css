@@ -1,0 +1,100 @@
+.container {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--sidebar-color);
+}
+
+.logoContainer {
+  display: flex;
+  align-items: center;
+  margin-bottom: 75px;
+}
+
+.appNameIcon{
+  margin-left: 20px;
+}
+
+.logo {
+  margin-right: 20px;
+}
+
+.username,
+.password {
+  display: block;
+  width: 320px;
+  border: var(--input-color) 1px solid;
+  border-radius: var(--border-radius-sm);
+  padding: 16px;
+  font-size: var(--body-size-md);
+  color: var(--text-default-color);
+}
+
+.username::placeholder,
+.password::placeholder {
+  color: var(--input-color);
+}
+
+.username {
+  margin-bottom: 10px;
+}
+
+.password {
+  margin-bottom: 30px;
+}
+
+.signInButton,
+.signUpButton {
+  display: flex;
+  width: 320px;
+  height: 50px;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  border-radius: var(--border-radius-sm);
+  cursor: pointer;
+}
+
+.signInButton {
+  background-color: var(--success-color);
+  margin-bottom: 20px;
+}
+
+.signUpButton {
+  background-color: var(--danger-color);
+}
+
+.separator {
+  display: flex;
+  width: 320px;
+  align-items: center;
+  text-align: center;
+  color: var(--input-color);
+  margin-bottom: 20px;
+}
+
+.separator::before,
+.separator::after {
+  content: '';
+  flex: 1;
+  border-bottom: 1px solid var(--input-color);
+}
+
+.separator::before {
+  margin-right: 36px;
+}
+
+.separator::after {
+  margin-left: 36px;
+}
+
+.submitIcon,
+.signUpIcon {
+  width: 20px;
+  height: 20px;
+  margin-right: 8px;
+}
+
+
