@@ -2,7 +2,7 @@ form {
   width: 320px;
 }
 
-.username,
+.email,
 .password {
   display: block;
   width: 320px;
@@ -13,12 +13,12 @@ form {
   color: var(--text-default-color);
 }
 
-.username::placeholder,
+.email::placeholder,
 .password::placeholder {
   color: var(--input-color);
 }
 
-.username {
+.email {
   margin-bottom:5px;
 }
 
