@@ -2,7 +2,7 @@ import AppNameIcon from "/assets/app-name-icon.svg";
 import LogoIcon from "/assets/logo.svg";
 import Logo from "../../components/Logo/Logo";
 import styles from "./Signup.module.css";
-import Form from "../../components/Form/Form";
+import AuthenticationForm from "../../components/AuthenticationForm/AuthenticationForm";
 
 function Signup() {
   return (
@@ -16,7 +16,7 @@ function Signup() {
         />
       </div>
       <h2>Sign up</h2>
-      <Form isLoginMode={false} />
+      <AuthenticationForm isLoginMode={false} />
     </div>
   );
 }

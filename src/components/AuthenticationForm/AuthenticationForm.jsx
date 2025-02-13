@@ -1,4 +1,4 @@
-import styles from "./Form.module.css";
+import styles from "./AuthenticationForm.module.css";
 import SubmitIcon from "/assets/submit-icon.svg";
 import * as v from "valibot";
 import { useState } from "react";
@@ -22,7 +22,7 @@ const passwordSchema = v.pipe(
   )
 );
 
-function Form({ isLoginMode }) {
+function AuthenticationForm({ isLoginMode }) {
   const [formData, setFormData] = useState({
     username: "",
     password: "",
@@ -74,7 +74,7 @@ function Form({ isLoginMode }) {
   function handleSubmitButtonClick() {
     const result = validate(formData);
     if (result) {
-      alert("Form submitted successfully");
+      alert("AuthenticationForm submitted successfully");
     }
   }
 
@@ -108,7 +108,7 @@ function Form({ isLoginMode }) {
       />
       <span
         className={`${styles.errorMessage} ${
-          errors.password ? styles.visible : ""
+          errors.password && isLoginMode ? styles.visible : ""
         }`}
       >
         {errors.password}
@@ -125,8 +125,8 @@ function Form({ isLoginMode }) {
   );
 }
 
-Form.propTypes = {
+AuthenticationForm.propTypes = {
   isLoginMode: PropTypes.bool.isRequired,
 };
 
-export default Form;
+export default AuthenticationForm;

@@ -4,7 +4,7 @@ import LogoIcon from "/assets/logo.svg";
 import SignUpIcon from "/assets/signup-icon.svg";
 import Logo from "../../components/Logo/Logo";
 import styles from "./Login.module.css";
-import Form from "../../components/Form/Form";
+import AuthenticationForm from "../../components/AuthenticationForm/AuthenticationForm";
 
 function Login() {
   const navigate = useNavigate();
@@ -23,7 +23,7 @@ function Login() {
           alt="App name icon"
         />
       </div>
-      <Form isLoginMode={true}/>
+      <AuthenticationForm isLoginMode={true}/>
       <div className={styles.separator}>or sign up here</div>
       <button
         className={styles.signUpButton}
