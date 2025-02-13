@@ -2,16 +2,12 @@ import { useNavigate } from "react-router";
 import AppNameIcon from "/assets/app-name-icon.svg";
 import LogoIcon from "/assets/logo.svg";
 import SignUpIcon from "/assets/signup-icon.svg";
-import SubmitIcon from "/assets/submit-icon.svg";
 import Logo from "../../components/Logo/Logo";
 import styles from "./Login.module.css";
+import Form from "../../components/Form/Form";
 
 function Login() {
   const navigate = useNavigate();
-
-  function handleSignInButtonClick() {
-    navigate("/home");
-  }
 
   function handleSignUpButtonClick() {
     navigate("/signup");
@@ -27,24 +23,7 @@ function Login() {
           alt="App name icon"
         />
       </div>
-      <input
-        className={styles.username}
-        type="text"
-        placeholder="Type your username"
-      />
-      <input
-        className={styles.password}
-        type="password"
-        placeholder="Type your password"
-      />
-      <button
-        className={styles.signInButton}
-        type="submit"
-        onClick={handleSignInButtonClick}
-      >
-        <img className={styles.submitIcon} src={SubmitIcon} alt="Submit icon" />
-        Sign in note.me
-      </button>
+      <Form isLoginMode={true}/>
       <div className={styles.separator}>or sign up here</div>
       <button
         className={styles.signUpButton}
