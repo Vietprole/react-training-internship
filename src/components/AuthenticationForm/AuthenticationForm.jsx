@@ -90,6 +90,7 @@ function AuthenticationForm({ isLoginMode }) {
         }
       }
     }
+    setIsSubmitting(false);
   }
 
   return (
