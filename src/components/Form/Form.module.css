@@ -1,3 +1,7 @@
+form {
+  width: 320px;
+}
+
 .username,
 .password {
   display: block;
@@ -15,11 +19,11 @@
 }
 
 .username {
-  margin-bottom: 30px;
+  margin-bottom:5px;
 }
 
 .password {
-  margin-bottom: 30px;
+  margin-bottom: 5px;
 }
 
 .submitButton {
@@ -42,4 +46,19 @@
   width: 20px;
   height: 20px;
   margin-right: 8px;
+}
+
+.errorMessage {
+  display: block;
+  height: 18px;
+  margin-bottom: 7px;
+  font-size: var(--body-size-md);
+  font-weight: var(--font-weight-regular);
+  color: var(--danger-color);
+  visibility: hidden;
+  white-space: nowrap; /* Prevent text wrapping */
+}
+
+.errorMessage.visible {
+  visibility: visible;
 }
