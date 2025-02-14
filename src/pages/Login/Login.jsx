@@ -6,6 +6,8 @@ import Logo from "../../components/Logo/Logo";
 import styles from "./Login.module.css";
 import AuthenticationForm from "../../components/AuthenticationForm/AuthenticationForm";
 
+//TODO check for user token before navigating to home
+
 function Login() {
   const navigate = useNavigate();
 

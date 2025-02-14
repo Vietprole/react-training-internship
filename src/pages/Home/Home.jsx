@@ -8,6 +8,8 @@ import { useState, useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
 import { calculateModalPosition } from "../../utils/utils";
 import { createPortal } from "react-dom";
+import { getNotes } from "../../services/api/note";
+import useAuth from "../../hooks/useAuth";
 
 const VARIANTS = ["primary", "secondary", "tertiary"];
 
@@ -19,28 +21,37 @@ function getRandomVariant(prevVariant) {
   return availableVariants[randomIndex];
 }
 
-function getNotes() {
-  const storedNotes = localStorage.getItem("notes");
-  if (!storedNotes) return [];
+// function getNotes() {
+//   const storedNotes = localStorage.getItem("notes");
+//   if (!storedNotes) return [];
 
-  const parsedNotes = JSON.parse(storedNotes);
-  // Convert string back to Date object
-  return parsedNotes.map((note) => ({
-    ...note,
-    createdAt: new Date(note.createdAt),
-  }));
-}
+//   const parsedNotes = JSON.parse(storedNotes);
+//   // Convert string back to Date object
+//   return parsedNotes.map((note) => ({
+//     ...note,
+//     createdAt: new Date(note.createdAt),
+//   }));
+// }
 
 function Home() {
-  const [notes, setNotes] = useState(getNotes());
+  const { token, user } = useAuth();
+  const [notes, setNotes] = useState();
   const [searchPhrase, setSearchPhrase] = useState("");
   const [modalPosition, setModalPosition] = useState({ x: 0, y: 0 });
   const [noteIdToDelete, setNoteIdToDelete] = useState(null);
-  const filteredNotes = notes.filter((note) =>
+  const filteredNotes = notes?.filter((note) =>
     note.content.includes(searchPhrase)
-  );
+  ) || [];
 
   useEffect(() => {
+    const fetchData = async () => {
+      console.log("token, user", token, user.id);
+      const notes = await getNotes(token, user.id);
+      setNotes(notes);
+    };
+
+    fetchData();
+
     const handleClickOutside = (event) => {
       if (!event.target.closest(".delete-confirmation-modal")) {
         setNoteIdToDelete(null);
@@ -51,7 +62,7 @@ function Home() {
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, []);
+  }, [token, user.id]);
 
   // Sync notes to localStorage
   useEffect(() => {
