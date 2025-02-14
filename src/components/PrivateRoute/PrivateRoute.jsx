@@ -7,7 +7,7 @@ const PrivateRoute = () => {
   if (!user) {
     // Replaces current route in history
     // User can't go back to protected route
-    return <Navigate to="/" replace />;
+    return <Navigate to="/login" replace />;
   }
 
   return <Outlet />;

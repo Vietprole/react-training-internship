@@ -24,7 +24,7 @@ const passwordSchema = v.pipe(
 
 function AuthenticationForm({ isLoginMode }) {
   const navigate = useNavigate();
-  const auth = useAuth();
+  const { login } = useAuth();
   const [formData, setFormData] = useState({
     email: "",
     password: "",
@@ -81,11 +81,11 @@ function AuthenticationForm({ isLoginMode }) {
       setIsSubmitting(true);
       try {
         if (isLoginMode) {
-          await auth.login(formData);
+          await login(formData);
         } else {
           const response = await authAPI.signup(formData);
           if (response.user) {
-            navigate("/");
+            navigate("/login");
           }
         }
       } catch (error) {

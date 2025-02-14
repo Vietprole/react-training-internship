@@ -6,7 +6,7 @@ import authAPI from "../services/api/auth";
 const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(null);
+  const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")) || null);
   const [token, setToken] = useState(localStorage.getItem("token") || "");
   const navigate = useNavigate();
   const login = async (userData) => {
@@ -14,9 +14,10 @@ const AuthProvider = ({ children }) => {
       const response = await authAPI.login(userData);
       if (response.user) {
         setUser(response.user);
+        localStorage.setItem("user", JSON.stringify(response.user));
         setToken(response.token);
         localStorage.setItem("token", response.token);
-        navigate("/home");
+        navigate("/");
         return;
       }
       throw new Error(response.message);
@@ -27,6 +28,7 @@ const AuthProvider = ({ children }) => {
 
   const logout = () => {
     setUser(null);
+    localStorage.removeItem("user");
     setToken("");
     localStorage.removeItem("token");
     navigate("/login");

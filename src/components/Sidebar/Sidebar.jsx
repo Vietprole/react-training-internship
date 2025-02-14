@@ -7,8 +7,10 @@ import styles from "./Sidebar.module.css";
 import SidebarItem from "../SidebarItem/SidebarItem";
 import { useState } from "react";
 import PropTypes from "prop-types";
+import useAuth from "../../hooks/useAuth";
 
 function Sidebar({ handleCreateNote }) {
+  const { logout } = useAuth();
   const [selectedIndex, setSelectedIndex] = useState(null);
   const handleItemClick = (index, isSelectable) => {
     if (isSelectable) {
@@ -17,7 +19,7 @@ function Sidebar({ handleCreateNote }) {
   };
 
   const handleLogout = () => {
-    alert("Logout");
+    logout();
   };
 
   return (

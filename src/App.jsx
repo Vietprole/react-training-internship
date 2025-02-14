@@ -8,20 +8,23 @@ import AuthLayout from "./layouts/AuthLayout/AuthLayout";
 import MainLayout from "./layouts/MainLayout/MainLayout";
 import AuthProvider from "./contexts/AuthContext";
 import PrivateRoute from "./components/PrivateRoute/PrivateRoute";
+import PublicRoute from "./components/PublicRoute/PublicRoute";
 
 function App() {
   return (
     <AuthProvider>
       <Routes>
-        <Route element={<AuthLayout />}>
-          <Route path="/" element={<Login />} />
-          <Route path="/signup" element={<Signup />} />
+        <Route element={<PublicRoute />}>
+          <Route element={<AuthLayout />}>
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<Signup />} />
+          </Route>
         </Route>
 
         <Route element={<PrivateRoute />}>
           <Route element={<MainLayout />}>
-            <Route path="/home" element={<Home />} />
-            <Route path="/home/done" element={<Done />} />
+            <Route path="/" element={<Home />} />
+            <Route path="/done" element={<Done />} />
           </Route>
         </Route>
       </Routes>
