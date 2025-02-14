@@ -42,6 +42,11 @@ form {
   margin-bottom: 20px;
 }
 
+.submitButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
 .submitIcon {
   width: 20px;
   height: 20px;
