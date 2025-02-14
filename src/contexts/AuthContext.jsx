@@ -12,6 +12,7 @@ const AuthProvider = ({ children }) => {
   const login = async (userData) => {
     try {
       const response = await authAPI.login(userData);
+      console.log(response);
       if (response.user) {
         setUser(response.user);
         localStorage.setItem("user", JSON.stringify(response.user));
