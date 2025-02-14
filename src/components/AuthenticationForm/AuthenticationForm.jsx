@@ -1,16 +1,16 @@
-import styles from "./Form.module.css";
+import styles from "./AuthenticationForm.module.css";
 import SubmitIcon from "/assets/submit-icon.svg";
 import * as v from "valibot";
 import { useState } from "react";
 import PropTypes from "prop-types";
+import useAuth from "../../hooks/useAuth";
+import authAPI from "../../services/api/auth";
+import { useNavigate } from "react-router";
 
-const usernameSchema = v.pipe(
-  v.string("Username must be a string"),
-  v.nonEmpty("Username must not be empty"),
-  v.regex(
-    /^[a-zA-Z0-9!@#$%^&*(),.?":{}|<>]*$/,
-    "Username must contain only letters, numbers, and special characters"
-  )
+const emailSchema = v.pipe(
+  v.string("Email must be a string"),
+  v.nonEmpty("Email must not be empty"),
+  v.email("Please enter a valid email address")
 );
 
 const passwordSchema = v.pipe(
@@ -22,28 +22,31 @@ const passwordSchema = v.pipe(
   )
 );
 
-function Form({ isLoginMode }) {
+function AuthenticationForm({ isLoginMode }) {
+  const navigate = useNavigate();
+  const { login } = useAuth();
   const [formData, setFormData] = useState({
-    username: "",
+    email: "",
     password: "",
   });
   const [errors, setErrors] = useState({});
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const validate = (formData) => {
     let result = false;
-    const usernameResult = v.safeParse(usernameSchema, formData.username);
+    const emailResult = v.safeParse(emailSchema, formData.email);
     const passwordResult = v.safeParse(passwordSchema, formData.password);
 
-    if (usernameResult.success) {
+    if (emailResult.success) {
       setErrors((prevErrors) => ({
         ...prevErrors,
-        username: "",
+        email: "",
       }));
       result = true;
     } else {
       setErrors((prevErrors) => ({
         ...prevErrors,
-        username: usernameResult.issues[0].message,
+        email: emailResult.issues[0].message,
       }));
     }
 
@@ -52,8 +55,7 @@ function Form({ isLoginMode }) {
         ...prevErrors,
         password: "",
       }));
-    }
-    else {
+    } else {
       setErrors((prevErrors) => ({
         ...prevErrors,
         password: passwordResult.issues[0].message,
@@ -63,6 +65,7 @@ function Form({ isLoginMode }) {
     return result;
   };
 
+  // Handle changes to the form fields
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prevFormData) => ({
@@ -71,44 +74,58 @@ function Form({ isLoginMode }) {
     }));
   };
 
-  function handleSubmitButtonClick() {
+  async function handleSubmitButtonClick() {
     const result = validate(formData);
+
     if (result) {
-      alert("Form submitted successfully");
+      setIsSubmitting(true);
+      try {
+        if (isLoginMode) {
+          await login(formData);
+        } else {
+          const response = await authAPI.signup(formData);
+          if (response.user) {
+            navigate("/login");
+          }
+        }
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setIsSubmitting(false);
+      }
     }
   }
 
   return (
     <form action="">
       <input
-        className={styles.username}
+        className={styles.email}
         type="text"
-        placeholder="Type your username"
-        name="username"
-        autoComplete="new-username"
-        value={formData.username}
+        placeholder="Type your email"
+        name="email"
+        // autoComplete="new-email"
+        value={formData.email}
         onChange={handleChange}
       />
-      {console.log("errors", errors)}
       <span
         className={`${styles.errorMessage} ${
-          errors.username ? styles.visible : ""
+          errors.email ? styles.visible : ""
         }`}
       >
-        {errors.username}
+        {errors.email}
       </span>
       <input
         className={styles.password}
         type="password"
         placeholder="Type your password"
         name="password"
-        autoComplete="new-password"
+        // autoComplete="new-password"
         value={formData.password}
         onChange={handleChange}
       />
       <span
         className={`${styles.errorMessage} ${
-          errors.password ? styles.visible : ""
+          errors.password && !isLoginMode ? styles.visible : ""
         }`}
       >
         {errors.password}
@@ -117,6 +134,7 @@ function Form({ isLoginMode }) {
         className={styles.submitButton}
         type="button"
         onClick={handleSubmitButtonClick}
+        disabled={isSubmitting}
       >
         <img className={styles.submitIcon} src={SubmitIcon} alt="Submit icon" />
         {isLoginMode ? "Sign in note.me" : "Sign up"}
@@ -125,8 +143,8 @@ function Form({ isLoginMode }) {
   );
 }
 
-Form.propTypes = {
+AuthenticationForm.propTypes = {
   isLoginMode: PropTypes.bool.isRequired,
 };
 
-export default Form;
+export default AuthenticationForm;

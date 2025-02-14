@@ -2,7 +2,7 @@ form {
   width: 320px;
 }
 
-.username,
+.email,
 .password {
   display: block;
   width: 320px;
@@ -13,12 +13,12 @@ form {
   color: var(--text-default-color);
 }
 
-.username::placeholder,
+.email::placeholder,
 .password::placeholder {
   color: var(--input-color);
 }
 
-.username {
+.email {
   margin-bottom:5px;
 }
 
@@ -40,6 +40,11 @@ form {
 .submitButton {
   background-color: var(--success-color);
   margin-bottom: 20px;
+}
+
+.submitButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 .submitIcon {
