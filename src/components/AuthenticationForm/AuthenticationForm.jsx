@@ -55,8 +55,7 @@ function AuthenticationForm({ isLoginMode }) {
         ...prevErrors,
         password: "",
       }));
-    }
-    else {
+    } else {
       setErrors((prevErrors) => ({
         ...prevErrors,
         password: passwordResult.issues[0].message,
@@ -80,17 +79,21 @@ function AuthenticationForm({ isLoginMode }) {
 
     if (result) {
       setIsSubmitting(true);
-      if (isLoginMode) {
-        auth.login(formData);
-      } else {
-        const response = await authAPI.signup(formData);
-        console.log(response);
-        if (response.user){
-          navigate("/");
+      try {
+        if (isLoginMode) {
+          await auth.login(formData);
+        } else {
+          const response = await authAPI.signup(formData);
+          if (response.user) {
+            navigate("/");
+          }
         }
+      } catch (error) {
+        console.error(error);
+      } finally {
+        setIsSubmitting(false);
       }
     }
-    setIsSubmitting(false);
   }
 
   return (
@@ -100,7 +103,7 @@ function AuthenticationForm({ isLoginMode }) {
         type="text"
         placeholder="Type your email"
         name="email"
-        autoComplete="new-email"
+        // autoComplete="new-email"
         value={formData.email}
         onChange={handleChange}
       />
@@ -116,7 +119,7 @@ function AuthenticationForm({ isLoginMode }) {
         type="password"
         placeholder="Type your password"
         name="password"
-        autoComplete="new-password"
+        // autoComplete="new-password"
         value={formData.password}
         onChange={handleChange}
       />
