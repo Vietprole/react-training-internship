@@ -6,10 +6,11 @@ import DarkModeIcon from "/assets/dark-mode-icon.svg";
 import DeleteConfirmationModal from "../../components/DeleteConfirmationModal/DeleteConfirmationModal";
 import { useState, useEffect } from "react";
 import { v4 as uuidv4 } from "uuid";
-import { calculateModalPosition } from "../../utils/utils";
+import { calculateModalPosition } from "../../utils/dom";
 import { createPortal } from "react-dom";
 import { getNotes } from "../../services/api/note";
 import useAuth from "../../hooks/useAuth";
+import { convertStringToDate } from "../../utils/date";
 
 const VARIANTS = ["primary", "secondary", "tertiary"];
 
@@ -40,13 +41,16 @@ function Home() {
   const [modalPosition, setModalPosition] = useState({ x: 0, y: 0 });
   const [noteIdToDelete, setNoteIdToDelete] = useState(null);
   const filteredNotes = notes?.filter((note) =>
-    note.content.includes(searchPhrase)
+    note.title.includes(searchPhrase)
   ) || [];
 
   useEffect(() => {
     const fetchData = async () => {
       console.log("token, user", token, user.id);
       const notes = await getNotes(token, user.id);
+      notes.forEach((note) => {
+        note.createdAt = convertStringToDate(note.createdAt);
+      });
       setNotes(notes);
     };
 
@@ -122,7 +126,7 @@ function Home() {
         {filteredNotes.map((note) => (
           <NoteBox
             key={note.id}
-            content={note.content}
+            title={note.title}
             createdAt={note.createdAt}
             variant={note.variant}
             onSaveChanges={(content) => handleNoteChange(note.id, content)}
