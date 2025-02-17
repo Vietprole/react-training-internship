@@ -6,7 +6,7 @@ import DeleteConfirmationModal from "../../components/DeleteConfirmationModal/De
 import { useState, useEffect } from "react";
 import { calculateModalPosition } from "../../utils/dom";
 // import { createPortal } from "react-dom";
-import { createNote, getNotes } from "../../services/api/note";
+import { createNote, getNotes, deleteNote } from "../../services/api/note";
 import useAuth from "../../hooks/useAuth";
 import { convertStringToDate } from "../../utils/date";
 import { useOutletContext } from "react-router";
@@ -33,11 +33,8 @@ function Home() {
   const filteredNotes =
     notes?.filter((note) => note.title.includes(searchPhrase)) || [];
 
-  console.log("notes", notes);
-
   useEffect(() => {
     const fetchData = async () => {
-      console.log("token, user", token, user.id);
       try {
         let notes = await getNotes(token, user.id);
 
@@ -63,7 +60,7 @@ function Home() {
     fetchData();
 
     const handleClickOutside = (event) => {
-      if (!event.target.closest(".delete-confirmation-modal")) {
+      if (!event.target.closest('[data-testid="delete-confirmation-modal"]')) {
         setNoteIdToDelete(null);
       }
     };
@@ -84,9 +81,15 @@ function Home() {
     try {
       const createdNote = await createNote(token, noteToAdd);
       createdNote.createdAt = convertStringToDate(createdNote.createdAt);
-      // setNotes((prevNotes) => [...prevNotes, createdNote]);
+      setNotes((prevNotes) => {
+        const newNotes = [...prevNotes];
+        newNotes[newNotes.length - 1] = createdNote;
+        return newNotes;
+      });
     } catch (error) {
       console.error("Error creating note:", error);
+      // Remove the last note if creation failed
+      setNotes(prevNotes => prevNotes.slice(0, -1));
     }
   };
 
@@ -98,8 +101,9 @@ function Home() {
     );
   };
 
-  const handleDeleteNote = (id) => {
-    setNotes((prevNotes) => prevNotes.filter((note) => note.id !== id));
+  const handleDeleteNote = (noteId) => {
+    deleteNote(token, noteId);
+    setNotes((prevNotes) => prevNotes.filter((note) => note.id !== noteId));
     setNoteIdToDelete(null);
   };
 
