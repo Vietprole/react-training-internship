@@ -11,7 +11,7 @@ const getNotes = async (token, userId) => {
 
   if (!response.ok) {
     const error = await response.json();
-    throw new Error(error.message || 'Failed to fetch notes');
+    throw new Error(error || 'Failed to fetch notes');
   }
 
   return response.json();
@@ -24,13 +24,48 @@ const createNote = async (token, note) => {
       'Authorization': `Bearer ${token}`,
       'Content-Type': 'application/json'
     },
+    body: JSON.stringify(note)
   })
 
   if (!response.ok) {
     const error = await response.json();
-    throw new Error(error.message || 'Failed to create note');
+    throw new Error(error || 'Failed to create note');
   }
+
+  return response.json();
+}
+
+const updateNote = async (token, noteId, note) => {
+  const response = await fetch(`${API_URL}/notes/${noteId}`, {
+    method: 'PUT',
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(note)
+  })
+
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error || 'Failed to update note');
+  }
+
+  return response.json();
+}
+
+const deleteNote = async (token, noteId) => {
+  const response = await fetch(`${API_URL}/notes/${noteId}`, {
+    method: 'DELETE',
+    headers: { 'Authorization': `Bearer ${token}` }
+  });
+
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error || 'Failed to delete note');
+  }
+
+  return response.json();
 }
 
 
-export { getNotes, createNote };
+export { getNotes, createNote, updateNote, deleteNote };

@@ -1,26 +1,15 @@
 import styles from "./Home.module.css";
-import Sidebar from "../../components/Sidebar/Sidebar";
 import NoteBox from "../../components/NoteBox/NoteBox";
 import SearchBar from "../../components/SearchBar/SearchBar";
 import DarkModeIcon from "/assets/dark-mode-icon.svg";
 import DeleteConfirmationModal from "../../components/DeleteConfirmationModal/DeleteConfirmationModal";
 import { useState, useEffect } from "react";
-import { v4 as uuidv4 } from "uuid";
 import { calculateModalPosition } from "../../utils/dom";
-import { createPortal } from "react-dom";
-import { getNotes } from "../../services/api/note";
+// import { createPortal } from "react-dom";
+import { createNote, getNotes } from "../../services/api/note";
 import useAuth from "../../hooks/useAuth";
 import { convertStringToDate } from "../../utils/date";
-
-const VARIANTS = ["primary", "secondary", "tertiary"];
-
-function getRandomVariant(prevVariant) {
-  const availableVariants = VARIANTS.filter(
-    (variant) => variant !== prevVariant
-  );
-  const randomIndex = Math.floor(Math.random() * availableVariants.length);
-  return availableVariants[randomIndex];
-}
+import { useOutletContext } from "react-router";
 
 // function getNotes() {
 //   const storedNotes = localStorage.getItem("notes");
@@ -35,23 +24,40 @@ function getRandomVariant(prevVariant) {
 // }
 
 function Home() {
+  const newNote = useOutletContext();
   const { token, user } = useAuth();
   const [notes, setNotes] = useState();
   const [searchPhrase, setSearchPhrase] = useState("");
   const [modalPosition, setModalPosition] = useState({ x: 0, y: 0 });
   const [noteIdToDelete, setNoteIdToDelete] = useState(null);
-  const filteredNotes = notes?.filter((note) =>
-    note.title.includes(searchPhrase)
-  ) || [];
+  const filteredNotes =
+    notes?.filter((note) => note.title.includes(searchPhrase)) || [];
+
+  console.log("notes", notes);
 
   useEffect(() => {
     const fetchData = async () => {
       console.log("token, user", token, user.id);
-      const notes = await getNotes(token, user.id);
-      notes.forEach((note) => {
-        note.createdAt = convertStringToDate(note.createdAt);
-      });
-      setNotes(notes);
+      try {
+        let notes = await getNotes(token, user.id);
+
+        notes.forEach((note) => {
+          note.createdAt = convertStringToDate(note.createdAt);
+        });
+
+        if (newNote) {
+          notes = [...notes, newNote];
+        }
+
+        setNotes(notes);
+      } catch (error) {
+        console.error("Error fetching notes:", error);
+        // If no note found for an user, json-server return error instead of empty array
+        // so we need to set new note to allow create new note
+        if (newNote) {
+          setNotes([newNote]);
+        }
+      }
     };
 
     fetchData();
@@ -66,25 +72,22 @@ function Home() {
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [token, user.id]);
+  }, [newNote, token, user.id]);
 
   // Sync notes to localStorage
   useEffect(() => {
     localStorage.setItem("notes", JSON.stringify(notes));
   }, [notes]);
 
-  const handleCreateNote = () => {
-    const prevNote = notes[notes.length - 1];
-    const prevVariant = prevNote?.variant;
-
-    const newNote = {
-      id: uuidv4(),
-      content: "",
-      createdAt: new Date(),
-      variant: getRandomVariant(prevVariant),
-    };
-
-    setNotes((prevNotes) => [...prevNotes, newNote]);
+  const handleCreateNote = async (currentTitle) => {
+    const noteToAdd = { ...newNote, userId: user.id, title: currentTitle };
+    try {
+      const createdNote = await createNote(token, noteToAdd);
+      createdNote.createdAt = convertStringToDate(createdNote.createdAt);
+      // setNotes((prevNotes) => [...prevNotes, createdNote]);
+    } catch (error) {
+      console.error("Error creating note:", error);
+    }
   };
 
   const handleNoteChange = (id, newContent) => {
@@ -129,22 +132,21 @@ function Home() {
             title={note.title}
             createdAt={note.createdAt}
             variant={note.variant}
-            onSaveChanges={(content) => handleNoteChange(note.id, content)}
+            // onSaveChanges={(content) => handleNoteChange(note.id, content)}
             handleEmptyNote={() => handleDeleteNote(note.id)}
             onDeleteButtonClick={() => showDeleteConfirmationModal(note.id)}
+            handleNewNote={handleCreateNote}
           />
         ))}
       </div>
-      {noteIdToDelete != null &&
-        createPortal(
-          <DeleteConfirmationModal
-            isDisplayed={noteIdToDelete !== null}
-            position={modalPosition}
-            onDeleteButtonClick={() => handleDeleteNote(noteIdToDelete)}
-            onCancelButtonClick={() => setNoteIdToDelete(null)}
-          />,
-          document.body
-        )}
+      {noteIdToDelete != null && (
+        <DeleteConfirmationModal
+          isDisplayed={noteIdToDelete !== null}
+          position={modalPosition}
+          onDeleteButtonClick={() => handleDeleteNote(noteIdToDelete)}
+          onCancelButtonClick={() => setNoteIdToDelete(null)}
+        />
+      )}
     </div>
   );
 }

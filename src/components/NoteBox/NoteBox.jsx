@@ -9,9 +9,10 @@ function NoteBox({
   variant,
   title,
   createdAt,
-  onSaveChanges,
+  // onSaveChanges,
   handleEmptyNote,
   onDeleteButtonClick,
+  handleNewNote,
 }) {
   const [isEditing, setIsEditing] = useState(title === "" ? true : false);
   const [currentTitle, setCurrentTitle] = useState(title);
@@ -39,7 +40,8 @@ function NoteBox({
         handleEmptyNote();
       } else {
         // If note is newly created and user typed something, save note
-        onSaveChanges(currentTitle);
+        // onSaveChanges(currentTitle);
+        handleNewNote(currentTitle);
       }
     } else setCurrentTitle(title); // If note is not newly created, reset title
   };
