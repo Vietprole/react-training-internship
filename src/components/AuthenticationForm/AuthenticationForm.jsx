@@ -22,6 +22,11 @@ const passwordSchema = v.pipe(
   )
 );
 
+const passwordSchemaForLogin = v.pipe(
+  v.string("Password must be a string"),
+  v.nonEmpty("Password must not be empty")
+);
+
 function AuthenticationForm({ isLoginMode }) {
   const navigate = useNavigate();
   const { login } = useAuth();
@@ -34,8 +39,10 @@ function AuthenticationForm({ isLoginMode }) {
 
   const validate = (formData) => {
     let result = false;
+    const passwordSchemaInUse = isLoginMode ? passwordSchemaForLogin : passwordSchema;
+
     const emailResult = v.safeParse(emailSchema, formData.email);
-    const passwordResult = v.safeParse(passwordSchema, formData.password);
+    const passwordResult = v.safeParse(passwordSchemaInUse, formData.password);
 
     if (emailResult.success) {
       setErrors((prevErrors) => ({
@@ -125,7 +132,7 @@ function AuthenticationForm({ isLoginMode }) {
       />
       <span
         className={`${styles.errorMessage} ${
-          errors.password && !isLoginMode ? styles.visible : ""
+          errors.password ? styles.visible : ""
         }`}
       >
         {errors.password}
