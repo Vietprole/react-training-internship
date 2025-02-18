@@ -1,48 +1,66 @@
 import styles from "./Home.module.css";
-import Sidebar from "../../components/Sidebar/Sidebar";
 import NoteBox from "../../components/NoteBox/NoteBox";
 import SearchBar from "../../components/SearchBar/SearchBar";
 import DarkModeIcon from "/assets/dark-mode-icon.svg";
 import DeleteConfirmationModal from "../../components/DeleteConfirmationModal/DeleteConfirmationModal";
 import { useState, useEffect } from "react";
-import { v4 as uuidv4 } from "uuid";
-import { calculateModalPosition } from "../../utils/utils";
-import { createPortal } from "react-dom";
+import { calculateModalPosition } from "../../utils/dom";
+// import { createPortal } from "react-dom";
+import { createNote, getNotes, deleteNote } from "../../services/api/note";
+import useAuth from "../../hooks/useAuth";
+import { convertStringToDate } from "../../utils/date";
+import { useOutletContext } from "react-router";
 
-const VARIANTS = ["primary", "secondary", "tertiary"];
+// function getNotes() {
+//   const storedNotes = localStorage.getItem("notes");
+//   if (!storedNotes) return [];
 
-function getRandomVariant(prevVariant) {
-  const availableVariants = VARIANTS.filter(
-    (variant) => variant !== prevVariant
-  );
-  const randomIndex = Math.floor(Math.random() * availableVariants.length);
-  return availableVariants[randomIndex];
-}
-
-function getNotes() {
-  const storedNotes = localStorage.getItem("notes");
-  if (!storedNotes) return [];
-
-  const parsedNotes = JSON.parse(storedNotes);
-  // Convert string back to Date object
-  return parsedNotes.map((note) => ({
-    ...note,
-    createdAt: new Date(note.createdAt),
-  }));
-}
+//   const parsedNotes = JSON.parse(storedNotes);
+//   // Convert string back to Date object
+//   return parsedNotes.map((note) => ({
+//     ...note,
+//     createdAt: new Date(note.createdAt),
+//   }));
+// }
 
 function Home() {
-  const [notes, setNotes] = useState(getNotes());
+  const newNote = useOutletContext();
+  const { token, user } = useAuth();
+  const [notes, setNotes] = useState();
   const [searchPhrase, setSearchPhrase] = useState("");
   const [modalPosition, setModalPosition] = useState({ x: 0, y: 0 });
   const [noteIdToDelete, setNoteIdToDelete] = useState(null);
-  const filteredNotes = notes.filter((note) =>
-    note.content.includes(searchPhrase)
-  );
+  const filteredNotes =
+    notes?.filter((note) => note.title.includes(searchPhrase)) || [];
 
   useEffect(() => {
+    const fetchData = async () => {
+      try {
+        let notes = await getNotes(token, user.id);
+
+        notes.forEach((note) => {
+          note.createdAt = convertStringToDate(note.createdAt);
+        });
+
+        if (newNote) {
+          notes = [...notes, newNote];
+        }
+
+        setNotes(notes);
+      } catch (error) {
+        console.error("Error fetching notes:", error);
+        // If no note found for an user, json-server return error instead of empty array
+        // so we need to set new note to allow create new note
+        if (newNote) {
+          setNotes([newNote]);
+        }
+      }
+    };
+
+    fetchData();
+
     const handleClickOutside = (event) => {
-      if (!event.target.closest(".delete-confirmation-modal")) {
+      if (!event.target.closest('[data-testid="delete-confirmation-modal"]')) {
         setNoteIdToDelete(null);
       }
     };
@@ -51,25 +69,28 @@ function Home() {
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, []);
+  }, [newNote, token, user.id]);
 
   // Sync notes to localStorage
   useEffect(() => {
     localStorage.setItem("notes", JSON.stringify(notes));
   }, [notes]);
 
-  const handleCreateNote = () => {
-    const prevNote = notes[notes.length - 1];
-    const prevVariant = prevNote?.variant;
-
-    const newNote = {
-      id: uuidv4(),
-      content: "",
-      createdAt: new Date(),
-      variant: getRandomVariant(prevVariant),
-    };
-
-    setNotes((prevNotes) => [...prevNotes, newNote]);
+  const handleCreateNote = async (currentTitle) => {
+    const noteToAdd = { ...newNote, userId: user.id, title: currentTitle };
+    try {
+      const createdNote = await createNote(token, noteToAdd);
+      createdNote.createdAt = convertStringToDate(createdNote.createdAt);
+      setNotes((prevNotes) => {
+        const newNotes = [...prevNotes];
+        newNotes[newNotes.length - 1] = createdNote;
+        return newNotes;
+      });
+    } catch (error) {
+      console.error("Error creating note:", error);
+      // Remove the last note if creation failed
+      setNotes(prevNotes => prevNotes.slice(0, -1));
+    }
   };
 
   const handleNoteChange = (id, newContent) => {
@@ -80,8 +101,9 @@ function Home() {
     );
   };
 
-  const handleDeleteNote = (id) => {
-    setNotes((prevNotes) => prevNotes.filter((note) => note.id !== id));
+  const handleDeleteNote = (noteId) => {
+    deleteNote(token, noteId);
+    setNotes((prevNotes) => prevNotes.filter((note) => note.id !== noteId));
     setNoteIdToDelete(null);
   };
 
@@ -111,25 +133,24 @@ function Home() {
         {filteredNotes.map((note) => (
           <NoteBox
             key={note.id}
-            content={note.content}
+            title={note.title}
             createdAt={note.createdAt}
             variant={note.variant}
-            onSaveChanges={(content) => handleNoteChange(note.id, content)}
+            // onSaveChanges={(content) => handleNoteChange(note.id, content)}
             handleEmptyNote={() => handleDeleteNote(note.id)}
             onDeleteButtonClick={() => showDeleteConfirmationModal(note.id)}
+            handleNewNote={handleCreateNote}
           />
         ))}
       </div>
-      {noteIdToDelete != null &&
-        createPortal(
-          <DeleteConfirmationModal
-            isDisplayed={noteIdToDelete !== null}
-            position={modalPosition}
-            onDeleteButtonClick={() => handleDeleteNote(noteIdToDelete)}
-            onCancelButtonClick={() => setNoteIdToDelete(null)}
-          />,
-          document.body
-        )}
+      {noteIdToDelete != null && (
+        <DeleteConfirmationModal
+          isDisplayed={noteIdToDelete !== null}
+          position={modalPosition}
+          onDeleteButtonClick={() => handleDeleteNote(noteIdToDelete)}
+          onCancelButtonClick={() => setNoteIdToDelete(null)}
+        />
+      )}
     </div>
   );
 }

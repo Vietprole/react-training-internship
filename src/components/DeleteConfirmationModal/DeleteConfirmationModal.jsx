@@ -7,6 +7,7 @@ function DeleteConfirmationModal({ isDisplayed, position, onDeleteButtonClick, o
     <div
       className={`${styles.deleteConfirmationModal} ${isDisplayed ? "" : styles.hidden}`}
       style={{ top: position.y, left: position.x, position: "absolute" }}
+      data-testid="delete-confirmation-modal"
     >
       <div className={styles.modalContent}>
         <h2>Confirm deletion</h2>
