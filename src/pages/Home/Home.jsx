@@ -3,6 +3,7 @@ import NoteBox from "../../components/NoteBox/NoteBox";
 import SearchBar from "../../components/SearchBar/SearchBar";
 import DarkModeIcon from "/assets/dark-mode-icon.svg";
 import DeleteConfirmationModal from "../../components/DeleteConfirmationModal/DeleteConfirmationModal";
+import NoteDetailModal from "../../components/NoteDetailModal/NoteDetailModal";
 import { useState, useEffect } from "react";
 import { calculateModalPosition } from "../../utils/dom";
 // import { createPortal } from "react-dom";
@@ -30,6 +31,7 @@ function Home() {
   const [searchPhrase, setSearchPhrase] = useState("");
   const [modalPosition, setModalPosition] = useState({ x: 0, y: 0 });
   const [noteIdToDelete, setNoteIdToDelete] = useState(null);
+  const [noteIdToShowDetail, setNoteIdToShowDetail] = useState(null);
   const filteredNotes =
     notes?.filter((note) => note.title.includes(searchPhrase)) || [];
 
@@ -112,6 +114,10 @@ function Home() {
     setNoteIdToDelete(id);
   };
 
+  const showNoteDetailModal = (id) => {
+    setNoteIdToShowDetail(id);
+  }
+
   return (
     <div className={styles.container}>
       <div className={styles.header}>
@@ -139,6 +145,7 @@ function Home() {
             // onSaveChanges={(content) => handleNoteChange(note.id, content)}
             handleEmptyNote={() => handleDeleteNote(note.id)}
             onDeleteButtonClick={() => showDeleteConfirmationModal(note.id)}
+            onClick={() => showNoteDetailModal(note.id)}
             handleNewNote={handleCreateNote}
           />
         ))}
@@ -149,6 +156,12 @@ function Home() {
           position={modalPosition}
           onDeleteButtonClick={() => handleDeleteNote(noteIdToDelete)}
           onCancelButtonClick={() => setNoteIdToDelete(null)}
+        />
+      )}
+      {noteIdToShowDetail != null && (
+        <NoteDetailModal
+          note={notes.find((note) => note.id === noteIdToShowDetail)}
+          // onCloseButtonClick={() => setNoteIdToShowDetail(null)}
         />
       )}
     </div>

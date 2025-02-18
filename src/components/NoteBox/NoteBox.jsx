@@ -13,6 +13,7 @@ function NoteBox({
   handleEmptyNote,
   onDeleteButtonClick,
   handleNewNote,
+  onClick,
 }) {
   const [isEditing, setIsEditing] = useState(title === "" ? true : false);
   const [currentTitle, setCurrentTitle] = useState(title);
@@ -53,7 +54,7 @@ function NoteBox({
   };
 
   return (
-    <>
+    <button onClick={onClick}>
     <div className={`${styles.overlay} ${isEditing ? styles.visible : ''}`} />
     <div className={`${styles.noteBox} ${styles[variant]} ${isEditing ? styles.editing : ""}`}>
       <button
@@ -80,7 +81,7 @@ function NoteBox({
         </button>
       </div>
     </div>
-    </>
+    </button>
   );
 }
 
