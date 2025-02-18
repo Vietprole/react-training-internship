@@ -18,11 +18,14 @@
 
 .deleteConfirmationModal h2 {
   font-size: var(--heading-size-sm);
+  color: var(--text-default-color);
   margin-bottom: 6px;
 }
 
 .deleteConfirmationModal p {
   font-size: var(--body-size-sm);
+  color: var(--text-default-color);
+  line-height: 20px;
   margin-bottom: 25px;
 }
 

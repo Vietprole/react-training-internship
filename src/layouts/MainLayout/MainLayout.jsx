@@ -1,19 +1,25 @@
-import { Outlet } from 'react-router';
-import Sidebar from '../../components/Sidebar/Sidebar';
-import styles from './MainLayout.module.css';
+import { Outlet } from "react-router";
+import { useState } from "react";
+import Sidebar from "../../components/Sidebar/Sidebar";
+import styles from "./MainLayout.module.css";
+import { getRandomVariant } from "../../utils/note";
 
-function MainLayout(){
-  function handleCreateNote(){
-    console.log("Create note");
+function MainLayout() {
+  const [newNote, setNewNote] = useState(null);
+  function handleCreateNote() {
+    setNewNote({
+      title: "",
+      variant: getRandomVariant(),
+      createdAt: new Date(),
+    });
   }
 
   return (
     <div className={styles.container}>
       <Sidebar handleCreateNote={handleCreateNote} />
-      <Outlet />
+      <Outlet context={newNote} />
     </div>
-  )
+  );
 }
 
 export default MainLayout;
-

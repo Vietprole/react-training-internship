@@ -15,8 +15,8 @@ const AuthProvider = ({ children }) => {
       if (response.user) {
         setUser(response.user);
         localStorage.setItem("user", JSON.stringify(response.user));
-        setToken(response.token);
-        localStorage.setItem("token", response.token);
+        setToken(response.accessToken);
+        localStorage.setItem("token", response.accessToken);
         navigate("/");
         return;
       }
