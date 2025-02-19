@@ -24,7 +24,7 @@
 h2 {
   width: 320px;
   font-weight: var(--font-weight-bold);
-  font-size: var(--heading-size-lg);
+  font-size: var(--heading-size-xl);
   margin-bottom: 16px;
   color: black;
 }
