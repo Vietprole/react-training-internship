@@ -1,7 +1,6 @@
 import PropTypes from "prop-types";
 import styles from "./NoteBox.module.css";
 import TrashIcon from "/assets/trash-icon.svg";
-import SaveIcon from "/assets/save-icon.svg";
 import { formatDate } from "../../utils/date";
 import { useState, useEffect, useRef } from "react";
 
@@ -9,7 +8,6 @@ function NoteBox({
   variant,
   title,
   createdAt,
-  // onSaveChanges,
   handleEmptyNote,
   onDeleteButtonClick,
   handleNewNote,
@@ -49,16 +47,10 @@ function NoteBox({
     } else setCurrentTitle(title); // If note is not newly created, reset title
   };
 
-  const handleSave = () => {
-    // No need to save if title is the same
-    if (currentTitle === title) return;
-    onSaveChanges(currentTitle);
-  };
-
   const handleDeleteButtonClick = (e) => {
     e.stopPropagation(); // Stop event from bubbling up to parent
     onDeleteButtonClick();
-  }
+  };
 
   return (
     <div onClick={onClick}>
@@ -68,13 +60,6 @@ function NoteBox({
           isEditing ? styles.editing : ""
         }`}
       >
-        <button
-          className={`${styles.saveButton} ${isEditing ? "" : styles.hidden}`}
-          type="button"
-          onMouseDown={handleSave}
-        >
-          <img src={SaveIcon} alt="Save icon" />
-        </button>
         <textarea
           ref={textareaRef}
           className={styles.note}
@@ -108,6 +93,8 @@ NoteBox.propTypes = {
   onSaveChanges: PropTypes.func,
   handleEmptyNote: PropTypes.func,
   onDeleteButtonClick: PropTypes.func,
+  handleNewNote: PropTypes.func,
+  onClick: PropTypes.func,
 };
 
 export default NoteBox;

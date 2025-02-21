@@ -116,7 +116,7 @@ function Home() {
       </div>
       <h1 className={styles.title}>
         <span>Hello, </span>
-        <span className={styles.name}>Ruy</span>! 👋🏼
+        <span className={styles.name}>{user.email}</span>! 👋🏼
       </h1>
       <p className={styles.description}>
         All your notes are here, in one place!

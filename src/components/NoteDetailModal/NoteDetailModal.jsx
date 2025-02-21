@@ -62,7 +62,6 @@ function NoteDetailModal({ noteId, onCloseButtonClick, onNoteTitleUpdate }) {
   };
 
   const handleCancelDescription = () => {
-    console.log("lastSavedDescription", lastSavedDescription);
     setNote((prev) => ({
       ...prev,
       description: lastSavedDescription,
