@@ -9,7 +9,6 @@ const authAPI = {
       },
       body: JSON.stringify(userData),
     });
-    console.log(response);
     return response.json();
   },
 
@@ -21,7 +20,6 @@ const authAPI = {
       },
       body: JSON.stringify(userData),
     });
-    console.log(response);
     return response.json();
   },
 };

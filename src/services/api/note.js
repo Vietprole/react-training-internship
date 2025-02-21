@@ -17,6 +17,25 @@ const getNotes = async (token, userId) => {
   return response.json();
 };
 
+const getNoteById = async (token, noteId) => {
+  const response = await fetch(`${API_URL}/notes/${noteId}`, {
+    method: 'GET',
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    }
+  });
+
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error || 'Failed to fetch notes');
+  }
+
+  return response.json();
+};
+
+
+
 const createNote = async (token, note) => {
   const response = await fetch(`${API_URL}/notes`, {
     method: 'POST',
@@ -68,4 +87,4 @@ const deleteNote = async (token, noteId) => {
 }
 
 
-export { getNotes, createNote, updateNote, deleteNote };
+export { getNotes, getNoteById, createNote, updateNote, deleteNote };
