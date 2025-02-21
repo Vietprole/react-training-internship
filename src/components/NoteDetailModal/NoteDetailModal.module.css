@@ -128,7 +128,7 @@
 .commentList {
   color: var(--text-default-color);
   font-size: var(--body-size-xl);
-  max-height: 168px;
+  height: 168px;
   overflow-y: auto;
   list-style-type: disc;
   list-style-position: inside;
