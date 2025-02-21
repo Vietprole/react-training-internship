@@ -26,6 +26,8 @@ function NoteBox({
       textareaRef.current.selectionStart = 0;
       textareaRef.current.selectionEnd = 0;
     }
+
+    setCurrentTitle(title);
   }, [title]);
 
   const handleDoubleClick = () => {
@@ -53,35 +55,49 @@ function NoteBox({
     onSaveChanges(currentTitle);
   };
 
+  const handleDeleteButtonClick = (e) => {
+    e.stopPropagation(); // Stop event from bubbling up to parent
+    onDeleteButtonClick();
+  }
+
   return (
-    <button onClick={onClick}>
-    <div className={`${styles.overlay} ${isEditing ? styles.visible : ''}`} />
-    <div className={`${styles.noteBox} ${styles[variant]} ${isEditing ? styles.editing : ""}`}>
-      <button
-        className={`${styles.saveButton} ${isEditing ? "" : styles.hidden}`}
-        type="button"
-        onMouseDown={handleSave}
+    <div onClick={onClick}>
+      <div className={`${styles.overlay} ${isEditing ? styles.visible : ""}`} />
+      <div
+        className={`${styles.noteBox} ${styles[variant]} ${
+          isEditing ? styles.editing : ""
+        }`}
       >
-        <img src={SaveIcon} alt="Save icon" />
-      </button>
-      <textarea
-        ref={textareaRef}
-        className={styles.note}
-        placeholder="Type your note..."
-        onDoubleClick={handleDoubleClick}
-        onBlur={handleBlur}
-        readOnly={!isEditing}
-        value={currentTitle}
-        onChange={(e) => setCurrentTitle(e.target.value)}
-      />
-      <div className={styles.footer}>
-        <p className={styles.noteDate}>{formatDate(createdAt)}</p>
-        <button onClick={onDeleteButtonClick} type="button" className={styles.deleteModalOpenButton}>
-          <img src={TrashIcon} alt="Delete icon" />
+        <button
+          className={`${styles.saveButton} ${isEditing ? "" : styles.hidden}`}
+          type="button"
+          onMouseDown={handleSave}
+        >
+          <img src={SaveIcon} alt="Save icon" />
         </button>
+        <textarea
+          ref={textareaRef}
+          className={styles.note}
+          placeholder="Type your note..."
+          onDoubleClick={handleDoubleClick}
+          onBlur={handleBlur}
+          readOnly={!isEditing}
+          value={currentTitle}
+          onChange={(e) => setCurrentTitle(e.target.value)}
+        />
+        <div className={styles.footer}>
+          <p className={styles.noteDate}>{formatDate(createdAt)}</p>
+          <button
+            id="note-box-delete-button"
+            onClick={handleDeleteButtonClick}
+            type="button"
+            className={styles.deleteModalOpenButton}
+          >
+            <img src={TrashIcon} alt="Delete icon" />
+          </button>
+        </div>
       </div>
     </div>
-    </button>
   );
 }
 

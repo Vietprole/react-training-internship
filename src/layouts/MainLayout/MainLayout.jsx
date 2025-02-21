@@ -8,9 +8,13 @@ function MainLayout() {
   const [newNote, setNewNote] = useState(null);
   function handleCreateNote() {
     setNewNote({
-      title: "",
+      userId: null,
       variant: getRandomVariant(),
+      title: "",
+      description: "",
+      comments: [],
       createdAt: new Date(),
+      isDone: false,
     });
   }
 
