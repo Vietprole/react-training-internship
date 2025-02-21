@@ -1,55 +1,31 @@
-import styles from "./Home.module.css";
+import styles from "./NoteContainer.module.css";
 import NoteBox from "../../components/NoteBox/NoteBox";
 import DeleteConfirmationModal from "../../components/DeleteConfirmationModal/DeleteConfirmationModal";
 import NoteDetailModal from "../../components/NoteDetailModal/NoteDetailModal";
 import { useState, useEffect } from "react";
 import { calculateModalPosition } from "../../utils/dom";
-// import { createPortal } from "react-dom";
-import { createNote, getNotes, deleteNote } from "../../services/api/note";
+import { createPortal } from "react-dom";
+import { createNote, deleteNote, updateNote } from "../../services/api/note";
 import useAuth from "../../hooks/useAuth";
 import { convertStringToDate } from "../../utils/date";
 import { useOutletContext } from "react-router";
+import PropTypes from "prop-types";
 
-function NoteContainer({ filteredNotes }) {
-  const newNote = useOutletContext();
+function NoteContainer({ filteredNotes, setNotes }) {
+  const { newNote, clearNewNote } = useOutletContext();
   const { token, user } = useAuth();
-  const [notes, setNotes] = useState(filteredNotes);
-  // const [searchPhrase, setSearchPhrase] = useState("");
   const [modalPosition, setModalPosition] = useState({ x: 0, y: 0 });
   const [noteIdToDelete, setNoteIdToDelete] = useState(null);
   const [noteIdToShowDetail, setNoteIdToShowDetail] = useState(null);
-  // const filteredNotes =
-  //   notes?.filter((note) => note.title.includes(searchPhrase)) || [];
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        let notes = await getNotes(token, user.id);
-
-        notes.forEach((note) => {
-          note.createdAt = convertStringToDate(note.createdAt);
-        });
-
-        if (newNote) {
-          notes = [...notes, newNote];
-        }
-
-        setNotes(notes);
-      } catch (error) {
-        console.error("Error fetching notes:", error);
-        // If no note found for an user, json-server return error instead of empty array
-        // so we need to set new note to allow create new note
-        if (newNote) {
-          setNotes([newNote]);
-        }
-      }
-    };
-
-    fetchData();
-
     const handleClickOutside = (event) => {
-      if (!event.target.closest('[data-testid="delete-confirmation-modal"]')) {
+      if (!event.target.closest("#delete-confirmation-modal")) {
         setNoteIdToDelete(null);
+      }
+
+      if (!event.target.closest("#note-detail-modal")) {
+        setNoteIdToShowDetail(null);
       }
     };
     document.addEventListener("mousedown", handleClickOutside);
@@ -58,11 +34,6 @@ function NoteContainer({ filteredNotes }) {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [newNote, token, user.id]);
-
-  // Sync notes to localStorage
-  useEffect(() => {
-    localStorage.setItem("notes", JSON.stringify(notes));
-  }, [notes]);
 
   const handleCreateNote = async (currentTitle) => {
     const noteToAdd = { ...newNote, userId: user.id, title: currentTitle };
@@ -78,19 +49,27 @@ function NoteContainer({ filteredNotes }) {
       console.error("Error creating note:", error);
       // Remove the last note if creation failed
       setNotes((prevNotes) => prevNotes.slice(0, -1));
+    } finally {
+      clearNewNote();
     }
   };
 
-  const handleNoteChange = (id, newContent) => {
+  const handleNoteTitleUpdate = (id, newTitle) => {
     setNotes((prevNotes) =>
       prevNotes.map((note) =>
-        note.id === id ? { ...note, content: newContent } : note
+        note.id === id ? { ...note, title: newTitle } : note
       )
     );
   };
 
   const handleDeleteNote = (noteId) => {
     deleteNote(token, noteId);
+    setNotes((prevNotes) => prevNotes.filter((note) => note.id !== noteId));
+    setNoteIdToDelete(null);
+  };
+
+  // Remove note from UI if note is empty and has not been committed to the database
+  const handleEmptyNote = (noteId) => {
     setNotes((prevNotes) => prevNotes.filter((note) => note.id !== noteId));
     setNoteIdToDelete(null);
   };
@@ -104,18 +83,29 @@ function NoteContainer({ filteredNotes }) {
     setNoteIdToShowDetail(id);
   };
 
+  const handleToggleDone = async (id) => {
+    const noteToUpdate = filteredNotes.find((note) => note.id === id);
+    await updateNote(token, id, { ...noteToUpdate, isDone: !noteToUpdate.isDone });
+    setNotes((prevNotes) =>
+      prevNotes.map((note) =>
+        note.id === id ? { ...note, isDone: !note.isDone } : note
+      )
+    );
+  }
+
   return (
     <>
       <div className={styles.notesContainer}>
         {filteredNotes.map((note) => (
           <NoteBox
-            key={note.id}
+            key={note.id ? note.id : 0} // Temporary key for new note
             title={note.title}
             createdAt={note.createdAt}
             variant={note.variant}
-            // onSaveChanges={(content) => handleNoteChange(note.id, content)}
-            handleEmptyNote={() => handleDeleteNote(note.id)}
+            isDone={note.isDone}
+            handleEmptyNote={() => handleEmptyNote(note.id)}
             onDeleteButtonClick={() => showDeleteConfirmationModal(note.id)}
+            onDoneButtonClick={() => handleToggleDone(note.id)}
             onClick={() => showNoteDetailModal(note.id)}
             handleNewNote={handleCreateNote}
           />
@@ -129,14 +119,32 @@ function NoteContainer({ filteredNotes }) {
           onCancelButtonClick={() => setNoteIdToDelete(null)}
         />
       )}
-      {noteIdToShowDetail != null && (
-        <NoteDetailModal
-          note={notes.find((note) => note.id === noteIdToShowDetail)}
-          // onCloseButtonClick={() => setNoteIdToShowDetail(null)}
-        />
-      )}
+      {noteIdToShowDetail != null &&
+        createPortal(
+          <NoteDetailModal
+            noteId={noteIdToShowDetail}
+            onCloseButtonClick={() => setNoteIdToShowDetail(null)}
+            onNoteTitleUpdate={handleNoteTitleUpdate}
+          />,
+          document.getElementById('root')
+        )}
     </>
   );
 }
+NoteContainer.propTypes = {
+  filteredNotes: PropTypes.arrayOf(
+    PropTypes.shape({
+      id: PropTypes.number,
+      userId: PropTypes.number,
+      variant: PropTypes.string,
+      title: PropTypes.string,
+      description: PropTypes.string,
+      comments: PropTypes.arrayOf(PropTypes.string),
+      createdAt: PropTypes.instanceOf(Date),
+      isDone: PropTypes.bool,
+    })
+  ),
+  setNotes: PropTypes.func,
+};
 
 export default NoteContainer;

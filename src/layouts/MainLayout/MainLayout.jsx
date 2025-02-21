@@ -18,10 +18,14 @@ function MainLayout() {
     });
   }
 
+  function clearNewNote(){
+    setNewNote(null);
+  }
+
   return (
     <div className={styles.container}>
       <Sidebar handleCreateNote={handleCreateNote} />
-      <Outlet context={newNote} />
+      <Outlet context={{newNote, clearNewNote}} />
     </div>
   );
 }

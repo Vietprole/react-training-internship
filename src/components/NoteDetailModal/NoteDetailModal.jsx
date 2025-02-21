@@ -101,7 +101,7 @@ function NoteDetailModal({ noteId, onCloseButtonClick, onNoteTitleUpdate }) {
     <div className={styles.overlay}>
       <div className={styles.noteDetailModal} id="note-detail-modal">
         <button className={styles.closeButton} onClick={onCloseButtonClick}>
-          <img src={CloseIcon} alt="close icon" />
+          <img src={CloseIcon} alt="Close icon" />
         </button>
         <input
           className={styles.title}
@@ -131,7 +131,7 @@ function NoteDetailModal({ noteId, onCloseButtonClick, onNoteTitleUpdate }) {
             <img
               className={styles.enterIcon}
               src={EnterIcon}
-              alt="enter icon"
+              alt="Enter icon"
               onClick={handleAddComment}
             />
           </button>

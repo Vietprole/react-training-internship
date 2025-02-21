@@ -5,44 +5,55 @@ import PlusIcon from "/assets/plus-icon.svg";
 import LogoutIcon from "/assets/logout-icon.svg";
 import styles from "./Sidebar.module.css";
 import SidebarItem from "../SidebarItem/SidebarItem";
-import { useState } from "react";
+import DoneIcon from "/assets/done-icon.svg";
 import PropTypes from "prop-types";
 import useAuth from "../../hooks/useAuth";
+import { useNavigate } from "react-router";
+import { useLocation } from 'react-router';
 
 function Sidebar({ handleCreateNote }) {
   const { logout } = useAuth();
-  const [selectedIndex, setSelectedIndex] = useState(null);
-  const handleItemClick = (index, isSelectable) => {
-    if (isSelectable) {
-      setSelectedIndex(index);
-    }
-  };
+  const navigate = useNavigate();
+  const location = useLocation();
 
-  const handleLogout = () => {
-    logout();
+  const sidebarItems = [
+    { icon: HomeIcon, alt: "Home icon", path: "/" },
+    { icon: DoneIcon, alt: "Done icon", path: "/done" },
+    { icon: PlusIcon, alt: "Plus icon", action: handleCreateNote }
+  ];
+
+  // Get selected index based on current path
+  const selectedIndex = sidebarItems.findIndex(item =>
+    item.path === location.pathname
+  );
+
+  const handleItemClick = (index) => {
+    const item = sidebarItems[index];
+    if (item.action) {
+      item.action();
+    } else {
+      navigate(item.path);
+    }
   };
 
   return (
     <nav className={styles.sidebar}>
       <Logo src={LogoSrc} />
       <div className={styles.itemsContainer}>
-        <SidebarItem
-          icon={HomeIcon}
-          alt="Home icon"
-          isSelected={selectedIndex === 0}
-          onClick={() => handleItemClick(0, true)}
-        />
-        <SidebarItem
-          icon={PlusIcon}
-          alt="Plus icon"
-          isSelected={selectedIndex === 1}
-          onClick={handleCreateNote}
-        />
+        {sidebarItems.map((item, index) => (
+          <SidebarItem
+            key={item.alt}
+            icon={item.icon}
+            alt={item.alt}
+            isSelected={index === selectedIndex}
+            onClick={() => handleItemClick(index)}
+          />
+        ))}
       </div>
       <button
         className={styles.logoutButton}
         type="button"
-        onClick={handleLogout}
+        onClick={logout}
       >
         <img src={LogoutIcon} alt="Logout icon" />
       </button>
