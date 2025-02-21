@@ -1,4 +1,4 @@
-import Logo from "./Logo/Logo";
+import Logo from "./Logo";
 import LogoSrc from "/assets/logo.svg";
 
 export default {
@@ -13,13 +13,23 @@ export default {
 export const PlaceHolder = {
   args: {
     src: 'https://via.placeholder.com/48',
+    variant: "medium",
     alt: 'Logo',
   },
 };
 
-export const Custom = {
+export const Medium = {
   args: {
     src: LogoSrc,
+    variant: "medium",
+    alt: 'Logo',
+  },
+};
+
+export const Large = {
+  args: {
+    src: LogoSrc,
+    variant: "large",
     alt: 'Logo',
   },
 };
