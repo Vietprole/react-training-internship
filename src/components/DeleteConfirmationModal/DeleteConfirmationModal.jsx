@@ -5,9 +5,9 @@ import PropTypes from "prop-types";
 function DeleteConfirmationModal({ isDisplayed, position, onDeleteButtonClick, onCancelButtonClick }) {
   return (
     <div
+      id="delete-confirmation-modal"
       className={`${styles.deleteConfirmationModal} ${isDisplayed ? "" : styles.hidden}`}
       style={{ top: position.y, left: position.x, position: "absolute" }}
-      data-testid="delete-confirmation-modal"
     >
       <div className={styles.modalContent}>
         <h2>Confirm deletion</h2>

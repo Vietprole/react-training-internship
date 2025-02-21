@@ -18,7 +18,7 @@
 
 h1 {
   font-weight: var(--font-weight-bold);
-  font-size: var(--heading-size-lg);
+  font-size: var(--heading-size-xl);
   line-height: 42px;
   margin-bottom: 21px;
   color: black;

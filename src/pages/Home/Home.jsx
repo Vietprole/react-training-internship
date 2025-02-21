@@ -3,25 +3,13 @@ import NoteBox from "../../components/NoteBox/NoteBox";
 import SearchBar from "../../components/SearchBar/SearchBar";
 import DarkModeIcon from "/assets/dark-mode-icon.svg";
 import DeleteConfirmationModal from "../../components/DeleteConfirmationModal/DeleteConfirmationModal";
+import NoteDetailModal from "../../components/NoteDetailModal/NoteDetailModal";
 import { useState, useEffect } from "react";
 import { calculateModalPosition } from "../../utils/dom";
-// import { createPortal } from "react-dom";
 import { createNote, getNotes, deleteNote } from "../../services/api/note";
 import useAuth from "../../hooks/useAuth";
 import { convertStringToDate } from "../../utils/date";
 import { useOutletContext } from "react-router";
-
-// function getNotes() {
-//   const storedNotes = localStorage.getItem("notes");
-//   if (!storedNotes) return [];
-
-//   const parsedNotes = JSON.parse(storedNotes);
-//   // Convert string back to Date object
-//   return parsedNotes.map((note) => ({
-//     ...note,
-//     createdAt: new Date(note.createdAt),
-//   }));
-// }
 
 function Home() {
   const newNote = useOutletContext();
@@ -30,6 +18,7 @@ function Home() {
   const [searchPhrase, setSearchPhrase] = useState("");
   const [modalPosition, setModalPosition] = useState({ x: 0, y: 0 });
   const [noteIdToDelete, setNoteIdToDelete] = useState(null);
+  const [noteIdToShowDetail, setNoteIdToShowDetail] = useState(null);
   const filteredNotes =
     notes?.filter((note) => note.title.includes(searchPhrase)) || [];
 
@@ -60,8 +49,12 @@ function Home() {
     fetchData();
 
     const handleClickOutside = (event) => {
-      if (!event.target.closest('[data-testid="delete-confirmation-modal"]')) {
+      if (!event.target.closest("#delete-confirmation-modal")) {
         setNoteIdToDelete(null);
+      }
+
+      if (!event.target.closest("#note-detail-modal")) {
+        setNoteIdToShowDetail(null);
       }
     };
     document.addEventListener("mousedown", handleClickOutside);
@@ -70,11 +63,6 @@ function Home() {
       document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [newNote, token, user.id]);
-
-  // Sync notes to localStorage
-  useEffect(() => {
-    localStorage.setItem("notes", JSON.stringify(notes));
-  }, [notes]);
 
   const handleCreateNote = async (currentTitle) => {
     const noteToAdd = { ...newNote, userId: user.id, title: currentTitle };
@@ -89,14 +77,14 @@ function Home() {
     } catch (error) {
       console.error("Error creating note:", error);
       // Remove the last note if creation failed
-      setNotes(prevNotes => prevNotes.slice(0, -1));
+      setNotes((prevNotes) => prevNotes.slice(0, -1));
     }
   };
 
-  const handleNoteChange = (id, newContent) => {
+  const handleNoteTitleUpdate = (id, newTitle) => {
     setNotes((prevNotes) =>
       prevNotes.map((note) =>
-        note.id === id ? { ...note, content: newContent } : note
+        note.id === id ? { ...note, title: newTitle } : note
       )
     );
   };
@@ -112,6 +100,10 @@ function Home() {
     setNoteIdToDelete(id);
   };
 
+  const showNoteDetailModal = (id) => {
+    setNoteIdToShowDetail(id);
+  };
+
   return (
     <div className={styles.container}>
       <div className={styles.header}>
@@ -124,7 +116,7 @@ function Home() {
       </div>
       <h1 className={styles.title}>
         <span>Hello, </span>
-        <span className={styles.name}>Ruy</span>! 👋🏼
+        <span className={styles.name}>{user.email}</span>! 👋🏼
       </h1>
       <p className={styles.description}>
         All your notes are here, in one place!
@@ -136,9 +128,9 @@ function Home() {
             title={note.title}
             createdAt={note.createdAt}
             variant={note.variant}
-            // onSaveChanges={(content) => handleNoteChange(note.id, content)}
             handleEmptyNote={() => handleDeleteNote(note.id)}
             onDeleteButtonClick={() => showDeleteConfirmationModal(note.id)}
+            onClick={() => showNoteDetailModal(note.id)}
             handleNewNote={handleCreateNote}
           />
         ))}
@@ -149,6 +141,13 @@ function Home() {
           position={modalPosition}
           onDeleteButtonClick={() => handleDeleteNote(noteIdToDelete)}
           onCancelButtonClick={() => setNoteIdToDelete(null)}
+        />
+      )}
+      {noteIdToShowDetail != null && (
+        <NoteDetailModal
+          noteId={noteIdToShowDetail}
+          onCloseButtonClick={() => setNoteIdToShowDetail(null)}
+          onNoteTitleUpdate={handleNoteTitleUpdate}
         />
       )}
     </div>
