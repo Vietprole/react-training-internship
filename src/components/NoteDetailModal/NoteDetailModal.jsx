@@ -7,7 +7,7 @@ import useAuth from "../../hooks/useAuth";
 import { useState, useEffect, useRef } from "react";
 import { convertStringToDate, formatDate } from "../../utils/date";
 
-function NoteDetailModal({ noteId, onCloseButtonClick, onNoteTitleUpdate }) {
+function NoteDetailModal({ noteId, onCloseButtonClick, onNoteTitleUpdate, onDeleteButtonClick }) {
   const { token } = useAuth();
   const [note, setNote] = useState();
   const [lastSavedDescription, setLastSavedDescription] = useState();
@@ -143,7 +143,7 @@ function NoteDetailModal({ noteId, onCloseButtonClick, onNoteTitleUpdate }) {
         </ul>
         <footer className={styles.footer}>
           <p className={styles.noteDate}>{formatDate(convertStringToDate(note.createdAt))}</p>
-          <button className={styles.deleteButton}>Delete</button>
+          <button className={styles.deleteButton} onClick={onDeleteButtonClick}>Delete</button>
         </footer>
       </div>
     </div>
@@ -154,6 +154,7 @@ NoteDetailModal.propTypes = {
   noteId: PropTypes.number,
   onCloseButtonClick: PropTypes.func,
   onNoteTitleUpdate: PropTypes.func,
+  onDeleteButtonClick: PropTypes.func,
 };
 
 export default NoteDetailModal;

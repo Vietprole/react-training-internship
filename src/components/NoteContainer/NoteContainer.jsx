@@ -3,7 +3,6 @@ import NoteBox from "../../components/NoteBox/NoteBox";
 import DeleteConfirmationModal from "../../components/DeleteConfirmationModal/DeleteConfirmationModal";
 import NoteDetailModal from "../../components/NoteDetailModal/NoteDetailModal";
 import { useState, useEffect } from "react";
-import { calculateModalPosition } from "../../utils/dom";
 import { createPortal } from "react-dom";
 import { createNote, deleteNote, updateNote } from "../../services/api/note";
 import useAuth from "../../hooks/useAuth";
@@ -14,7 +13,6 @@ import PropTypes from "prop-types";
 function NoteContainer({ filteredNotes, setNotes }) {
   const { newNote, clearNewNote } = useOutletContext();
   const { token, user } = useAuth();
-  const [modalPosition, setModalPosition] = useState({ x: 0, y: 0 });
   const [noteIdToDelete, setNoteIdToDelete] = useState(null);
   const [noteIdToShowDetail, setNoteIdToShowDetail] = useState(null);
 
@@ -75,7 +73,6 @@ function NoteContainer({ filteredNotes, setNotes }) {
   };
 
   const showDeleteConfirmationModal = (id) => {
-    setModalPosition(calculateModalPosition(event.clientX, event.clientY));
     setNoteIdToDelete(id);
   };
 
@@ -112,12 +109,13 @@ function NoteContainer({ filteredNotes, setNotes }) {
         ))}
       </div>
       {noteIdToDelete != null && (
-        <DeleteConfirmationModal
-          isDisplayed={noteIdToDelete !== null}
-          position={modalPosition}
-          onDeleteButtonClick={() => handleDeleteNote(noteIdToDelete)}
-          onCancelButtonClick={() => setNoteIdToDelete(null)}
-        />
+        createPortal(
+          <DeleteConfirmationModal
+            onDeleteButtonClick={() => handleDeleteNote(noteIdToDelete)}
+            onCancelButtonClick={() => setNoteIdToDelete(null)}
+          />,
+          document.getElementById('root')
+        )
       )}
       {noteIdToShowDetail != null &&
         createPortal(
@@ -125,6 +123,7 @@ function NoteContainer({ filteredNotes, setNotes }) {
             noteId={noteIdToShowDetail}
             onCloseButtonClick={() => setNoteIdToShowDetail(null)}
             onNoteTitleUpdate={handleNoteTitleUpdate}
+            onDeleteButtonClick={() => showDeleteConfirmationModal(noteIdToShowDetail)}
           />,
           document.getElementById('root')
         )}
