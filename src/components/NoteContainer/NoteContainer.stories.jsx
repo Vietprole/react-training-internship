@@ -1,52 +1,74 @@
-import NoteContainer from './NoteContainer';
-import { BrowserRouter } from 'react-router';
+import { BrowserRouter, Routes, Route, Outlet } from "react-router";
+import NoteContainer from "./NoteContainer";
+import { AuthContext } from "../../contexts/AuthContext";
 
-export default {
-  title: 'Components/NoteContainer',
+// Mock context values
+const mockOutletValues = {
+  newNote: null,
+  clearNewNote: () => {},
+};
+
+// Mock auth values
+const mockAuthValues = {
+  token: "mock-token",
+  user: {
+    id: 1,
+    email: "test@example.com"
+  },
+  login: () => {},
+  logout: () => {},
+};
+
+// Wrapper with proper routing structure
+const WithProviders = ({ children }) => {
+  return (
+    <AuthContext.Provider value={mockAuthValues}>
+      <BrowserRouter>
+        <Routes>
+          <Route path="/" element={<Outlet context={mockOutletValues} />}>
+            <Route index element={children} />
+          </Route>
+        </Routes>
+      </BrowserRouter>
+    </AuthContext.Provider>
+  );
+};
+
+const meta = {
+  title: "Components/NoteContainer",
   component: NoteContainer,
   decorators: [
     (Story) => (
-      <BrowserRouter>
+      <WithProviders>
         <Story />
-      </BrowserRouter>
+      </WithProviders>
     ),
   ],
   parameters: {
-    layout: 'centered',
+    // Disable routing in Storybook
+    reactRouter: {
+      routePath: '/',
+    },
   },
+  tags: ["autodocs"],
 };
 
-// Mock data for the stories
+export default meta;
+
 const mockNotes = [
   {
     id: 1,
-    userId: 1,
-    variant: 'primary',
-    title: 'Note 1',
-    description: 'This is note 1',
-    comments: ['Remember to do this'],
-    createdAt: new Date('2024-01-15'),
+    title: "Meeting Notes",
+    variant: "primary",
+    createdAt: new Date("2024-01-15"),
     isDone: false,
   },
   {
     id: 2,
-    userId: 1,
-    variant: 'secondary',
-    title: 'Note 2',
-    description: 'This is note 2',
-    comments: ['Don\'t forget to do this'],
-    createdAt: new Date('2024-01-16'),
+    title: "Shopping List",
+    variant: "secondary",
+    createdAt: new Date("2024-01-16"),
     isDone: true,
-  },
-  {
-    id: 3,
-    userId: 1,
-    variant: 'tertiary',
-    title: 'Note 3',
-    description: 'This is note 3',
-    comments: [],
-    createdAt: new Date('2024-01-17'),
-    isDone: false,
   },
 ];
 
@@ -57,7 +79,7 @@ export const Default = {
   },
 };
 
-export const EmptyState = {
+export const Empty = {
   args: {
     filteredNotes: [],
     setNotes: () => {},
@@ -70,4 +92,3 @@ export const SingleNote = {
     setNotes: () => {},
   },
 };
-
