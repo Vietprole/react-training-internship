@@ -3,12 +3,10 @@ import styles from "./NoteDetailModal.module.css";
 import EnterIcon from "/assets/enter-icon.svg";
 import CloseIcon from "/assets/close-icon.svg";
 import { getNoteById, updateNote } from "../../services/api/note";
-import useAuth from "../../hooks/useAuth";
 import { useState, useEffect, useRef } from "react";
 import { convertStringToDate, formatDate } from "../../utils/date";
 
-function NoteDetailModal({ noteId, onCloseButtonClick, onNoteTitleUpdate }) {
-  const { token } = useAuth();
+function NoteDetailModal({ noteId, onCloseButtonClick, onNoteTitleUpdate, onDeleteButtonClick }) {
   const [note, setNote] = useState();
   const [lastSavedDescription, setLastSavedDescription] = useState();
   const [isLoading, setIsLoading] = useState(true);
@@ -17,7 +15,7 @@ function NoteDetailModal({ noteId, onCloseButtonClick, onNoteTitleUpdate }) {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const note = await getNoteById(token, noteId);
+        const note = await getNoteById(noteId);
         setNote(note);
         setLastSavedDescription(note.description);
       } catch (error) {
@@ -27,12 +25,12 @@ function NoteDetailModal({ noteId, onCloseButtonClick, onNoteTitleUpdate }) {
       }
     };
     fetchData();
-  }, [noteId, token]);
+  }, [noteId]);
 
   const onTitleBlur = async (event) => {
     const editedNote = { ...note, title: event.target.value };
     try {
-      await updateNote(token, note.id, editedNote);
+      await updateNote(note.id, editedNote);
       onNoteTitleUpdate(note.id, editedNote.title);
     } catch (error) {
       console.error(error);
@@ -49,7 +47,7 @@ function NoteDetailModal({ noteId, onCloseButtonClick, onNoteTitleUpdate }) {
 
   const handleSaveDescription = async () => {
     try {
-      await updateNote(token, note.id, note);
+      await updateNote(note.id, note);
       setLastSavedDescription(note.description);
     } catch (error) {
       console.error(error);
@@ -78,7 +76,7 @@ function NoteDetailModal({ noteId, onCloseButtonClick, onNoteTitleUpdate }) {
         comments: [...note.comments, commentText]
       };
       setNote(updatedNote);
-      updateNote(token, note.id, updatedNote);
+      updateNote(note.id, updatedNote);
 
       // Clear input after adding
       commentInputRef.current.value = '';
@@ -101,7 +99,7 @@ function NoteDetailModal({ noteId, onCloseButtonClick, onNoteTitleUpdate }) {
     <div className={styles.overlay}>
       <div className={styles.noteDetailModal} id="note-detail-modal">
         <button className={styles.closeButton} onClick={onCloseButtonClick}>
-          <img src={CloseIcon} alt="close icon" />
+          <img src={CloseIcon} alt="Close icon" />
         </button>
         <input
           className={styles.title}
@@ -131,7 +129,7 @@ function NoteDetailModal({ noteId, onCloseButtonClick, onNoteTitleUpdate }) {
             <img
               className={styles.enterIcon}
               src={EnterIcon}
-              alt="enter icon"
+              alt="Enter icon"
               onClick={handleAddComment}
             />
           </button>
@@ -143,7 +141,7 @@ function NoteDetailModal({ noteId, onCloseButtonClick, onNoteTitleUpdate }) {
         </ul>
         <footer className={styles.footer}>
           <p className={styles.noteDate}>{formatDate(convertStringToDate(note.createdAt))}</p>
-          <button className={styles.deleteButton}>Delete</button>
+          <button className={styles.deleteButton} onClick={onDeleteButtonClick}>Delete</button>
         </footer>
       </div>
     </div>
@@ -154,6 +152,7 @@ NoteDetailModal.propTypes = {
   noteId: PropTypes.number,
   onCloseButtonClick: PropTypes.func,
   onNoteTitleUpdate: PropTypes.func,
+  onDeleteButtonClick: PropTypes.func,
 };
 
 export default NoteDetailModal;
