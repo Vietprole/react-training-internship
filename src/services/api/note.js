@@ -1,6 +1,8 @@
 import { API_URL } from '../config';
 
-const getNotes = async (token, userId) => {
+const getNotes = async (userId) => {
+  const token = localStorage.getItem('token');
+
   const response = await fetch(`${API_URL}/notes?userId=${userId}`, {
     method: 'GET',
     headers: {
@@ -17,7 +19,30 @@ const getNotes = async (token, userId) => {
   return response.json();
 };
 
-const createNote = async (token, note) => {
+const getNoteById = async (noteId) => {
+  const token = localStorage.getItem('token');
+
+  const response = await fetch(`${API_URL}/notes/${noteId}`, {
+    method: 'GET',
+    headers: {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    }
+  });
+
+  if (!response.ok) {
+    const error = await response.json();
+    throw new Error(error || 'Failed to fetch notes');
+  }
+
+  return response.json();
+};
+
+
+
+const createNote = async (note) => {
+  const token = localStorage.getItem('token');
+
   const response = await fetch(`${API_URL}/notes`, {
     method: 'POST',
     headers: {
@@ -35,7 +60,9 @@ const createNote = async (token, note) => {
   return response.json();
 }
 
-const updateNote = async (token, noteId, note) => {
+const updateNote = async (noteId, note) => {
+  const token = localStorage.getItem('token');
+
   const response = await fetch(`${API_URL}/notes/${noteId}`, {
     method: 'PUT',
     headers: {
@@ -53,7 +80,9 @@ const updateNote = async (token, noteId, note) => {
   return response.json();
 }
 
-const deleteNote = async (token, noteId) => {
+const deleteNote = async (noteId) => {
+  const  token = localStorage.getItem('token');
+
   const response = await fetch(`${API_URL}/notes/${noteId}`, {
     method: 'DELETE',
     headers: { 'Authorization': `Bearer ${token}` }
@@ -68,4 +97,4 @@ const deleteNote = async (token, noteId) => {
 }
 
 
-export { getNotes, createNote, updateNote, deleteNote };
+export { getNotes, getNoteById, createNote, updateNote, deleteNote };
