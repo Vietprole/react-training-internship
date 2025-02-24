@@ -13,7 +13,7 @@ import { useOutletContext } from "react-router";
 
 function Home() {
   const newNote = useOutletContext();
-  const { token, user } = useAuth();
+  const { user } = useAuth();
   const [notes, setNotes] = useState();
   const [searchPhrase, setSearchPhrase] = useState("");
   const [modalPosition, setModalPosition] = useState({ x: 0, y: 0 });
@@ -25,7 +25,7 @@ function Home() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        let notes = await getNotes(token, user.id);
+        let notes = await getNotes(user.id);
 
         notes.forEach((note) => {
           note.createdAt = convertStringToDate(note.createdAt);
@@ -62,12 +62,12 @@ function Home() {
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [newNote, token, user.id]);
+  }, [newNote, user.id]);
 
   const handleCreateNote = async (currentTitle) => {
     const noteToAdd = { ...newNote, userId: user.id, title: currentTitle };
     try {
-      const createdNote = await createNote(token, noteToAdd);
+      const createdNote = await createNote(noteToAdd);
       createdNote.createdAt = convertStringToDate(createdNote.createdAt);
       setNotes((prevNotes) => {
         const newNotes = [...prevNotes];
@@ -90,7 +90,7 @@ function Home() {
   };
 
   const handleDeleteNote = (noteId) => {
-    deleteNote(token, noteId);
+    deleteNote(noteId);
     setNotes((prevNotes) => prevNotes.filter((note) => note.id !== noteId));
     setNoteIdToDelete(null);
   };
@@ -98,10 +98,6 @@ function Home() {
   const showDeleteConfirmationModal = (id) => {
     setModalPosition(calculateModalPosition(event.clientX, event.clientY));
     setNoteIdToDelete(id);
-  };
-
-  const showNoteDetailModal = (id) => {
-    setNoteIdToShowDetail(id);
   };
 
   return (
@@ -130,7 +126,7 @@ function Home() {
             variant={note.variant}
             handleEmptyNote={() => handleDeleteNote(note.id)}
             onDeleteButtonClick={() => showDeleteConfirmationModal(note.id)}
-            onClick={() => showNoteDetailModal(note.id)}
+            onClick={() => setNoteIdToShowDetail(note.id)}
             handleNewNote={handleCreateNote}
           />
         ))}
