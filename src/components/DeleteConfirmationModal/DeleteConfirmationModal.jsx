@@ -28,13 +28,8 @@ function DeleteConfirmationModal({ onDeleteButtonClick, onCancelButtonClick }) {
 }
 
 DeleteConfirmationModal.propTypes = {
-  isDisplayed: PropTypes.bool.isRequired,
-  position: PropTypes.shape({
-    x: PropTypes.number,
-    y: PropTypes.number,
-  }),
-  onDeleteButtonClick: PropTypes.func.isRequired,
-  onCancelButtonClick: PropTypes.func.isRequired,
+  onDeleteButtonClick: PropTypes.func,
+  onCancelButtonClick: PropTypes.func,
 };
 
 export default DeleteConfirmationModal;

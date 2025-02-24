@@ -6,7 +6,8 @@ import { getRandomVariant } from "../../utils/note";
 
 function MainLayout() {
   const [newNote, setNewNote] = useState(null);
-  function handleCreateNote(isDone) {
+  function handleCreateNote() {
+    const isDone = (location.pathname === "/done") ? true : false;
     setNewNote({
       userId: null,
       variant: getRandomVariant(),
@@ -20,6 +21,7 @@ function MainLayout() {
 
   function clearNewNote(){
     setNewNote(null);
+    console.log("clear note", newNote);
   }
 
   return (

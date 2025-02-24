@@ -10,9 +10,5 @@ export default {
 };
 
 export const Default = {
-  args: {
-    isDisplayed: true,
-    position: {x: 0, y: 0},
-  },
 };
 

@@ -1,10 +1,11 @@
+import { useEffect, useRef } from "react";
+import useNoteBoxState from "../../hooks/useNoteBoxState";
 import PropTypes from "prop-types";
-import styles from "./NoteBox.module.css";
-import TrashIcon from "/assets/trash-icon.svg";
 import { formatDate } from "../../utils/date";
-import { useState, useEffect, useRef } from "react";
 import NoteDoneIcon from "/assets/note-done-icon.svg";
 import NoteUndoneIcon from "/assets/note-undone-icon.svg";
+import TrashIcon from "/assets/trash-icon.svg";
+import styles from "./NoteBox.module.css";
 
 function NoteBox({
   variant,
@@ -17,8 +18,20 @@ function NoteBox({
   handleNewNote,
   onClick,
 }) {
-  const [isEditing, setIsEditing] = useState(title === "" ? true : false);
-  const [currentTitle, setCurrentTitle] = useState(title);
+  const {
+    isEditing,
+    currentTitle,
+    setCurrentTitle,
+    handleBlur,
+    handleDeleteButtonClick,
+    handleToggleDoneClick,
+  } = useNoteBoxState(
+    title,
+    handleEmptyNote,
+    onDeleteButtonClick,
+    onDoneButtonClick,
+    handleNewNote
+  );
   const textareaRef = useRef(null);
 
   useEffect(() => {
@@ -28,38 +41,7 @@ function NoteBox({
       textareaRef.current.selectionStart = 0;
       textareaRef.current.selectionEnd = 0;
     }
-
-    setCurrentTitle(title);
   }, [title]);
-
-  const handleDoubleClick = () => {
-    setIsEditing(true);
-  };
-
-  const handleBlur = () => {
-    setIsEditing(false);
-
-    if (title === "") {
-      if (currentTitle === "") {
-        // If note is newly created but user didn't type anything, discard note
-        handleEmptyNote();
-      } else {
-        // If note is newly created and user typed something, save note
-        // onSaveChanges(currentTitle);
-        handleNewNote(currentTitle);
-      }
-    } else setCurrentTitle(title); // If note is not newly created, reset title
-  };
-
-  const handleDeleteButtonClick = (e) => {
-    e.stopPropagation(); // Stop event from bubbling up to parent
-    onDeleteButtonClick();
-  };
-
-  const handleToggleDoneClick = (e) => {
-    e.stopPropagation(); // Stop event from bubbling up to parent
-    onDoneButtonClick();
-  }
 
   return (
     <div onClick={onClick}>
@@ -69,7 +51,11 @@ function NoteBox({
           isEditing ? styles.editing : ""
         }`}
       >
-        <button className={styles.doneButton} onClick={handleToggleDoneClick} type="button">
+        <button
+          className={styles.doneButton}
+          onClick={handleToggleDoneClick}
+          type="button"
+        >
           <img
             className={styles.doneIcon}
             src={isDone ? NoteDoneIcon : NoteUndoneIcon}
@@ -80,7 +66,6 @@ function NoteBox({
           ref={textareaRef}
           className={styles.note}
           placeholder="Type your note..."
-          onDoubleClick={handleDoubleClick}
           onBlur={handleBlur}
           readOnly={!isEditing}
           value={currentTitle}
