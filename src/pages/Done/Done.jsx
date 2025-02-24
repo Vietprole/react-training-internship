@@ -10,16 +10,16 @@ import NoteContainer from "../../components/NoteContainer/NoteContainer";
 
 function Done() {
   const { newNote } = useOutletContext();
-  const { token, user } = useAuth();
+  const { user } = useAuth();
   const [doneNotes, setDoneNotes] = useState();
   const [searchPhrase, setSearchPhrase] = useState("");
   const filteredNotes =
-    doneNotes?.filter((note) => note.title.includes(searchPhrase)) || [];
+    doneNotes?.filter((note) => note.title.includes(searchPhrase) && note.isDone === true) || [];
 
   useEffect(() => {
     const fetchData = async () => {
       try {
-        let notes = await getNotes(token, user.id);
+        let notes = await getNotes(user.id);
 
         notes.forEach((note) => {
           note.createdAt = convertStringToDate(note.createdAt);
@@ -41,7 +41,7 @@ function Done() {
     };
 
     fetchData();
-  }, [newNote, token, user.id]);
+  }, [newNote, user.id]);
 
   return (
     <div className={styles.container}>
@@ -56,12 +56,10 @@ function Done() {
       <h1 className={styles.title}>
         <span>Done Notes!</span>
       </h1>
-      <p className={styles.description}>
-        All your done notes are here!
-      </p>
-      <NoteContainer filteredNotes={filteredNotes} setNotes={setDoneNotes}/>
+      <p className={styles.description}>All your done notes are here!</p>
+      <NoteContainer filteredNotes={filteredNotes} setNotes={setDoneNotes} />
     </div>
-  )
+  );
 }
 
 export default Done;
