@@ -1,6 +1,7 @@
-import { describe, test, expect, vi, beforeEach, afterEach, global } from "vitest";
-import { render, screen, fireEvent } from "@testing-library/react";
+import { describe, test, expect, vi, beforeEach, afterEach } from "vitest";
+import { render, screen, fireEvent, act, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
+import "@testing-library/jest-dom";
 import NoteDetailModal from "./NoteDetailModal";
 import { BrowserRouter } from "react-router";
 import { AuthContext } from "../../contexts/AuthContext";
@@ -14,32 +15,46 @@ const mockAuthValues = {
 // Mock note data
 const mockNote = {
   id: 1,
+  userId: 1,
   title: "Test Title",
   description: "Test Description",
   createdAt: "2024-02-24T10:00:00.000Z",
   variant: "primary",
   isDone: false,
-  comments: [ "Test comment 1", "Test comment 2" ],
+  comments: ["Test comment 1", "Test comment 2"],
 };
 
+// Mock the API import
+vi.mock("../../services/api/note", () => ({
+  getNoteById: vi.fn(() => Promise.resolve(mockNote)),
+  updateNote: vi.fn(() => Promise.resolve(mockNote)),
+}));
+
+// Now the import is mocked, we need to import it
+import { updateNote } from "../../services/api/note";
+
 // Setup fetch mock
+const mockFetch = vi.fn(() =>
+  Promise.resolve({
+    ok: true,
+    json: () => Promise.resolve(mockNote),
+  })
+);
+
 beforeEach(() => {
-  global.fetch = vi.fn(() =>
-    Promise.resolve({
-      ok: true,
-      json: () => Promise.resolve(mockNote)
-    })
-  );
+  // Use stubGlobal to mock fetch
+  vi.stubGlobal("fetch", mockFetch);
 });
 
 afterEach(() => {
-  vi.restoreAllMocks();
+  vi.unstubAllGlobals();
+  vi.clearAllMocks();
 });
 
-const renderWithProviders = (ui) => {
+const renderWithProviders = (component) => {
   return render(
     <AuthContext.Provider value={mockAuthValues}>
-      <BrowserRouter>{ui}</BrowserRouter>
+      <BrowserRouter>{component}</BrowserRouter>
     </AuthContext.Provider>
   );
 };
@@ -54,55 +69,113 @@ describe("NoteDetailModal", () => {
 
   let user;
 
-  beforeEach(() => {
+  beforeEach(async () => {
     user = userEvent.setup();
+    await act(async () => {
+      renderWithProviders(<NoteDetailModal {...mockProps} />);
+    });
   });
 
   test("renders modal with correct note details", () => {
-    renderWithProviders(<NoteDetailModal {...mockProps} />);
-    expect(screen.getByText(/Test Title/i)).toBeInTheDocument();
+    expect(screen.getByDisplayValue(/Test Title/i)).toBeInTheDocument();
     expect(screen.getByText(/Test Description/i)).toBeInTheDocument();
     expect(screen.getByText(/Test comment 1/i)).toBeInTheDocument();
     expect(screen.getByText(/Test comment 2/i)).toBeInTheDocument;
-    expect(screen.getByText(/Feb, 24 2025/i)).toBeInTheDocument();
+    expect(screen.getByText(/Feb, 24 2024/i)).toBeInTheDocument();
   });
 
   test("calls onCloseButtonClick when close button is clicked", async () => {
-    renderWithProviders(<NoteDetailModal {...mockProps} />);
-
     const closeButton = screen.getByTestId("close-button");
     await user.click(closeButton);
-
     expect(mockProps.onCloseButtonClick).toHaveBeenCalledTimes(1);
   });
 
-  test("calls onDeleteButtonClick when delete button is clicked", async () => {
-    renderWithProviders(<NoteDetailModal {...mockProps} />);
-
-    const deleteButton = screen.getByTestId("delete-button");
-    await user.click(deleteButton);
-
-    expect(mockProps.onDeleteButtonClick).toHaveBeenCalledTimes(1);
-  });
-
-  test("updates note title when title is changed", async () => {
-    renderWithProviders(<NoteDetailModal {...mockProps} />);
-
+  test("update title when title is blurred", async () => {
     const titleInput = screen.getByTestId("title-input");
     await user.clear(titleInput);
     await user.type(titleInput, "New Title");
     fireEvent.blur(titleInput);
 
-    expect(mockProps.onNoteTitleUpdate).toHaveBeenCalledWith(1, "New Title");
+    await waitFor(() => {
+      expect(updateNote).toHaveBeenCalledWith("mock-token", mockNote.id, {
+        ...mockNote,
+        title: "New Title"
+      });
+      expect(mockProps.onNoteTitleUpdate).toHaveBeenCalledWith(
+        mockNote.id,
+        "New Title"
+      );
+    });
   });
 
   test("doesn't update title if new value is empty", async () => {
-    renderWithProviders(<NoteDetailModal {...mockProps} />);
-
     const titleInput = screen.getByTestId("title-input");
     await user.clear(titleInput);
     fireEvent.blur(titleInput);
-
     expect(mockProps.onNoteTitleUpdate).not.toHaveBeenCalled();
   });
+
+  test("update description when save button is clicked", async () => {
+    const descriptionInput = screen.getByText(/Test Description/i);
+    await user.clear(descriptionInput);
+    await user.type(descriptionInput, "New Description");
+    const saveButton = screen.getByText(/Save/i);
+    await user.click(saveButton);
+
+    await waitFor(() => {
+      expect(updateNote).toHaveBeenCalledWith("mock-token", mockNote.id, {
+        ...mockNote,
+        description: "New Description"
+      });
+    });
+  });
+
+  test("reverts to last saved description when save fails", async () => {
+    const descriptionInput = screen.getByText(/Test Description/i);
+    await user.clear(descriptionInput);
+    await user.type(descriptionInput, "New Description");
+    const saveButton = screen.getByText(/Save/i);
+    updateNote.mockImplementationOnce(() => Promise.reject(new Error("Error")));
+    await user.click(saveButton);
+
+    await waitFor(() => {
+      expect(screen.getByText(/Test Description/i)).toBeInTheDocument();
+    });
+  });
+
+  test("reverts to last saved description when cancel button is clicked", async () => {
+    const descriptionInput = screen.getByText(/Test Description/i);
+    await user.clear(descriptionInput);
+    await user.type(descriptionInput, "New Description");
+    const cancelButton = screen.getByText(/Cancel/i);
+    await user.click(cancelButton);
+
+    await waitFor(() => {
+      expect(screen.getByText(/Test Description/i)).toBeInTheDocument();
+    });
+  });
+
+  test("update comments and clear input when add button is clicked", async () => {
+    const commentInput = screen.getByTestId("comment-input");
+    await user.type(commentInput, "New Comment");
+    const addButton = screen.getByTestId("add-comment-button");
+    await user.click(addButton);
+
+    await waitFor(() => {
+      expect(updateNote).toHaveBeenCalledWith("mock-token", mockNote.id, {
+        ...mockNote,
+        comments: [...mockNote.comments, "New Comment"]
+      });
+
+      expect(screen.getByText(/New Comment/i)).toBeInTheDocument();
+      expect(commentInput).toHaveValue("");
+    });
+  });
+
+  test("calls onDeleteButtonClick when delete button is clicked", async () => {
+    const deleteButton = screen.getByText(/Delete/i);
+    await user.click(deleteButton);
+    expect(mockProps.onDeleteButtonClick).toHaveBeenCalledTimes(1);
+  });
+
 });

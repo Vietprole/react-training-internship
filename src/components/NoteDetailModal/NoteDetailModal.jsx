@@ -7,10 +7,16 @@ import useAuth from "../../hooks/useAuth";
 import { useState, useEffect, useRef } from "react";
 import { convertStringToDate, formatDate } from "../../utils/date";
 
-function NoteDetailModal({ noteId, onCloseButtonClick, onNoteTitleUpdate, onDeleteButtonClick }) {
+function NoteDetailModal({
+  noteId,
+  onCloseButtonClick,
+  onNoteTitleUpdate,
+  onDeleteButtonClick,
+}) {
   const { token } = useAuth();
   const [note, setNote] = useState();
   const [lastSavedDescription, setLastSavedDescription] = useState();
+  const [lastSavedTitle, setLastSavedTitle] = useState();
   const [isLoading, setIsLoading] = useState(true);
   const commentInputRef = useRef(null);
 
@@ -20,6 +26,7 @@ function NoteDetailModal({ noteId, onCloseButtonClick, onNoteTitleUpdate, onDele
         const note = await getNoteById(token, noteId);
         setNote(note);
         setLastSavedDescription(note.description);
+        setLastSavedTitle(note.title);
       } catch (error) {
         console.error("Error fetching note:", error);
       } finally {
@@ -30,13 +37,23 @@ function NoteDetailModal({ noteId, onCloseButtonClick, onNoteTitleUpdate, onDele
   }, [noteId, token]);
 
   const onTitleBlur = async (event) => {
-    const editedNote = { ...note, title: event.target.value };
+    const newTitle = event.target.value;
+    // Prevent empty title from being saved
+    // And revert to last saved title
+    if (newTitle === "") {
+      event.target.value = lastSavedTitle;
+      return;
+    }
+
+    const editedNote = { ...note, title: newTitle };
     try {
       await updateNote(token, note.id, editedNote);
       onNoteTitleUpdate(note.id, editedNote.title);
     } catch (error) {
       console.error(error);
       event.target.value = note.title;
+    } finally {
+      setLastSavedTitle(newTitle);
     }
   };
 
@@ -75,13 +92,13 @@ function NoteDetailModal({ noteId, onCloseButtonClick, onNoteTitleUpdate, onDele
 
       const updatedNote = {
         ...note,
-        comments: [...note.comments, commentText]
+        comments: [...note.comments, commentText],
       };
       setNote(updatedNote);
       updateNote(token, note.id, updatedNote);
 
       // Clear input after adding
-      commentInputRef.current.value = '';
+      commentInputRef.current.value = "";
     } catch (error) {
       console.error(error);
     }
@@ -100,13 +117,18 @@ function NoteDetailModal({ noteId, onCloseButtonClick, onNoteTitleUpdate, onDele
   return (
     <div className={styles.overlay}>
       <div className={styles.noteDetailModal} id="note-detail-modal">
-        <button className={styles.closeButton} onClick={onCloseButtonClick}>
+        <button
+          className={styles.closeButton}
+          onClick={onCloseButtonClick}
+          data-testid="close-button"
+        >
           <img src={CloseIcon} alt="Close icon" />
         </button>
         <input
           className={styles.title}
           defaultValue={note.title}
           onBlur={onTitleBlur}
+          data-testid="title-input"
         />
         <h3 className={styles.descriptionHeading}>Description</h3>
         <textarea
@@ -118,7 +140,12 @@ function NoteDetailModal({ noteId, onCloseButtonClick, onNoteTitleUpdate, onDele
           <button className={styles.saveButton} onClick={handleSaveDescription}>
             Save
           </button>
-          <button className={styles.cancelButton} onClick={handleCancelDescription}>Cancel</button>
+          <button
+            className={styles.cancelButton}
+            onClick={handleCancelDescription}
+          >
+            Cancel
+          </button>
         </div>
         <h3 className={styles.commentHeading}>Comment</h3>
         <div className={styles.commentInputContainer}>
@@ -126,6 +153,7 @@ function NoteDetailModal({ noteId, onCloseButtonClick, onNoteTitleUpdate, onDele
             ref={commentInputRef}
             className={styles.commentInput}
             placeholder="Type your comment..."
+            data-testid="comment-input"
           />
           <button className={styles.enterButton}>
             <img
@@ -133,6 +161,7 @@ function NoteDetailModal({ noteId, onCloseButtonClick, onNoteTitleUpdate, onDele
               src={EnterIcon}
               alt="Enter icon"
               onClick={handleAddComment}
+              data-testid="add-comment-button"
             />
           </button>
         </div>
@@ -142,8 +171,15 @@ function NoteDetailModal({ noteId, onCloseButtonClick, onNoteTitleUpdate, onDele
           ))}
         </ul>
         <footer className={styles.footer}>
-          <p className={styles.noteDate}>{formatDate(convertStringToDate(note.createdAt))}</p>
-          <button className={styles.deleteButton} onClick={onDeleteButtonClick}>Delete</button>
+          <p className={styles.noteDate}>
+            {formatDate(convertStringToDate(note.createdAt))}
+          </p>
+          <button
+            className={styles.deleteButton}
+            onClick={onDeleteButtonClick}
+          >
+            Delete
+          </button>
         </footer>
       </div>
     </div>
