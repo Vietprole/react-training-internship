@@ -10,7 +10,7 @@ import NoteContainer from "../../components/NoteContainer/NoteContainer";
 
 function Home() {
   const { newNote } = useOutletContext();
-  const { token, user } = useAuth();
+  const { user } = useAuth();
   const [notes, setNotes] = useState();
   const [searchPhrase, setSearchPhrase] = useState("");
   const filteredNotes =
@@ -19,7 +19,7 @@ function Home() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        let notes = await getNotes(token, user.id);
+        let notes = await getNotes(user.id);
 
         notes.forEach((note) => {
           note.createdAt = convertStringToDate(note.createdAt);
@@ -41,7 +41,7 @@ function Home() {
     };
 
     fetchData();
-  }, [newNote, token, user.id]);
+  }, [newNote, user.id]);
 
   return (
     <div className={styles.container}>

@@ -3,7 +3,6 @@ import styles from "./NoteDetailModal.module.css";
 import EnterIcon from "/assets/enter-icon.svg";
 import CloseIcon from "/assets/close-icon.svg";
 import { getNoteById, updateNote } from "../../services/api/note";
-import useAuth from "../../hooks/useAuth";
 import { useState, useEffect, useRef } from "react";
 import { convertStringToDate, formatDate } from "../../utils/date";
 
@@ -23,7 +22,7 @@ function NoteDetailModal({
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const note = await getNoteById(token, noteId);
+        const note = await getNoteById(noteId);
         setNote(note);
         setLastSavedDescription(note.description);
         setLastSavedTitle(note.title);
@@ -34,7 +33,7 @@ function NoteDetailModal({
       }
     };
     fetchData();
-  }, [noteId, token]);
+  }, [noteId]);
 
   const onTitleBlur = async (event) => {
     const newTitle = event.target.value;
@@ -47,7 +46,7 @@ function NoteDetailModal({
 
     const editedNote = { ...note, title: newTitle };
     try {
-      await updateNote(token, note.id, editedNote);
+      await updateNote(note.id, editedNote);
       onNoteTitleUpdate(note.id, editedNote.title);
     } catch (error) {
       console.error(error);
@@ -66,7 +65,7 @@ function NoteDetailModal({
 
   const handleSaveDescription = async () => {
     try {
-      await updateNote(token, note.id, note);
+      await updateNote(note.id, note);
       setLastSavedDescription(note.description);
     } catch (error) {
       console.error(error);
@@ -95,7 +94,7 @@ function NoteDetailModal({
         comments: [...note.comments, commentText],
       };
       setNote(updatedNote);
-      updateNote(token, note.id, updatedNote);
+      updateNote(note.id, updatedNote);
 
       // Clear input after adding
       commentInputRef.current.value = "";

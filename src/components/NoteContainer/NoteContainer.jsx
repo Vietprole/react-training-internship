@@ -12,7 +12,7 @@ import PropTypes from "prop-types";
 
 function NoteContainer({ filteredNotes, setNotes }) {
   const { newNote, clearNewNote } = useOutletContext();
-  const { token, user } = useAuth();
+  const { user } = useAuth();
   const [noteIdToDelete, setNoteIdToDelete] = useState(null);
   const [noteIdToShowDetail, setNoteIdToShowDetail] = useState(null);
 
@@ -31,12 +31,12 @@ function NoteContainer({ filteredNotes, setNotes }) {
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [newNote, token, user.id]);
+  }, [newNote, user.id]);
 
   const handleCreateNote = async (currentTitle) => {
     const noteToAdd = { ...newNote, userId: user.id, title: currentTitle };
     try {
-      const createdNote = await createNote(token, noteToAdd);
+      const createdNote = await createNote(noteToAdd);
       createdNote.createdAt = convertStringToDate(createdNote.createdAt);
       setNotes((prevNotes) => {
         const newNotes = [...prevNotes];
@@ -61,13 +61,14 @@ function NoteContainer({ filteredNotes, setNotes }) {
   };
 
   const handleDeleteNote = (noteId) => {
-    deleteNote(token, noteId);
+    deleteNote(noteId);
     setNotes((prevNotes) => prevNotes.filter((note) => note.id !== noteId));
     setNoteIdToDelete(null);
   };
 
   // Remove note from UI if note is empty and has not been committed to the database
   const handleEmptyNote = (noteId) => {
+    clearNewNote();
     setNotes((prevNotes) => prevNotes.filter((note) => note.id !== noteId));
     setNoteIdToDelete(null);
   };
@@ -82,13 +83,13 @@ function NoteContainer({ filteredNotes, setNotes }) {
 
   const handleToggleDone = async (id) => {
     const noteToUpdate = filteredNotes.find((note) => note.id === id);
-    await updateNote(token, id, { ...noteToUpdate, isDone: !noteToUpdate.isDone });
+    await updateNote(id, { ...noteToUpdate, isDone: !noteToUpdate.isDone });
     setNotes((prevNotes) =>
       prevNotes.map((note) =>
         note.id === id ? { ...note, isDone: !note.isDone } : note
       )
     );
-  }
+  };
 
   return (
     <>
@@ -108,24 +109,25 @@ function NoteContainer({ filteredNotes, setNotes }) {
           />
         ))}
       </div>
-      {noteIdToDelete != null && (
+      {noteIdToDelete != null &&
         createPortal(
           <DeleteConfirmationModal
             onDeleteButtonClick={() => handleDeleteNote(noteIdToDelete)}
             onCancelButtonClick={() => setNoteIdToDelete(null)}
           />,
-          document.getElementById('root')
-        )
-      )}
+          document.getElementById("root")
+        )}
       {noteIdToShowDetail != null &&
         createPortal(
           <NoteDetailModal
             noteId={noteIdToShowDetail}
             onCloseButtonClick={() => setNoteIdToShowDetail(null)}
             onNoteTitleUpdate={handleNoteTitleUpdate}
-            onDeleteButtonClick={() => showDeleteConfirmationModal(noteIdToShowDetail)}
+            onDeleteButtonClick={() =>
+              showDeleteConfirmationModal(noteIdToShowDetail)
+            }
           />,
-          document.getElementById('root')
+          document.getElementById("root")
         )}
     </>
   );

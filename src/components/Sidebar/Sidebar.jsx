@@ -15,11 +15,12 @@ function Sidebar({ handleCreateNote }) {
   const { logout } = useAuth();
   const navigate = useNavigate();
   const location = useLocation();
+  const isDone = location.pathname === "/done" ? true : false;
 
   const sidebarItems = [
     { icon: HomeIcon, alt: "Home icon", path: "/" },
     { icon: DoneIcon, alt: "Done icon", path: "/done" },
-    { icon: PlusIcon, alt: "Plus icon", action: handleCreateNote }
+    { icon: PlusIcon, alt: "Plus icon", action: () => handleCreateNote(isDone) }
   ];
 
   // Get selected index based on current path
