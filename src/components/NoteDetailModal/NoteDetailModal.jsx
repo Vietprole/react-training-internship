@@ -28,6 +28,8 @@ function NoteDetailModal({ noteId, onCloseButtonClick, onNoteTitleUpdate, onDele
   }, [noteId]);
 
   const onTitleBlur = async (event) => {
+    if (event.target.value === "") return;
+
     const editedNote = { ...note, title: event.target.value };
     try {
       await updateNote(note.id, editedNote);
