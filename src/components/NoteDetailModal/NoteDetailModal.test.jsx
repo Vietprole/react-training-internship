@@ -1,5 +1,11 @@
 import { describe, test, expect, vi, beforeEach, afterEach } from "vitest";
-import { render, screen, fireEvent, act, waitFor } from "@testing-library/react";
+import {
+  render,
+  screen,
+  fireEvent,
+  act,
+  waitFor,
+} from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import "@testing-library/jest-dom";
 import NoteDetailModal from "./NoteDetailModal";
@@ -97,9 +103,9 @@ describe("NoteDetailModal", () => {
     fireEvent.blur(titleInput);
 
     await waitFor(() => {
-      expect(updateNote).toHaveBeenCalledWith("mock-token", mockNote.id, {
+      expect(updateNote).toHaveBeenCalledWith(mockNote.id, {
         ...mockNote,
-        title: "New Title"
+        title: "New Title",
       });
       expect(mockProps.onNoteTitleUpdate).toHaveBeenCalledWith(
         mockNote.id,
@@ -123,9 +129,9 @@ describe("NoteDetailModal", () => {
     await user.click(saveButton);
 
     await waitFor(() => {
-      expect(updateNote).toHaveBeenCalledWith("mock-token", mockNote.id, {
+      expect(updateNote).toHaveBeenCalledWith(mockNote.id, {
         ...mockNote,
-        description: "New Description"
+        description: "New Description",
       });
     });
   });
@@ -162,9 +168,9 @@ describe("NoteDetailModal", () => {
     await user.click(addButton);
 
     await waitFor(() => {
-      expect(updateNote).toHaveBeenCalledWith("mock-token", mockNote.id, {
+      expect(updateNote).toHaveBeenCalledWith(mockNote.id, {
         ...mockNote,
-        comments: [...mockNote.comments, "New Comment"]
+        comments: [...mockNote.comments, "New Comment"],
       });
 
       expect(screen.getByText(/New Comment/i)).toBeInTheDocument();
@@ -177,5 +183,4 @@ describe("NoteDetailModal", () => {
     await user.click(deleteButton);
     expect(mockProps.onDeleteButtonClick).toHaveBeenCalledTimes(1);
   });
-
 });

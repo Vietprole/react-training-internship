@@ -12,7 +12,6 @@ function NoteDetailModal({
   onNoteTitleUpdate,
   onDeleteButtonClick,
 }) {
-  const { token } = useAuth();
   const [note, setNote] = useState();
   const [lastSavedDescription, setLastSavedDescription] = useState();
   const [lastSavedTitle, setLastSavedTitle] = useState();
