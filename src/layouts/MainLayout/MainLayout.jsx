@@ -7,6 +7,7 @@ import { getRandomVariant } from "../../utils/note";
 function MainLayout() {
   const [newNote, setNewNote] = useState(null);
   function handleCreateNote() {
+    const isDone = (location.pathname === "/done") ? true : false;
     setNewNote({
       userId: null,
       variant: getRandomVariant(),
@@ -14,14 +15,19 @@ function MainLayout() {
       description: "",
       comments: [],
       createdAt: new Date(),
-      isDone: false,
+      isDone: isDone,
     });
+  }
+
+  function clearNewNote(){
+    setNewNote(null);
+    console.log("clear note", newNote);
   }
 
   return (
     <div className={styles.container}>
       <Sidebar handleCreateNote={handleCreateNote} />
-      <Outlet context={newNote} />
+      <Outlet context={{newNote, clearNewNote}} />
     </div>
   );
 }

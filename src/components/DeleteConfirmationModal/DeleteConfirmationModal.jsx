@@ -1,23 +1,28 @@
-import ArrowIcon from "/assets/arrow-icon.svg";
 import styles from "./DeleteConfirmationModal.module.css";
+import CloseIcon from "/assets/close-icon.svg";
 import PropTypes from "prop-types";
 
-function DeleteConfirmationModal({ isDisplayed, position, onDeleteButtonClick, onCancelButtonClick }) {
+function DeleteConfirmationModal({ onDeleteButtonClick, onCancelButtonClick }) {
   return (
-    <div
-      id="delete-confirmation-modal"
-      className={`${styles.deleteConfirmationModal} ${isDisplayed ? "" : styles.hidden}`}
-      style={{ top: position.y, left: position.x, position: "absolute" }}
-    >
-      <div className={styles.modalContent}>
+    <div className={styles.overlay}>
+      <div
+        id="delete-confirmation-modal"
+        className={styles.deleteConfirmationModal}
+      >
+        <button className={styles.closeButton} onClick={onCancelButtonClick}>
+          <img src={CloseIcon} alt="Close icon" />
+        </button>
         <h2>Confirm deletion</h2>
         <p>Are you sure you want to delete this note?</p>
         <div className={styles.buttonContainer}>
-          <button className={styles.cancelButton} onClick={onCancelButtonClick}>Cancel</button>
-          <button className={styles.deleteButton} onClick={onDeleteButtonClick}>Delete</button>
+          <button className={styles.cancelButton} onClick={onCancelButtonClick}>
+            Cancel
+          </button>
+          <button className={styles.deleteButton} onClick={onDeleteButtonClick}>
+            Delete
+          </button>
         </div>
       </div>
-      <img src={ArrowIcon} alt="Arrow icon" className={styles.arrowIcon} />
     </div>
   );
 }

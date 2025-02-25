@@ -6,7 +6,7 @@ import { getNoteById, updateNote } from "../../services/api/note";
 import { useState, useEffect, useRef } from "react";
 import { convertStringToDate, formatDate } from "../../utils/date";
 
-function NoteDetailModal({ noteId, onCloseButtonClick, onNoteTitleUpdate }) {
+function NoteDetailModal({ noteId, onCloseButtonClick, onNoteTitleUpdate, onDeleteButtonClick }) {
   const [note, setNote] = useState();
   const [lastSavedDescription, setLastSavedDescription] = useState();
   const [isLoading, setIsLoading] = useState(true);
@@ -28,6 +28,8 @@ function NoteDetailModal({ noteId, onCloseButtonClick, onNoteTitleUpdate }) {
   }, [noteId]);
 
   const onTitleBlur = async (event) => {
+    if (event.target.value === "") return;
+
     const editedNote = { ...note, title: event.target.value };
     try {
       await updateNote(note.id, editedNote);
@@ -99,7 +101,7 @@ function NoteDetailModal({ noteId, onCloseButtonClick, onNoteTitleUpdate }) {
     <div className={styles.overlay}>
       <div className={styles.noteDetailModal} id="note-detail-modal">
         <button className={styles.closeButton} onClick={onCloseButtonClick}>
-          <img src={CloseIcon} alt="close icon" />
+          <img src={CloseIcon} alt="Close icon" />
         </button>
         <input
           className={styles.title}
@@ -129,7 +131,7 @@ function NoteDetailModal({ noteId, onCloseButtonClick, onNoteTitleUpdate }) {
             <img
               className={styles.enterIcon}
               src={EnterIcon}
-              alt="enter icon"
+              alt="Enter icon"
               onClick={handleAddComment}
             />
           </button>
@@ -141,7 +143,7 @@ function NoteDetailModal({ noteId, onCloseButtonClick, onNoteTitleUpdate }) {
         </ul>
         <footer className={styles.footer}>
           <p className={styles.noteDate}>{formatDate(convertStringToDate(note.createdAt))}</p>
-          <button className={styles.deleteButton}>Delete</button>
+          <button className={styles.deleteButton} onClick={onDeleteButtonClick}>Delete</button>
         </footer>
       </div>
     </div>
@@ -152,6 +154,7 @@ NoteDetailModal.propTypes = {
   noteId: PropTypes.number,
   onCloseButtonClick: PropTypes.func,
   onNoteTitleUpdate: PropTypes.func,
+  onDeleteButtonClick: PropTypes.func,
 };
 
 export default NoteDetailModal;
