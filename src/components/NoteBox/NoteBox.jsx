@@ -50,6 +50,7 @@ function NoteBox({
         className={`${styles.noteBox} ${styles[variant]} ${
           isEditing ? styles.editing : ""
         }`}
+        data-testid="note-box"
       >
         <button
           className={styles.doneButton}
