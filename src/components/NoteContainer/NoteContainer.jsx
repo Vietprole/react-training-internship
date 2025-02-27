@@ -2,7 +2,7 @@ import styles from "./NoteContainer.module.css";
 import NoteBox from "../../components/NoteBox/NoteBox";
 import DeleteConfirmationModal from "../../components/DeleteConfirmationModal/DeleteConfirmationModal";
 import NoteDetailModal from "../../components/NoteDetailModal/NoteDetailModal";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { createPortal } from "react-dom";
 import { createNote, deleteNote, updateNote } from "../../services/api/note";
 import useAuth from "../../hooks/useAuth";
@@ -17,23 +17,6 @@ function NoteContainer({ filteredNotes, setNotes }) {
   const { isNewNoteDisplayed } = useOutletContext();
   const [noteIdToDelete, setNoteIdToDelete] = useState(null);
   const [noteIdToShowDetail, setNoteIdToShowDetail] = useState(null);
-
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (!event.target.closest("#delete-confirmation-modal")) {
-        setNoteIdToDelete(null);
-      }
-
-      if (!event.target.closest("#note-detail-modal")) {
-        setNoteIdToShowDetail(null);
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    // Cleanup event listener to prevent memory leak
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [user.id]);
 
   const handleCreateNote = async (title, variant) => {
     // Add userId and title of note to be created

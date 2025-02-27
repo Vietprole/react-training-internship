@@ -14,10 +14,8 @@ function NoteBox({
   onDoneButtonClick,
   onClick,
 }) {
-
   return (
     <div onClick={onClick}>
-      <div className={styles.overlay} />
       <div
         className={`${styles.noteBox} ${styles[variant]}`}
         data-testid="note-box"

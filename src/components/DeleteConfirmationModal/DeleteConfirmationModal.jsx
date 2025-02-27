@@ -4,7 +4,8 @@ import PropTypes from "prop-types";
 
 function DeleteConfirmationModal({ onDeleteButtonClick, onCancelButtonClick }) {
   return (
-    <div className={styles.overlay}>
+    <div>
+      <div className={styles.overlay} onClick={onCancelButtonClick}/>
       <div
         id="delete-confirmation-modal"
         className={styles.deleteConfirmationModal}

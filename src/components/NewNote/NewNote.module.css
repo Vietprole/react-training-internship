@@ -10,11 +10,6 @@
   position: relative;
 }
 
-.newNote.editing {
-  position: relative;
-  z-index: 2;
-}
-
 .note {
   font-family: var(--font-primary);
   font-size: var(--body-size-xxl);
