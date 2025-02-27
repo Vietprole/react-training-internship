@@ -32,15 +32,9 @@ function NoteContainer({ filteredNotes, setNotes }) {
     try {
       const createdNote = await createNote(noteToAdd);
       createdNote.createdAt = convertStringToDate(createdNote.createdAt);
-      setNotes((prevNotes) => {
-        const newNotes = [...prevNotes];
-        newNotes[newNotes.length - 1] = createdNote;
-        return newNotes;
-      });
+      setNotes((prevNotes) => [...prevNotes, createdNote]);
     } catch (error) {
       console.error("Error creating note:", error);
-      // Remove the last note if creation failed
-      setNotes((prevNotes) => prevNotes.slice(0, -1));
     }
   };
 

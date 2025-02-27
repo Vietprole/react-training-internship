@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from "react";
-import { getNoteById, updateNote } from "../api/notes";
+import { getNoteById, updateNote } from "../services/api/note";
 
 const useNoteDetail = ({noteId, onNoteTitleUpdate}) => {
   const [note, setNote] = useState();

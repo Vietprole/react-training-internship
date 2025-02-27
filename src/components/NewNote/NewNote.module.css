@@ -2,7 +2,7 @@
   min-width: 264px;
   min-height: 240px;
   max-width: fit-content;
-  padding: 25px 25px 20px 25px;
+  padding: 49px 25px 20px 25px;
   border-radius: var(--border-radius-md);
   display: flex;
   flex-direction: column;
@@ -16,6 +16,7 @@
   font-weight: var(--font-weight-medium);
   line-height: 30px;
   min-height: 167px;
+  max-width: 214px;
   color: var(--text-default-color);
   white-space: pre-wrap;
   word-wrap: break-word;
