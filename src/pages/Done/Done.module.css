@@ -1,3 +1,10 @@
+.loader {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
 .container {
   padding: 40px 112px;
   flex: 1 1 auto;

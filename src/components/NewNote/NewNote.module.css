@@ -1,4 +1,4 @@
-.noteBox {
+.newNote {
   min-width: 264px;
   min-height: 240px;
   max-width: fit-content;
@@ -10,18 +10,9 @@
   position: relative;
 }
 
-.doneButton {
-  width: 24px;
-  height: 24px;
-  cursor: pointer;
-}
-
-.doneIcon {
-  position: absolute;
-  top: 10px;
-  right: 10px;
-  width: 24px;
-  height: 24px;
+.newNote.editing {
+  position: relative;
+  z-index: 2;
 }
 
 .note {
@@ -34,6 +25,14 @@
   white-space: pre-wrap;
   word-wrap: break-word;
   overflow-wrap: break-word;
+}
+
+.note::placeholder {
+  font-family: var(--font-primary);
+  font-size: var(--body-size-xxl);
+  font-weight: var(--font-weight-medium);
+  line-height: 30px;
+  color: var(--text-secondary-color);
 }
 
 .footer {
@@ -65,5 +64,16 @@
 
 .tertiary {
   background-color: var(--note-tertiary-color);
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: var(--overlay-color);
+  z-index: 1;
+  display: block;
 }
 

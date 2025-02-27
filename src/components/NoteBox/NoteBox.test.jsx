@@ -11,18 +11,14 @@ describe('NoteBox', () => {
     title: 'Test Note',
     createdAt: new Date('2023-01-01'),
     isDone: false,
-    handleEmptyNote: vi.fn(),
     onDeleteButtonClick: vi.fn(),
     onDoneButtonClick: vi.fn(),
-    handleNewNote: vi.fn(),
     onClick: vi.fn()
   };
 
   it('renders with correct content', () => {
     render(<NoteBox {...mockProps} />);
     expect(screen.getByText('Test Note')).toBeInTheDocument();
-    expect(screen.getByRole('textbox')).toHaveValue('Test Note');
-    expect(screen.getByRole('textbox')).toHaveAttribute('readonly');
     expect(screen.getByText(/Jan, 1 2023/i)).toBeInTheDocument();
     expect(screen.getByTestId('note-box')).toHaveClass(/primary/i);
   });
@@ -45,21 +41,5 @@ describe('NoteBox', () => {
     const deleteButton = screen.getByRole('button', { name: /delete icon/i });
     await user.click(deleteButton);
     expect(mockProps.onDeleteButtonClick).toHaveBeenCalled();
-  });
-
-  it('focuses textarea and allow editing when empty note is rendered', () => {
-    const emptyProps = { ...mockProps, title: '' };
-    render(<NoteBox {...emptyProps} />);
-    const textarea = screen.getByRole('textbox');
-    expect(textarea).not.toHaveAttribute('readonly');
-    expect(textarea).toHaveFocus();
-  });
-
-  it('handles text input in textarea', async () => {
-    const emptyProps = { ...mockProps, title: '' };
-    render(<NoteBox {...emptyProps} />);
-    const textarea = screen.getByRole('textbox');
-    await user.type(textarea, 'New note content');
-    expect(textarea).toHaveValue('New note content');
   });
 });
