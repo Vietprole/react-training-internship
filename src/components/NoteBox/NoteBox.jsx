@@ -7,6 +7,7 @@ import NoteUndoneIcon from "/assets/note-undone-icon.svg";
 import TrashIcon from "/assets/trash-icon.svg";
 import styles from "./NoteBox.module.css";
 
+//TODO Add newNote component
 function NoteBox({
   variant,
   title,
@@ -33,15 +34,15 @@ function NoteBox({
     handleNewNote
   );
   const textareaRef = useRef(null);
-
-  useEffect(() => {
-    // Set cursor to the beginning of textarea when note is empty (newly created)
-    if (title === "" && textareaRef.current) {
-      textareaRef.current.focus();
-      textareaRef.current.selectionStart = 0;
-      textareaRef.current.selectionEnd = 0;
-    }
-  }, [title]);
+  //TODO remove isEditing
+  // useEffect(() => {
+  //   // Set cursor to the beginning of textarea when note is empty (newly created)
+  //   if (title === "" && textareaRef.current) {
+  //     textareaRef.current.focus();
+  //     textareaRef.current.selectionStart = 0;
+  //     textareaRef.current.selectionEnd = 0;
+  //   }
+  // }, [title]);
 
   return (
     <div onClick={onClick}>
@@ -71,6 +72,7 @@ function NoteBox({
           readOnly={!isEditing}
           value={currentTitle}
           onChange={(e) => setCurrentTitle(e.target.value)}
+          autoFocus={title === ""}
         />
         <div className={styles.footer}>
           <p className={styles.noteDate}>{formatDate(createdAt)}</p>

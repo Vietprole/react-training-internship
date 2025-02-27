@@ -1,5 +1,6 @@
 import { useState, useEffect } from "react";
 
+//TODO Pass object for > 3 params
 function useNoteBoxState(
   title,
   handleEmptyNote,

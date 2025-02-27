@@ -13,9 +13,10 @@ function Home() {
   const { user } = useAuth();
   const [notes, setNotes] = useState();
   const [searchPhrase, setSearchPhrase] = useState("");
+  //TODO newNote to filteredNotes
   const filteredNotes =
     notes?.filter((note) => note.title.includes(searchPhrase)) || [];
-
+  //TODO Extract custom hook, add error/loading handling
   useEffect(() => {
     const fetchData = async () => {
       try {
