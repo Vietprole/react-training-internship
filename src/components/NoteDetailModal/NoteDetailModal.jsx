@@ -24,7 +24,7 @@ function NoteDetailModal({
   if (isLoading || !note) {
     return (
       <div className={styles.overlay}>
-        <div className={styles.noteDetailModal} id="note-detail-modal">
+        <div className={styles.noteDetailModal} data-testid="note-detail-modal">
           <div className={styles.loadingContainer}>Loading...</div>
         </div>
       </div>
@@ -34,7 +34,7 @@ function NoteDetailModal({
   return (
     <div>
       <div className={styles.overlay} onClick={onCloseButtonClick} />
-      <div className={styles.noteDetailModal} id="note-detail-modal">
+      <div className={styles.noteDetailModal} data-testid="note-detail-modal">
         <button
           className={styles.closeButton}
           onClick={onCloseButtonClick}

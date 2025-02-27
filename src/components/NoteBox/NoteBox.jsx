@@ -27,6 +27,7 @@ function NoteBox({
             onDoneButtonClick();
           }}
           type="button"
+          data-testid="done-button"
         >
           <img
             className={styles.doneIcon}
@@ -38,13 +39,13 @@ function NoteBox({
         <div className={styles.footer}>
           <p className={styles.noteDate}>{formatDate(createdAt)}</p>
           <button
-            id="note-box-delete-button"
             onClick={(e) => {
               e.stopPropagation();
               onDeleteButtonClick();
             }}
             type="button"
             className={styles.deleteModalOpenButton}
+            data-testid="delete-button"
           >
             <img src={TrashIcon} alt="Delete icon" />
           </button>

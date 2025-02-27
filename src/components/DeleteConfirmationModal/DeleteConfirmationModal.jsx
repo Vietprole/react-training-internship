@@ -7,7 +7,6 @@ function DeleteConfirmationModal({ onDeleteButtonClick, onCancelButtonClick }) {
     <div>
       <div className={styles.overlay} onClick={onCancelButtonClick}/>
       <div
-        id="delete-confirmation-modal"
         className={styles.deleteConfirmationModal}
       >
         <button className={styles.closeButton} onClick={onCancelButtonClick}>
