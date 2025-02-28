@@ -1,14 +1,20 @@
-import { render, screen, fireEvent } from '@testing-library/react';
+import { render, screen } from '@testing-library/react';
+import userEvent from '@testing-library/user-event';
+import "@testing-library/jest-dom";
 import { describe, test, expect, beforeEach, vi } from 'vitest';
-import { BrowserRouter } from 'react-router-dom';
 import Sidebar from './Sidebar';
+import { BrowserRouter } from 'react-router';
 
 const mockNavigate = vi.fn();
-vi.mock('react-router', () => ({
-  ...vi.importActual('react-router'),
-  useNavigate: () => mockNavigate,
-  useLocation: () => ({ pathname: '/' })
-}));
+vi.mock('react-router', async () => {
+  const originalModule = await import('react-router');
+  return {
+    ...originalModule,
+    useNavigate: () => mockNavigate,
+    useLocation: () => ({ pathname: '/' })
+  };
+});
+
 
 const mockLogout = vi.fn();
 vi.mock('../../hooks/useAuth', () => ({
@@ -17,8 +23,10 @@ vi.mock('../../hooks/useAuth', () => ({
 
 describe('Sidebar', () => {
   const mockHandleCreateNote = vi.fn();
+  let user;
 
   beforeEach(() => {
+    user = userEvent.setup();
     render(
       <BrowserRouter>
         <Sidebar handleCreateNote={mockHandleCreateNote} />
@@ -27,23 +35,28 @@ describe('Sidebar', () => {
   });
 
   test('renders all navigation items', () => {
-    expect(screen.getByAltText('Home icon')).toBeDefined();
-    expect(screen.getByAltText('Done icon')).toBeDefined();
-    expect(screen.getByAltText('Plus icon')).toBeDefined();
+    expect(screen.getByAltText('Home icon')).toBeInTheDocument();
+    expect(screen.getByAltText('Done icon')).toBeInTheDocument();
+    expect(screen.getByAltText('Plus icon')).toBeInTheDocument();
   });
 
-  test('clicking home icon navigates to home', () => {
-    fireEvent.click(screen.getByAltText('Home icon'));
+  test('clicking home icon navigates to home', async () => {
+    await user.click(screen.getByAltText('Home icon'));
     expect(mockNavigate).toHaveBeenCalledWith('/');
   });
 
-  test('clicking plus icon calls handleCreateNote', () => {
-    fireEvent.click(screen.getByAltText('Plus icon'));
+  test('clicking done icon navigates to done', async () => {
+    await user.click(screen.getByAltText('Done icon'));
+    expect(mockNavigate).toHaveBeenCalledWith('/done');
+  });
+
+  test('clicking plus icon calls handleCreateNote', async () => {
+    await user.click(screen.getByAltText('Plus icon'));
     expect(mockHandleCreateNote).toHaveBeenCalled();
   });
 
-  test('clicking logout button calls logout function', () => {
-    fireEvent.click(screen.getByAltText('Logout icon'));
+  test('clicking logout button calls logout function', async () => {
+    await user.click(screen.getByAltText('Logout icon'));
     expect(mockLogout).toHaveBeenCalled();
   });
 });
