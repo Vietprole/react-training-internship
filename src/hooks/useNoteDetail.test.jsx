@@ -19,7 +19,7 @@ describe('useNoteDetail', () => {
 
   const mockProps = {
     noteId: 1,
-    onNoteTitleUpdate: vi.fn()
+    onTitleUpdate: vi.fn()
   };
 
   beforeEach(() => {
@@ -86,7 +86,7 @@ describe('useNoteDetail', () => {
       ...mockNote,
       title: 'Updated Title'
     });
-    expect(mockProps.onNoteTitleUpdate).toHaveBeenCalledWith(1, 'Updated Title');
+    expect(mockProps.onTitleUpdate).toHaveBeenCalledWith(1, 'Updated Title');
   });
 
   test('prevents empty title and reverts to last saved', async () => {

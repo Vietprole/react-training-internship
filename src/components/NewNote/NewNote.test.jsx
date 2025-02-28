@@ -13,12 +13,12 @@ vi.mock("react-router", () => ({
 }));
 
 describe("NewNote", () => {
-  const mockPersistNote = vi.fn();
+  const mockonCreate = vi.fn();
   let user;
 
   beforeEach(() => {
     user = userEvent.setup();
-    render(<NewNote variant="primary" persistNote={mockPersistNote} />);
+    render(<NewNote variant="primary" onCreate={mockonCreate} />);
   });
 
   afterEach(() => vi.clearAllMocks());
@@ -35,18 +35,18 @@ describe("NewNote", () => {
     expect(screen.getByText(formattedDate)).toBeInTheDocument();
   });
 
-  test("calls persistNote when blur", async () => {
+  test("calls onCreate when blur", async () => {
     const textarea = screen.getByPlaceholderText("Type your note...");
     await user.type(textarea, "New note content");
     await user.tab(); // Tab moves focus away
-    expect(mockPersistNote).toHaveBeenCalledWith("New note content", "primary");
+    expect(mockonCreate).toHaveBeenCalledWith("New note content", "primary");
   });
 
-  test("does not call persistNote when textarea is empty and then blur", async () => {
+  test("does not call onCreate when textarea is empty and then blur", async () => {
     expect(
       screen.getByPlaceholderText("Type your note...")
     ).toBeInTheDocument();
     await user.tab(); // Tab moves focus away
-    expect(mockPersistNote).not.toHaveBeenCalled();
+    expect(mockonCreate).not.toHaveBeenCalled();
   });
 });

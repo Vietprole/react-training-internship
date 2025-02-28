@@ -96,8 +96,8 @@ function NoteContainer({ filteredNotes, setNotes }) {
         {isNewNoteDisplayed && (
           <NewNote
             variant={getNewNoteVariant()}
-            discardEmptyNote={discardEmptyNote}
-            persistNote={handleCreateNote}
+            onDiscard={discardEmptyNote}
+            onCreate={handleCreateNote}
           />
         )}
       </div>
@@ -114,7 +114,7 @@ function NoteContainer({ filteredNotes, setNotes }) {
           <NoteDetailModal
             noteId={noteIdToShowDetail}
             onCloseButtonClick={() => setNoteIdToShowDetail(null)}
-            onNoteTitleUpdate={handleNoteTitleUpdate}
+            onTitleUpdate={handleNoteTitleUpdate}
             onDeleteButtonClick={() => setNoteIdToDelete(noteIdToShowDetail)}
           />,
           document.getElementById("root")

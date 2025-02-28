@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { getNoteById, updateNote } from "../services/api/note";
 
-const useNoteDetail = ({noteId, onNoteTitleUpdate}) => {
+const useNoteDetail = ({noteId, onTitleUpdate}) => {
   const [note, setNote] = useState();
   const [isLoading, setIsLoading] = useState(true);
   const commentInputRef = useRef(null);
@@ -32,7 +32,7 @@ const useNoteDetail = ({noteId, onNoteTitleUpdate}) => {
     const editedNote = { ...note, title: newTitle };
     try {
       await updateNote(note.id, editedNote);
-      onNoteTitleUpdate(note.id, editedNote.title);
+      onTitleUpdate(note.id, editedNote.title);
     } catch (error) {
       console.error(error);
       event.target.value = note.title;
