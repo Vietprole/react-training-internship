@@ -113,7 +113,7 @@ function NoteContainer({ filteredNotes, setNotes }) {
         createPortal(
           <NoteDetailModal
             noteId={noteIdToShowDetail}
-            onCloseButtonClick={() => setNoteIdToShowDetail(null)}
+            onCloseModal={() => setNoteIdToShowDetail(null)}
             onTitleUpdate={handleNoteTitleUpdate}
             onDeleteButtonClick={() => setNoteIdToDelete(noteIdToShowDetail)}
           />,
