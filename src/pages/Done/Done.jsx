@@ -1,47 +1,16 @@
 import styles from "./Done.module.css";
 import SearchBar from "../../components/SearchBar/SearchBar";
 import DarkModeIcon from "/assets/dark-mode-icon.svg";
-import { useState, useEffect } from "react";
-import { getNotes } from "../../services/api/note";
-import useAuth from "../../hooks/useAuth";
-import { convertStringToDate } from "../../utils/date";
-import { useOutletContext } from "react-router";
 import NoteContainer from "../../components/NoteContainer/NoteContainer";
+import useNotes from "../../hooks/useNotes";
 
 function Done() {
-  const { newNote } = useOutletContext();
-  const { user } = useAuth();
-  const [doneNotes, setDoneNotes] = useState();
-  const [searchPhrase, setSearchPhrase] = useState("");
-  const filteredNotes =
-    doneNotes?.filter((note) => note.title.includes(searchPhrase) && note.isDone === true) || [];
+  const isDone = true;
+  const { filteredNotes, setNotes, setSearchPhrase} = useNotes(isDone);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        let notes = await getNotes(user.id);
-
-        notes.forEach((note) => {
-          note.createdAt = convertStringToDate(note.createdAt);
-        });
-
-        if (newNote) {
-          notes = [...notes, newNote];
-        }
-
-        setDoneNotes(notes.filter((note) => note.isDone));
-      } catch (error) {
-        console.error("Error fetching notes:", error);
-        // If no note found for an user, json-server return error instead of empty array
-        // so we need to set new note to allow create new note
-        if (newNote) {
-          setDoneNotes([newNote]);
-        }
-      }
-    };
-
-    fetchData();
-  }, [newNote, user.id]);
+  if (!filteredNotes) {
+    return <div className={styles.loader}>Loading...</div>;
+  }
 
   return (
     <div className={styles.container}>
@@ -57,7 +26,7 @@ function Done() {
         <span>Done Notes!</span>
       </h1>
       <p className={styles.description}>All your done notes are here!</p>
-      <NoteContainer filteredNotes={filteredNotes} setNotes={setDoneNotes} />
+      <NoteContainer filteredNotes={filteredNotes} setNotes={setNotes} />
     </div>
   );
 }

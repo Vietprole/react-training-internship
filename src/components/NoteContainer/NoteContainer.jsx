@@ -2,53 +2,39 @@ import styles from "./NoteContainer.module.css";
 import NoteBox from "../../components/NoteBox/NoteBox";
 import DeleteConfirmationModal from "../../components/DeleteConfirmationModal/DeleteConfirmationModal";
 import NoteDetailModal from "../../components/NoteDetailModal/NoteDetailModal";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { createPortal } from "react-dom";
 import { createNote, deleteNote, updateNote } from "../../services/api/note";
 import useAuth from "../../hooks/useAuth";
 import { convertStringToDate } from "../../utils/date";
-import { useOutletContext } from "react-router";
 import PropTypes from "prop-types";
+import NewNote from "../NewNote/NewNote";
+import { getRandomNonRepeatVariant } from "../../utils/note";
+import { useOutletContext } from "react-router";
 
 function NoteContainer({ filteredNotes, setNotes }) {
-  const { newNote, clearNewNote } = useOutletContext();
   const { user } = useAuth();
+  const { isNewNoteDisplayed } = useOutletContext();
   const [noteIdToDelete, setNoteIdToDelete] = useState(null);
   const [noteIdToShowDetail, setNoteIdToShowDetail] = useState(null);
 
-  useEffect(() => {
-    const handleClickOutside = (event) => {
-      if (!event.target.closest("#delete-confirmation-modal")) {
-        setNoteIdToDelete(null);
-      }
-
-      if (!event.target.closest("#note-detail-modal")) {
-        setNoteIdToShowDetail(null);
-      }
+  const handleCreateNote = async (title, variant) => {
+    // Add userId and title of note to be created
+    const noteToAdd = {
+      userId: user.id,
+      title,
+      variant,
+      description: "",
+      comments: [],
+      createdAt: Date.now(),
+      isDone: false,
     };
-    document.addEventListener("mousedown", handleClickOutside);
-    // Cleanup event listener to prevent memory leak
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [newNote, user.id]);
-
-  const handleCreateNote = async (currentTitle) => {
-    const noteToAdd = { ...newNote, userId: user.id, title: currentTitle };
     try {
       const createdNote = await createNote(noteToAdd);
       createdNote.createdAt = convertStringToDate(createdNote.createdAt);
-      setNotes((prevNotes) => {
-        const newNotes = [...prevNotes];
-        newNotes[newNotes.length - 1] = createdNote;
-        return newNotes;
-      });
+      setNotes((prevNotes) => [...prevNotes, createdNote]);
     } catch (error) {
       console.error("Error creating note:", error);
-      // Remove the last note if creation failed
-      setNotes((prevNotes) => prevNotes.slice(0, -1));
-    } finally {
-      clearNewNote();
     }
   };
 
@@ -67,18 +53,9 @@ function NoteContainer({ filteredNotes, setNotes }) {
   };
 
   // Remove note from UI if note is empty and has not been committed to the database
-  const handleEmptyNote = (noteId) => {
-    clearNewNote();
+  const discardEmptyNote = (noteId) => {
     setNotes((prevNotes) => prevNotes.filter((note) => note.id !== noteId));
     setNoteIdToDelete(null);
-  };
-
-  const showDeleteConfirmationModal = (id) => {
-    setNoteIdToDelete(id);
-  };
-
-  const showNoteDetailModal = (id) => {
-    setNoteIdToShowDetail(id);
   };
 
   const handleToggleDone = async (id) => {
@@ -91,23 +68,38 @@ function NoteContainer({ filteredNotes, setNotes }) {
     );
   };
 
+  // Get a random variant that is different from the previous note
+  const getNewNoteVariant = () => {
+    const prevVariant =
+      filteredNotes.length > 0
+        ? filteredNotes[filteredNotes.length - 1].variant
+        : "primary";
+    const newNoteVariant = getRandomNonRepeatVariant(prevVariant);
+    return newNoteVariant;
+  };
+
   return (
     <>
       <div className={styles.notesContainer}>
         {filteredNotes.map((note) => (
           <NoteBox
-            key={note.id ? note.id : 0} // Temporary key for new note
+            key={note.id}
             title={note.title}
             createdAt={note.createdAt}
             variant={note.variant}
             isDone={note.isDone}
-            handleEmptyNote={() => handleEmptyNote(note.id)}
-            onDeleteButtonClick={() => showDeleteConfirmationModal(note.id)}
+            onDeleteButtonClick={() => setNoteIdToDelete(note.id)}
             onDoneButtonClick={() => handleToggleDone(note.id)}
-            onClick={() => showNoteDetailModal(note.id)}
-            handleNewNote={handleCreateNote}
+            onClick={() => setNoteIdToShowDetail(note.id)}
           />
         ))}
+        {isNewNoteDisplayed && (
+          <NewNote
+            variant={getNewNoteVariant()}
+            discardEmptyNote={discardEmptyNote}
+            persistNote={handleCreateNote}
+          />
+        )}
       </div>
       {noteIdToDelete != null &&
         createPortal(
@@ -123,9 +115,7 @@ function NoteContainer({ filteredNotes, setNotes }) {
             noteId={noteIdToShowDetail}
             onCloseButtonClick={() => setNoteIdToShowDetail(null)}
             onNoteTitleUpdate={handleNoteTitleUpdate}
-            onDeleteButtonClick={() =>
-              showDeleteConfirmationModal(noteIdToShowDetail)
-            }
+            onDeleteButtonClick={() => setNoteIdToDelete(noteIdToShowDetail)}
           />,
           document.getElementById("root")
         )}
