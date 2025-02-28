@@ -4,8 +4,14 @@ import styles from "./NoteDescription.module.css";
 
 const NoteDescription = ({ defaultDescription, onSaveDescription }) => {
   const [description, setDescription] = useState(defaultDescription);
-  const handleSave = () => {
-    onSaveDescription(description);
+  const handleSave = async () => {
+    try {
+      await onSaveDescription(description);
+    }
+    catch (error) {
+      console.error(error);
+      setDescription(defaultDescription);
+    }
   };
   const handleCancel = () => {
     setDescription(defaultDescription);

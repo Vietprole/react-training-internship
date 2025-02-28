@@ -140,10 +140,15 @@ describe("NoteDetailModal", () => {
     const descriptionInput = screen.getByText(/Test Description/i);
     await user.clear(descriptionInput);
     await user.type(descriptionInput, "New Description");
+
+
+    // Mock the error before clicking
+    updateNote.mockRejectedValueOnce(new Error("Error"));
+
     const saveButton = screen.getByText(/Save/i);
-    updateNote.mockImplementationOnce(() => Promise.reject(new Error("Error")));
     await user.click(saveButton);
 
+    // Add more time to wait
     await waitFor(() => {
       expect(screen.getByText(/Test Description/i)).toBeInTheDocument();
     });

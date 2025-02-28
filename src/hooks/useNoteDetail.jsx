@@ -50,6 +50,7 @@ const useNoteDetail = ({noteId, onNoteTitleUpdate}) => {
       setNote(noteToUpdate);
     } catch (error) {
       console.error(error);
+      throw error;
     }
   };
 

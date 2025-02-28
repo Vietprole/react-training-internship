@@ -8,6 +8,7 @@ function DeleteConfirmationModal({ onDeleteButtonClick, onCancelButtonClick }) {
       <div className={styles.overlay} onClick={onCancelButtonClick}/>
       <div
         className={styles.deleteConfirmationModal}
+        data-testid="delete-confirmation-modal"
       >
         <button className={styles.closeButton} onClick={onCancelButtonClick}>
           <img src={CloseIcon} alt="Close icon" />
@@ -18,7 +19,7 @@ function DeleteConfirmationModal({ onDeleteButtonClick, onCancelButtonClick }) {
           <button className={styles.cancelButton} onClick={onCancelButtonClick}>
             Cancel
           </button>
-          <button className={styles.deleteButton} onClick={onDeleteButtonClick}>
+          <button className={styles.deleteButton} onClick={onDeleteButtonClick} data-testid="delete-confirm-button">
             Delete
           </button>
         </div>
