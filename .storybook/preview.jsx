@@ -1,3 +1,5 @@
+import { MemoryRouter } from "react-router";
+
 /** @type { import('@storybook/react').Preview } */
 import "../src/index.css";
 const preview = {
@@ -9,6 +11,13 @@ const preview = {
       },
     },
   },
+  decorators: [
+    (Story) => (
+      <MemoryRouter>
+        <Story />
+      </MemoryRouter>
+    ),
+  ],
 };
 
 export default preview;
