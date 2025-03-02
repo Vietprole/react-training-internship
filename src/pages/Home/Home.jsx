@@ -7,11 +7,7 @@ import useNotes from "../../hooks/useNotes";
 
 function Home() {
   const { user } = useAuth();
-  const { filteredNotes, setNotes, setSearchPhrase} = useNotes();
-
-  if (!filteredNotes) {
-    return <div className={styles.loader}>Loading...</div>;
-  }
+  const { filteredNotes, setNotes, setSearchPhrase} = useNotes(false);
 
   return (
     <div className={styles.container}>

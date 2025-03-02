@@ -39,12 +39,12 @@ describe('filterNotesBySearchPhraseAndDoneStatus', () => {
     expect(result).toHaveLength(3);
   });
 
-  test('returns empty array when notes is null or undefined', () => {
+  test('returns null when notes is null or undefined', () => {
     const resultOfNull = filterNotesBySearchPhraseAndDoneStatus(null, 'Buy', false);
-    expect(resultOfNull).toEqual([]);
+    expect(resultOfNull).toEqual(null);
 
     const resultOfUndefined = filterNotesBySearchPhraseAndDoneStatus(undefined, 'Buy', false);
-    expect(resultOfUndefined).toEqual([]);
+    expect(resultOfUndefined).toEqual(null);
   });
 
   test('returns empty array when no notes match searchPhrase or Done', () => {

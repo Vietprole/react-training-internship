@@ -55,8 +55,8 @@ describe('useNotes', () => {
     const filterNotesSpy = vi.spyOn(noteUtils, 'filterNotesBySearchPhraseAndDoneStatus');
     const { result } = renderHook(() => useNotes(false));
 
-    // Initially should return undefined/empty array
-    expect(result.current.filteredNotes).toEqual([]);
+    // Initially should return null
+    expect(result.current.filteredNotes).toEqual(null);
 
     // Wait for the fetch to complete
     await waitFor(() => {

@@ -29,6 +29,7 @@ function NoteContainer({ filteredNotes, setNotes }) {
       createdAt: Date.now(),
       isDone: false,
     };
+    console.log("noteToAdd", noteToAdd);
     try {
       const createdNote = await createNote(noteToAdd);
       createdNote.createdAt = convertStringToDate(createdNote.createdAt);
@@ -77,6 +78,10 @@ function NoteContainer({ filteredNotes, setNotes }) {
     const newNoteVariant = getRandomNonRepeatVariant(prevVariant);
     return newNoteVariant;
   };
+
+  if (!filteredNotes) {
+    return <div className={styles.loader}>Loading...</div>;
+  }
 
   return (
     <>
