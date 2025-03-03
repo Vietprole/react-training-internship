@@ -54,5 +54,12 @@
     "extends": [
       "plugin:storybook/recommended"
     ]
+  },
+  "imports": {
+    "#src/hooks/useNoteDetail": {
+      "storybook": "./src/hooks/useNoteDetail.mock.jsx",
+      "default": "./src/hooks/useNoteDetail.jsx"
+    },
+    "#*": ["*", "./*.js", "./*.jsx"]
   }
 }

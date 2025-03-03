@@ -4,7 +4,8 @@ import EnterIcon from "/assets/enter-icon.svg";
 import CloseIcon from "/assets/close-icon.svg";
 import { convertStringToDate, formatDate } from "../../utils/date";
 import NoteDescription from "../NoteDescription/NoteDescription";
-import useNoteDetail from "../../hooks/useNoteDetail";
+// import useNoteDetail from "../../hooks/useNoteDetail";
+import useNoteDetail from "#src/hooks/useNoteDetail";
 
 function NoteDetailModal({
   noteId,

@@ -1,7 +1,7 @@
 import NoteBox from "./NoteBox";
 
 export default {
-  title: "NoteBox",
+  title: "Components/NoteBox",
   component: NoteBox,
   parameters: {
     layout: "centered",

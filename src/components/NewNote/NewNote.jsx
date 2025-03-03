@@ -36,7 +36,6 @@ function NewNote({ variant, onCreate }) {
 
 NewNote.propTypes = {
   variant: PropTypes.oneOf(["primary", "secondary", "tertiary"]),
-  onDiscard: PropTypes.func,
   onCreate: PropTypes.func,
 };
 

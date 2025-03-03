@@ -29,7 +29,6 @@ function NoteContainer({ filteredNotes, setNotes }) {
       createdAt: Date.now(),
       isDone: false,
     };
-    console.log("noteToAdd", noteToAdd);
     try {
       const createdNote = await createNote(noteToAdd);
       createdNote.createdAt = convertStringToDate(createdNote.createdAt);
@@ -50,6 +49,8 @@ function NoteContainer({ filteredNotes, setNotes }) {
   const handleDeleteNote = (noteId) => {
     deleteNote(noteId);
     setNotes((prevNotes) => prevNotes.filter((note) => note.id !== noteId));
+    // Close both modals
+    setNoteIdToShowDetail(null);
     setNoteIdToDelete(null);
   };
 

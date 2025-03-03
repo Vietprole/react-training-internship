@@ -1,7 +1,7 @@
 import DeleteConfirmationModal from './DeleteConfirmationModal';
 
 export default {
-  title: 'DeleteConfirmationModal',
+  title: 'Components/DeleteConfirmationModal',
   component: DeleteConfirmationModal,
   parameters: {
     layout: 'centered',

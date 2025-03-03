@@ -1,59 +1,48 @@
-import { BrowserRouter, Routes, Route, Outlet } from "react-router";
+import { MemoryRouter as Router, Routes, Route, Outlet } from "react-router";
 import NoteContainer from "./NoteContainer";
 import { AuthContext } from "../../contexts/AuthContext";
 
-// Mock context values
-const mockOutletValues = {
-  newNote: null,
-  clearNewNote: () => {},
-};
-
-// Mock auth values
+// Mock AuthContext provider's values
 const mockAuthValues = {
   token: "mock-token",
   user: {
     id: 1,
-    email: "test@example.com"
+    email: "test@example.com",
   },
   login: () => {},
   logout: () => {},
 };
 
-// Wrapper with proper routing structure
-const WithProviders = ({ children }) => {
+const MockRoute = (Story) => {
   return (
     <AuthContext.Provider value={mockAuthValues}>
-      <BrowserRouter>
+      <Router>
         <Routes>
-          <Route path="/" element={<Outlet context={mockOutletValues} />}>
-            <Route index element={children} />
+          <Route element={<MainLayout />}>
+            <Route path="/*" element={<Story />} />
           </Route>
         </Routes>
-      </BrowserRouter>
+      </Router>
     </AuthContext.Provider>
   );
 };
 
-const meta = {
+function MainLayout() {
+  const setIsNewNoteDisplayed = () => {console.log("setIsNewNoteDisplayed")};
+
+  return (
+    <div>
+      <Outlet context={{setIsNewNoteDisplayed}} />
+    </div>
+  );
+}
+
+export default {
   title: "Components/NoteContainer",
   component: NoteContainer,
-  decorators: [
-    (Story) => (
-      <WithProviders>
-        <Story />
-      </WithProviders>
-    ),
-  ],
-  parameters: {
-    // Disable routing in Storybook
-    reactRouter: {
-      routePath: '/',
-    },
-  },
+  decorators: [MockRoute],
   tags: ["autodocs"],
 };
-
-export default meta;
 
 const mockNotes = [
   {
@@ -89,6 +78,13 @@ export const Empty = {
 export const SingleNote = {
   args: {
     filteredNotes: [mockNotes[0]],
+    setNotes: () => {},
+  },
+};
+
+export const Loading = {
+  args: {
+    filteredNotes: null,
     setNotes: () => {},
   },
 };

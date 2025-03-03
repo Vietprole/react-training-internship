@@ -1,31 +1,23 @@
-import { Outlet } from "react-router";
 import NewNote from "./NewNote";
-import { createContext } from "react";
+import { MemoryRouter as Router, Routes, Route, Outlet } from "react-router";
+
+const MockRoute = (Story) => (
+  <Router>
+    <Routes>
+      <Route element={<MainLayout />}>
+        <Route path="/*" element={<Story />} />
+      </Route>
+    </Routes>
+  </Router>
+);
 
 function MainLayout() {
-  const isNewNoteDisplayed = true;
   const setIsNewNoteDisplayed = () => {console.log("setIsNewNoteDisplayed")};
 
   return (
     <div>
-      <Outlet context={{isNewNoteDisplayed, setIsNewNoteDisplayed}} />
+      <Outlet context={{setIsNewNoteDisplayed}} />
     </div>
-  );
-}
-
-const AuthContext = createContext();
-
-function AuthProvider({ children }) {
-  const contextValue = {
-    token: 'token',
-    user: '',
-    login: () => {},
-    logout: () => {},
-  };
-  return (
-    <AuthContext.Provider value={contextValue}>
-      {children}
-    </AuthContext.Provider>
   );
 }
 
@@ -35,20 +27,14 @@ export default {
   parameters: {
     layout: "centered",
   },
-  decorators: [
-    (Story) => (
-      <AuthProvider>
-        <MainLayout>
-          <Story />
-        </MainLayout>
-      </AuthProvider>
-    ),
-  ],
+  decorators: [MockRoute],
   tags: ["autodocs"],
 };
 
 export const Default = {
   args: {
     variant: "primary",
+    onCreate: (title, variant) => console.log(`Creating a ${variant} note with title: ${title}`),
   },
 };
+
