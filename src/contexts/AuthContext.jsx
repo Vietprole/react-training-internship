@@ -1,14 +1,18 @@
-import { createContext, useState } from "react";
+import { createContext, useState, useEffect, useCallback } from "react";
 import PropTypes from "prop-types";
 import { useNavigate } from "react-router";
 import authAPI from "../services/api/auth";
+import { jwtDecode } from "jwt-decode";
 
 const AuthContext = createContext();
 
 const AuthProvider = ({ children }) => {
-  const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")) || null);
+  const [user, setUser] = useState(
+    JSON.parse(localStorage.getItem("user")) || null
+  );
   const [token, setToken] = useState(localStorage.getItem("token") || "");
   const navigate = useNavigate();
+
   const login = async (userData) => {
     try {
       const response = await authAPI.login(userData);
@@ -26,20 +30,61 @@ const AuthProvider = ({ children }) => {
     }
   };
 
-  const logout = () => {
+  const logout = useCallback(() => {
     setUser(null);
     localStorage.removeItem("user");
     setToken("");
     localStorage.removeItem("token");
     navigate("/login");
-  };
+  }, [navigate]);
+
+  useEffect(() => {
+    let logoutTimer;
+
+    const scheduleLogout = () => {
+      if (!token) return;
+
+      try {
+        const decodedToken = jwtDecode(token);
+        const expirationTime = decodedToken.exp * 1000; // Convert to milliseconds
+        const currentTime = Date.now();
+
+        // Calculate time until expiration
+        const timeUntilExpiration = expirationTime - currentTime;
+
+        // Only set timer if token isn't already expired
+        if (timeUntilExpiration > 0) {
+          // Clear any existing timer
+          if (logoutTimer) clearTimeout(logoutTimer);
+
+          // Schedule logout exactly when token expires
+          logoutTimer = setTimeout(() => {
+            logout();
+          }, timeUntilExpiration);
+        } else {
+          // Token already expired
+          logout();
+        }
+      } catch (error) {
+        console.error("Invalid token:", error);
+        logout();
+      }
+    };
+
+    // Schedule logout when token changes or on initial load
+    scheduleLogout();
+
+    // Clean up timer when component unmounts or token changes
+    return () => {
+      if (logoutTimer) clearTimeout(logoutTimer);
+    };
+  }, [token, logout]);
 
   return (
     <AuthContext.Provider value={{ token, user, login, logout }}>
       {children}
     </AuthContext.Provider>
   );
-
 };
 
 AuthProvider.propTypes = {
@@ -48,4 +93,3 @@ AuthProvider.propTypes = {
 
 export default AuthProvider;
 export { AuthContext };
-

@@ -8,10 +8,6 @@ function Done() {
   const isDone = true;
   const { filteredNotes, setNotes, setSearchPhrase} = useNotes(isDone);
 
-  if (!filteredNotes) {
-    return <div className={styles.loader}>Loading...</div>;
-  }
-
   return (
     <div className={styles.container}>
       <div className={styles.header}>

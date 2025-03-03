@@ -9,11 +9,17 @@ function getRandomNonRepeatVariant(prevVariant) {
 }
 
 function filterNotesBySearchPhraseAndDoneStatus(notes, searchPhrase, isDone) {
-  // Return empty array if note is undefined, null, or empty array
-  return notes?.filter(
+  // Return null if notes is null or undefined
+  if (notes === undefined || notes === null) {
+    return null
+  }
+
+  // Filter notes based on search phrase and done status
+  // Return empty array if no note pass the filter
+  return notes.filter(
     (note) =>
       note.title.includes(searchPhrase) && (!isDone || note.isDone)
-  ) || [];
+  );
 }
 
 export { getRandomNonRepeatVariant, filterNotesBySearchPhraseAndDoneStatus };

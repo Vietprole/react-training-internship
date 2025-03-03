@@ -4,11 +4,15 @@ import { getNotes } from "../services/api/note";
 import { convertStringToDate } from "../utils/date";
 import { filterNotesBySearchPhraseAndDoneStatus } from "../utils/note";
 
-function useNote( isDone ) {
+function useNote(isDone) {
   const { user } = useAuth();
   const [notes, setNotes] = useState();
   const [searchPhrase, setSearchPhrase] = useState("");
-  const filteredNotes = filterNotesBySearchPhraseAndDoneStatus(notes, searchPhrase, isDone);
+  const filteredNotes = filterNotesBySearchPhraseAndDoneStatus(
+    notes,
+    searchPhrase,
+    isDone
+  );
 
   useEffect(() => {
     const fetchData = async () => {
@@ -22,6 +26,9 @@ function useNote( isDone ) {
         setNotes(notes);
       } catch (error) {
         console.error("Error fetching notes:", error);
+        // If no note found for an user, json-server return error instead of empty array
+        // so we need to set empty note array manually
+        setNotes([]);
       }
     };
 

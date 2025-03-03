@@ -68,8 +68,8 @@ const renderWithProviders = (component) => {
 describe("NoteDetailModal", () => {
   const mockProps = {
     noteId: 1,
-    onCloseButtonClick: vi.fn(),
-    onNoteTitleUpdate: vi.fn(),
+    onCloseModal: vi.fn(),
+    onTitleUpdate: vi.fn(),
     onDeleteButtonClick: vi.fn(),
   };
 
@@ -90,10 +90,10 @@ describe("NoteDetailModal", () => {
     expect(screen.getByText(/Feb, 24 2024/i)).toBeInTheDocument();
   });
 
-  test("calls onCloseButtonClick when close button is clicked", async () => {
+  test("calls onCloseModal when close button is clicked", async () => {
     const closeButton = screen.getByTestId("close-button");
     await user.click(closeButton);
-    expect(mockProps.onCloseButtonClick).toHaveBeenCalledTimes(1);
+    expect(mockProps.onCloseModal).toHaveBeenCalledTimes(1);
   });
 
   test("update title when title is blurred", async () => {
@@ -107,7 +107,7 @@ describe("NoteDetailModal", () => {
         ...mockNote,
         title: "New Title",
       });
-      expect(mockProps.onNoteTitleUpdate).toHaveBeenCalledWith(
+      expect(mockProps.onTitleUpdate).toHaveBeenCalledWith(
         mockNote.id,
         "New Title"
       );
@@ -118,7 +118,7 @@ describe("NoteDetailModal", () => {
     const titleInput = screen.getByTestId("title-input");
     await user.clear(titleInput);
     fireEvent.blur(titleInput);
-    expect(mockProps.onNoteTitleUpdate).not.toHaveBeenCalled();
+    expect(mockProps.onTitleUpdate).not.toHaveBeenCalled();
   });
 
   test("update description when save button is clicked", async () => {

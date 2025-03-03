@@ -6,6 +6,7 @@ import { MemoryRouter } from "react-router";
 import { vi, describe, beforeEach, test, expect } from "vitest";
 import AuthProvider, { AuthContext } from "./AuthContext";
 import authAPI from "../services/api/auth";
+import {jwtDecode} from "jwt-decode";
 
 // Mock the auth API and login function
 vi.mock("../services/api/auth", () => ({
@@ -64,6 +65,11 @@ const TestComponent = () => {
   );
 };
 
+// Mock jwt-decode to avoid invalid token error
+vi.mock("jwt-decode", () => ({
+  jwtDecode: vi.fn()
+}));
+
 const renderWithProvider = () => {
   return render(
     <MemoryRouter>
@@ -81,6 +87,12 @@ describe("AuthContext", () => {
     vi.clearAllMocks();
     localStorageMock.clear();
     user = userEvent.setup();
+
+    // Mock a valid token expiration (far in the future)
+    // This will make the token appear valid in all tests
+    vi.mocked(jwtDecode).mockReturnValue({
+      exp: Math.floor(Date.now() / 1000) + 3600 // 1 hour from now
+    });
   });
 
   test("initializes with null user and empty token when localStorage is empty", () => {
@@ -172,5 +184,28 @@ describe("AuthContext", () => {
     expect(localStorageMock.removeItem).toHaveBeenCalledWith("user");
     expect(localStorageMock.removeItem).toHaveBeenCalledWith("token");
     expect(mockNavigate).toHaveBeenCalledWith("/login");
+  });
+
+  test("automatically logs out when token is expired", async () => {
+    // Mock jwt-decode to return an expired token
+    vi.mocked(jwtDecode).mockReturnValue({
+      exp: Math.floor(Date.now() / 1000) - 60 // Expired 1 minute ago
+    });
+
+    const mockUser = { id: 1, email: "test@gmail.com" };
+    const mockToken = "expired-token";
+
+    localStorageMock.getItem.mockImplementation((key) => {
+      if (key === "user") return JSON.stringify(mockUser);
+      if (key === "token") return mockToken;
+      return null;
+    });
+
+    renderWithProvider();
+
+    await waitFor(() => {
+      expect(screen.getByText(/no user/i)).toBeInTheDocument();
+      expect(screen.getByText(/no token/i)).toBeInTheDocument();
+    });
   });
 });

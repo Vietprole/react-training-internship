@@ -4,12 +4,13 @@ import EnterIcon from "/assets/enter-icon.svg";
 import CloseIcon from "/assets/close-icon.svg";
 import { convertStringToDate, formatDate } from "../../utils/date";
 import NoteDescription from "../NoteDescription/NoteDescription";
-import useNoteDetail from "../../hooks/useNoteDetail";
+// import useNoteDetail from "../../hooks/useNoteDetail";
+import useNoteDetail from "#src/hooks/useNoteDetail";
 
 function NoteDetailModal({
   noteId,
-  onCloseButtonClick,
-  onNoteTitleUpdate,
+  onCloseModal,
+  onTitleUpdate,
   onDeleteButtonClick,
 }) {
   const {
@@ -19,7 +20,7 @@ function NoteDetailModal({
     handleSaveDescription,
     handleAddComment,
     commentInputRef,
-  } = useNoteDetail({ noteId, onNoteTitleUpdate });
+  } = useNoteDetail({ noteId, onTitleUpdate });
 
   if (isLoading || !note) {
     return (
@@ -33,11 +34,11 @@ function NoteDetailModal({
 
   return (
     <div>
-      <div className={styles.overlay} onClick={onCloseButtonClick} />
+      <div className={styles.overlay} onClick={onCloseModal} />
       <div className={styles.noteDetailModal} data-testid="note-detail-modal">
         <button
           className={styles.closeButton}
-          onClick={onCloseButtonClick}
+          onClick={onCloseModal}
           data-testid="close-button"
         >
           <img src={CloseIcon} alt="Close icon" />
@@ -90,8 +91,8 @@ function NoteDetailModal({
 
 NoteDetailModal.propTypes = {
   noteId: PropTypes.number,
-  onCloseButtonClick: PropTypes.func,
-  onNoteTitleUpdate: PropTypes.func,
+  onCloseModal: PropTypes.func,
+  onTitleUpdate: PropTypes.func,
   onDeleteButtonClick: PropTypes.func,
 };
 

@@ -60,10 +60,8 @@ NoteBox.propTypes = {
   title: PropTypes.string,
   createdAt: PropTypes.instanceOf(Date),
   isDone: PropTypes.bool,
-  discardEmptyNote: PropTypes.func,
   onDeleteButtonClick: PropTypes.func,
   onDoneButtonClick: PropTypes.func,
-  persistNote: PropTypes.func,
   onClick: PropTypes.func,
 };
 

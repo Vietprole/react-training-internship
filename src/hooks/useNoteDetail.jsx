@@ -1,9 +1,8 @@
 import { useState, useEffect, useRef } from "react";
 import { getNoteById, updateNote } from "../services/api/note";
 
-const useNoteDetail = ({noteId, onNoteTitleUpdate}) => {
+const useNoteDetail = ({noteId, onTitleUpdate}) => {
   const [note, setNote] = useState();
-  const [lastSavedTitle, setLastSavedTitle] = useState();
   const [isLoading, setIsLoading] = useState(true);
   const commentInputRef = useRef(null);
 
@@ -12,7 +11,6 @@ const useNoteDetail = ({noteId, onNoteTitleUpdate}) => {
       try {
         const note = await getNoteById(noteId);
         setNote(note);
-        setLastSavedTitle(note.title);
       } catch (error) {
         console.error("Error fetching note:", error);
       } finally {
@@ -27,19 +25,17 @@ const useNoteDetail = ({noteId, onNoteTitleUpdate}) => {
     // Prevent empty title from being saved
     // And revert to last saved title
     if (newTitle === "") {
-      event.target.value = lastSavedTitle;
+      event.target.value = note.title;
       return;
     }
 
     const editedNote = { ...note, title: newTitle };
     try {
       await updateNote(note.id, editedNote);
-      onNoteTitleUpdate(note.id, editedNote.title);
+      onTitleUpdate(note.id, editedNote.title);
     } catch (error) {
       console.error(error);
       event.target.value = note.title;
-    } finally {
-      setLastSavedTitle(newTitle);
     }
   };
 

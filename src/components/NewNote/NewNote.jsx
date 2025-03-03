@@ -4,14 +4,14 @@ import { formatDate } from "../../utils/date";
 import styles from "./NewNote.module.css";
 import { useOutletContext } from "react-router";
 
-function NewNote({ variant, persistNote }) {
+function NewNote({ variant, onCreate }) {
   const { setIsNewNoteDisplayed } = useOutletContext();
   const textAreaRef = useRef(null);
   const handleBlur = () => {
     const title = textAreaRef.current.value;
     setIsNewNoteDisplayed(false);
     if (title !== "") {
-      persistNote(title, variant);
+      onCreate(title, variant);
     }
   };
 
@@ -36,8 +36,7 @@ function NewNote({ variant, persistNote }) {
 
 NewNote.propTypes = {
   variant: PropTypes.oneOf(["primary", "secondary", "tertiary"]),
-  discardEmptyNote: PropTypes.func,
-  persistNote: PropTypes.func,
+  onCreate: PropTypes.func,
 };
 
 export default NewNote;

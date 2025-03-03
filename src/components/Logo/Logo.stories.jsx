@@ -2,7 +2,7 @@ import Logo from "./Logo";
 import LogoSrc from "/assets/logo.svg";
 
 export default {
-  title: 'Logo',
+  title: 'Components/Logo',
   component: Logo,
   parameters: {
     layout: 'centered',

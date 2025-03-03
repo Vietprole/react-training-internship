@@ -49,6 +49,8 @@ function NoteContainer({ filteredNotes, setNotes }) {
   const handleDeleteNote = (noteId) => {
     deleteNote(noteId);
     setNotes((prevNotes) => prevNotes.filter((note) => note.id !== noteId));
+    // Close both modals
+    setNoteIdToShowDetail(null);
     setNoteIdToDelete(null);
   };
 
@@ -78,6 +80,10 @@ function NoteContainer({ filteredNotes, setNotes }) {
     return newNoteVariant;
   };
 
+  if (!filteredNotes) {
+    return <div className={styles.loader}>Loading...</div>;
+  }
+
   return (
     <>
       <div className={styles.notesContainer}>
@@ -96,8 +102,8 @@ function NoteContainer({ filteredNotes, setNotes }) {
         {isNewNoteDisplayed && (
           <NewNote
             variant={getNewNoteVariant()}
-            discardEmptyNote={discardEmptyNote}
-            persistNote={handleCreateNote}
+            onDiscard={discardEmptyNote}
+            onCreate={handleCreateNote}
           />
         )}
       </div>
@@ -113,8 +119,8 @@ function NoteContainer({ filteredNotes, setNotes }) {
         createPortal(
           <NoteDetailModal
             noteId={noteIdToShowDetail}
-            onCloseButtonClick={() => setNoteIdToShowDetail(null)}
-            onNoteTitleUpdate={handleNoteTitleUpdate}
+            onCloseModal={() => setNoteIdToShowDetail(null)}
+            onTitleUpdate={handleNoteTitleUpdate}
             onDeleteButtonClick={() => setNoteIdToDelete(noteIdToShowDetail)}
           />,
           document.getElementById("root")
