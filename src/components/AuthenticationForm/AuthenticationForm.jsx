@@ -1,11 +1,11 @@
-import styles from "./AuthenticationForm.module.css";
-import SubmitIcon from "/assets/submit-icon.svg";
-import * as v from "valibot";
-import { useState } from "react";
 import PropTypes from "prop-types";
+import { useState } from "react";
+import { useNavigate } from "react-router";
+import * as v from "valibot";
 import useAuth from "../../hooks/useAuth";
 import authAPI from "../../services/api/auth";
-import { useNavigate } from "react-router";
+import SubmitIcon from "/assets/submit-icon.svg";
+import styles from "./AuthenticationForm.module.css";
 
 const emailSchema = v.pipe(
   v.string("Email must be a string"),
@@ -37,6 +37,7 @@ function AuthenticationForm({ isLoginMode }) {
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
 
+  // Validate the form fields, set errors for display if any
   const validate = (formData) => {
     let result = false;
     const passwordSchemaInUse = isLoginMode ? passwordSchemaForLogin : passwordSchema;
@@ -110,7 +111,6 @@ function AuthenticationForm({ isLoginMode }) {
         type="text"
         placeholder="Type your email"
         name="email"
-        // autoComplete="new-email"
         value={formData.email}
         onChange={handleChange}
       />
@@ -126,7 +126,6 @@ function AuthenticationForm({ isLoginMode }) {
         type="password"
         placeholder="Type your password"
         name="password"
-        // autoComplete="new-password"
         value={formData.password}
         onChange={handleChange}
       />

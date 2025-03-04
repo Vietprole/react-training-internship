@@ -65,5 +65,4 @@ describe('App Routing', () => {
     renderApp(["/"]);
     expect(screen.getByText(/Sign in/i)).toBeInTheDocument();
   });
-
 });

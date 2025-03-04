@@ -4,10 +4,11 @@ import PropTypes from "prop-types";
 
 function DeleteConfirmationModal({ onDeleteButtonClick, onCancelButtonClick }) {
   return (
-    <div className={styles.overlay}>
+    <div>
+      <div className={styles.overlay} onClick={onCancelButtonClick}/>
       <div
-        id="delete-confirmation-modal"
         className={styles.deleteConfirmationModal}
+        data-testid="delete-confirmation-modal"
       >
         <button className={styles.closeButton} onClick={onCancelButtonClick}>
           <img src={CloseIcon} alt="Close icon" />
@@ -18,7 +19,7 @@ function DeleteConfirmationModal({ onDeleteButtonClick, onCancelButtonClick }) {
           <button className={styles.cancelButton} onClick={onCancelButtonClick}>
             Cancel
           </button>
-          <button className={styles.deleteButton} onClick={onDeleteButtonClick}>
+          <button className={styles.deleteButton} onClick={onDeleteButtonClick} data-testid="delete-confirm-button">
             Delete
           </button>
         </div>
@@ -28,13 +29,8 @@ function DeleteConfirmationModal({ onDeleteButtonClick, onCancelButtonClick }) {
 }
 
 DeleteConfirmationModal.propTypes = {
-  isDisplayed: PropTypes.bool.isRequired,
-  position: PropTypes.shape({
-    x: PropTypes.number,
-    y: PropTypes.number,
-  }),
-  onDeleteButtonClick: PropTypes.func.isRequired,
-  onCancelButtonClick: PropTypes.func.isRequired,
+  onDeleteButtonClick: PropTypes.func,
+  onCancelButtonClick: PropTypes.func,
 };
 
 export default DeleteConfirmationModal;
