@@ -1,23 +1,25 @@
-import Sidebar from './Sidebar';
-import AuthProvider from '../../contexts/AuthContext';
+import Sidebar from "./Sidebar";
+import AuthProvider from "../../contexts/AuthContext";
+import { BrowserRouter as Router } from "react-router";
 
 export default {
-  title: 'Components/Sidebar',
+  title: "Components/Sidebar",
   component: Sidebar,
   parameters: {
-    layout: 'centered',
+    layout: "centered",
   },
   decorators: [
     (Story) => (
-      <AuthProvider>
-        <Story />
-      </AuthProvider>
+      <Router>
+        <AuthProvider>
+          <Story />
+        </AuthProvider>
+      </Router>
     ),
   ],
-  tags: ['autodocs'],
+  tags: ["autodocs"],
 };
 
 export const Default = {
-  args: {
-  },
+  args: {},
 };
