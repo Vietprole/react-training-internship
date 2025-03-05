@@ -30,3 +30,14 @@ p {
   line-height: 32px;
   color: var(--text-secondary-color);
 }
+
+@media (max-width: 768px) {
+  .introduction {
+    display: none; /* Hide introduction on small screens */
+  }
+
+  /* Ensure proper centering of the content (Outlet) */
+  .container {
+    justify-content: center;
+  }
+}
