@@ -4,7 +4,7 @@ import { getNotes } from "../services/api/note";
 import { convertStringToDate } from "../utils/date";
 import { filterNotesBySearchPhraseAndDoneStatus } from "../utils/note";
 
-function useNote(isDone) {
+function useNotes(isDone) {
   const { user } = useAuth();
   const [notes, setNotes] = useState();
   const [searchPhrase, setSearchPhrase] = useState("");
@@ -38,4 +38,4 @@ function useNote(isDone) {
   return { filteredNotes, setNotes, setSearchPhrase };
 }
 
-export default useNote;
+export default useNotes;

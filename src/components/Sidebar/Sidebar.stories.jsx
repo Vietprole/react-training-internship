@@ -1,10 +1,13 @@
-import MainLayout from "./MainLayout";
+import Sidebar from "./Sidebar";
 import AuthProvider from "../../contexts/AuthContext";
 import { BrowserRouter as Router } from "react-router";
 
 export default {
-  title: "Components/MainLayout",
-  component: MainLayout,
+  title: "Components/Sidebar",
+  component: Sidebar,
+  parameters: {
+    layout: "centered",
+  },
   decorators: [
     (Story) => (
       <Router>
