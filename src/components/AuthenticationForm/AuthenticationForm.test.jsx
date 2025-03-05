@@ -70,6 +70,24 @@ describe("AuthenticationForm", () => {
         });
       }
     );
+
+    test("handle error when API call fails", async () => {
+      // Mock console.error
+      const originalConsoleError = console.error;
+      console.error = vi.fn();
+      authAPI.login.mockRejectedValueOnce(new Error("Login failed"));
+      const isLoginMode = true;
+      renderForm(isLoginMode);
+      fillForm("test@example.com", "Password123!");
+      submitForm(isLoginMode);
+
+      await waitFor(() => {
+        expect(console.error).toHaveBeenCalled();
+      });
+
+      // Restore console.error
+      console.error = originalConsoleError;
+    });
   });
 
   describe("Form Validation", () => {

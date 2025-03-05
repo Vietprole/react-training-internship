@@ -33,6 +33,18 @@ vi.mock("../../services/api/note", () => ({
   ),
   deleteNote: vi.fn(() => Promise.resolve()),
   updateNote: vi.fn(() => Promise.resolve()),
+  getNoteById: vi.fn(() =>
+    Promise.resolve({
+      id: 1,
+      userId: 1,
+      title: "Test Note 1",
+      description: "Test Description 1",
+      variant: "primary",
+      comments: [],
+      createdAt: "2025-02-27T12:00:00.000Z",
+      isDone: false,
+    })
+  ),
 }));
 
 // Import mocked functions to verify calls
@@ -140,7 +152,10 @@ describe("NoteContainer", () => {
     // Clear previous render
     cleanup();
 
-    useOutletContext.mockReturnValue({ isNewNoteDisplayed: true, setIsNewNoteDisplayed: vi.fn() });
+    useOutletContext.mockReturnValue({
+      isNewNoteDisplayed: true,
+      setIsNewNoteDisplayed: vi.fn(),
+    });
 
     // Re-render component with new context value
     render(<NoteContainer filteredNotes={mockNotes} setNotes={mockSetNotes} />);
@@ -158,5 +173,36 @@ describe("NoteContainer", () => {
       );
     });
     expect(mockSetNotes).toHaveBeenCalled();
+  });
+
+  test("updates NoteBox title when note detail modal's title updated", async () => {
+    const firstNote = screen.getByText("Test Note 1");
+    await user.click(firstNote);
+
+    const titleInput = screen.getByTestId("title-input");
+    await user.clear(titleInput);
+    await user.type(titleInput, "Updated Test Note");
+
+    // Blur to save title
+    await user.tab();
+
+    expect(mockSetNotes).toHaveBeenCalled();
+
+    // Get the function that was passed to mockSetNotes
+    const updateFunction = mockSetNotes.mock.calls[0][0];
+
+    // The function should be a state updater function
+    expect(typeof updateFunction).toBe("function");
+
+    // Test that the function updates the notes correctly
+    const updatedNotes = updateFunction(mockNotes);
+
+    // Verify the note with id 1 has the updated title
+    const updatedNote = updatedNotes.find((note) => note.id === 1);
+    expect(updatedNote.title).toBe("Updated Test Note");
+
+    // Verify the other note remains unchanged
+    const unchangedNote = updatedNotes.find((note) => note.id === 2);
+    expect(unchangedNote.title).toBe("Test Note 2");
   });
 });
