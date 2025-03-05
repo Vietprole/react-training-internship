@@ -13,6 +13,7 @@
   font-family: var(--font-primary);
   font-size: var(--body-size-xxl);
   color: var(--text-default-color);
+  width: 100%;
 }
 
 .input::placeholder {

@@ -1,5 +1,5 @@
 .sidebar {
-  width: 112px;
+  width: clamp(70px, 10vw, 112px);
   flex-shrink: 0;
   position: sticky;
   top: 0;
