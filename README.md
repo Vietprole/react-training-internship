@@ -67,6 +67,7 @@ npm install
 npm run dev
 ```
 
+- View app on browser: http://localhost:5173/
 ### Additional commands
 - Run storybook
 ```bash
@@ -83,5 +84,3 @@ npm run test
 ```bash
 npm run coverage
 ```
-
-- View app on browser: http://localhost:5173/
