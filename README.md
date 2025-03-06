@@ -41,15 +41,15 @@ npm install
 npm start
 ```
 
-- Clone the main repository in another folder
+- Clone the main repository in another terminal
 
 ```bash
-git clone https://github.com/Vietprole/javascript-training-internship.git
+git clone https://github.com/Vietprole/react-training-internship.git
 ```
 
 - Move to the cloned main repository folder
 ```bash
-cd javascript-training-internship
+cd react-training-internship
 ```
 
 - Checkout to branch `feat/practice`
