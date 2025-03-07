@@ -1,33 +1,13 @@
 import PropTypes from "prop-types";
 import { useState } from "react";
 import { useNavigate } from "react-router";
-import * as v from "valibot";
+import { validate } from "../../utils/auth";
 import useAuth from "../../hooks/useAuth";
 import authAPI from "../../services/api/auth";
 import SubmitIcon from "/assets/submit-icon.svg";
 import styles from "./AuthenticationForm.module.css";
 import Button from "../Button/Button";
 import Input from "../Input/Input";
-
-const emailSchema = v.pipe(
-  v.string("Email must be a string"),
-  v.nonEmpty("Email must not be empty"),
-  v.email("Please enter a valid email address")
-);
-
-const passwordSchemaForSignup = v.pipe(
-  v.string("Password must be a string"),
-  v.minLength(8, "Password must be at least 8 characters long"),
-  v.regex(
-    /^(?=.*[0-9])(?=.*[!@#$%^&*])(?=.*[A-Z])[a-zA-Z0-9!@#$%^&*]{8,}$/,
-    "Password must contain at least 1 number, 1 special character, and 1 uppercase letter"
-  )
-);
-
-const passwordSchemaForLogin = v.pipe(
-  v.string("Password must be a string"),
-  v.nonEmpty("Password must not be empty")
-);
 
 function AuthenticationForm({ isLoginMode }) {
   const navigate = useNavigate();
@@ -39,44 +19,6 @@ function AuthenticationForm({ isLoginMode }) {
   const [errors, setErrors] = useState({});
   const [isSubmitting, setIsSubmitting] = useState(false);
 
-  // Validate the form fields, set errors for display if any
-  const validate = (formData) => {
-    let result = false;
-    const passwordSchemaInUse = isLoginMode
-      ? passwordSchemaForLogin
-      : passwordSchemaForSignup;
-
-    const emailResult = v.safeParse(emailSchema, formData.email);
-    const passwordResult = v.safeParse(passwordSchemaInUse, formData.password);
-
-    if (emailResult.success) {
-      setErrors((prevErrors) => ({
-        ...prevErrors,
-        email: "",
-      }));
-      result = true;
-    } else {
-      setErrors((prevErrors) => ({
-        ...prevErrors,
-        email: emailResult.issues[0].message,
-      }));
-    }
-
-    if (passwordResult.success) {
-      setErrors((prevErrors) => ({
-        ...prevErrors,
-        password: "",
-      }));
-    } else {
-      setErrors((prevErrors) => ({
-        ...prevErrors,
-        password: passwordResult.issues[0].message,
-      }));
-      result = false;
-    }
-    return result;
-  };
-
   // Handle changes to the form fields
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -87,7 +29,7 @@ function AuthenticationForm({ isLoginMode }) {
   };
 
   async function handleSubmitButtonClick() {
-    const result = validate(formData);
+    const result = validate({ formData, isLoginMode, setErrors });
 
     if (result) {
       setIsSubmitting(true);
@@ -133,10 +75,7 @@ function AuthenticationForm({ isLoginMode }) {
       >
         {errors.password}
       </span>
-      <Button
-        onClick={handleSubmitButtonClick}
-        disabled={isSubmitting}
-      >
+      <Button onClick={handleSubmitButtonClick} disabled={isSubmitting}>
         <img className={styles.submitIcon} src={SubmitIcon} alt="Submit icon" />
         {isLoginMode ? "Sign in note.me" : "Sign up"}
       </Button>

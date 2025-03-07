@@ -69,8 +69,8 @@ describe("note API", () => {
       expect(result).toEqual([mockNote]);
     });
 
-    test("throws error when there is fetch error", async () => {
-      const mockConsoleLog = vi.spyOn(console, "log");
+    test("log error when there is fetch error", async () => {
+      const mockConsoleLog = vi.spyOn(console, "error");
       // Mock fetch to throw a network error
       const networkError = new Error("Network failure");
       mockFetch.mockRejectedValueOnce(networkError);
@@ -115,8 +115,8 @@ describe("note API", () => {
       expect(result).toEqual(mockNote);
     });
 
-    test("throws error when there is fetch error", async () => {
-      const mockConsoleLog = vi.spyOn(console, "log");
+    test("log error when there is fetch error", async () => {
+      const mockConsoleLog = vi.spyOn(console, "error");
       // Mock fetch to throw a network error
       const networkError = new Error("Network failure");
       mockFetch.mockRejectedValueOnce(networkError);
@@ -169,8 +169,8 @@ describe("note API", () => {
       expect(result).toEqual(createdNote);
     });
 
-    test("throws error when there is fetch error", async () => {
-      const mockConsoleLog = vi.spyOn(console, "log");
+    test("log error when there is fetch error", async () => {
+      const mockConsoleLog = vi.spyOn(console, "error");
       // Mock fetch to throw a network error
       const networkError = new Error("Network failure");
       mockFetch.mockRejectedValueOnce(networkError);
@@ -221,8 +221,8 @@ describe("note API", () => {
       expect(result).toEqual(updatedNote);
     });
 
-    test("throws error when there is fetch error", async () => {
-      const mockConsoleLog = vi.spyOn(console, "log");
+    test("log error when there is fetch error", async () => {
+      const mockConsoleLog = vi.spyOn(console, "error");
       // Mock fetch to throw a network error
       const networkError = new Error("Network failure");
       mockFetch.mockRejectedValueOnce(networkError);
@@ -266,8 +266,8 @@ describe("note API", () => {
       expect(result).toEqual(successResponse);
     });
 
-    test("throws error when there is fetch error", async () => {
-      const mockConsoleLog = vi.spyOn(console, "log");
+    test("log error when there is fetch error", async () => {
+      const mockConsoleLog = vi.spyOn(console, "error");
       // Mock fetch to throw a network error
       const networkError = new Error("Network failure");
       mockFetch.mockRejectedValueOnce(networkError);

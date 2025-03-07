@@ -10,17 +10,11 @@ const NoteDescription = ({ defaultDescription, onSaveDescription }) => {
     setIsSaving(true);
     try {
       await onSaveDescription(description);
-    }
-    catch (error) {
+    } catch (error) {
       console.error(error);
-    }
-    finally {
+    } finally {
       setIsSaving(false);
     }
-  };
-
-  const handleCancel = () => {
-    setDescription(defaultDescription);
   };
 
   return (
@@ -33,10 +27,18 @@ const NoteDescription = ({ defaultDescription, onSaveDescription }) => {
         disabled={isSaving}
       />
       <div className={styles.buttonContainer}>
-        <button className={styles.saveButton} onClick={handleSave} disabled={isSaving}>
+        <button
+          className={styles.saveButton}
+          onClick={handleSave}
+          disabled={isSaving}
+        >
           Save
         </button>
-        <button className={styles.cancelButton} onClick={handleCancel} disabled={isSaving}>
+        <button
+          className={styles.cancelButton}
+          onClick={() => setDescription(defaultDescription)}
+          disabled={isSaving}
+        >
           Cancel
         </button>
       </div>
