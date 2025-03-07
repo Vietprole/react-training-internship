@@ -8,7 +8,7 @@ function NewNote({ variant, onCreate }) {
   const { setIsNewNoteDisplayed } = useOutletContext();
   const textAreaRef = useRef(null);
   const handleBlur = () => {
-    const title = textAreaRef.current.value;
+    const title = textAreaRef.current.value.trim();
     setIsNewNoteDisplayed(false);
     if (title !== "") {
       onCreate(title, variant);
