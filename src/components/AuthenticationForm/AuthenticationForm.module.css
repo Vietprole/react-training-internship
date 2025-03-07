@@ -2,51 +2,6 @@ form {
   width: 320px;
 }
 
-.email,
-.password {
-  display: block;
-  width: 320px;
-  border: var(--input-color) 1px solid;
-  border-radius: var(--border-radius-sm);
-  padding: 16px;
-  font-size: var(--body-size-md);
-  color: var(--text-default-color);
-}
-
-.email::placeholder,
-.password::placeholder {
-  color: var(--input-color);
-}
-
-.email {
-  margin-bottom:5px;
-}
-
-.password {
-  margin-bottom: 5px;
-}
-
-.submitButton {
-  display: flex;
-  width: 320px;
-  height: 50px;
-  align-items: center;
-  justify-content: center;
-  color: white;
-  border-radius: var(--border-radius-sm);
-  cursor: pointer;
-}
-
-.submitButton {
-  background-color: var(--success-color);
-  margin-bottom: 20px;
-}
-
-.submitButton:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
-}
-
 .submitIcon {
   width: 20px;
   height: 20px;

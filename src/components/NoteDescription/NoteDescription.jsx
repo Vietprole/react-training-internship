@@ -4,17 +4,17 @@ import styles from "./NoteDescription.module.css";
 
 const NoteDescription = ({ defaultDescription, onSaveDescription }) => {
   const [description, setDescription] = useState(defaultDescription);
+  const [isSaving, setIsSaving] = useState(false);
+
   const handleSave = async () => {
+    setIsSaving(true);
     try {
       await onSaveDescription(description);
-    }
-    catch (error) {
+    } catch (error) {
       console.error(error);
-      setDescription(defaultDescription);
+    } finally {
+      setIsSaving(false);
     }
-  };
-  const handleCancel = () => {
-    setDescription(defaultDescription);
   };
 
   return (
@@ -24,12 +24,21 @@ const NoteDescription = ({ defaultDescription, onSaveDescription }) => {
         className={styles.description}
         value={description}
         onChange={(e) => setDescription(e.target.value)}
+        disabled={isSaving}
       />
       <div className={styles.buttonContainer}>
-        <button className={styles.saveButton} onClick={handleSave}>
+        <button
+          className={styles.saveButton}
+          onClick={handleSave}
+          disabled={isSaving}
+        >
           Save
         </button>
-        <button className={styles.cancelButton} onClick={handleCancel}>
+        <button
+          className={styles.cancelButton}
+          onClick={() => setDescription(defaultDescription)}
+          disabled={isSaving}
+        >
           Cancel
         </button>
       </div>

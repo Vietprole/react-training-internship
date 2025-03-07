@@ -1,0 +1,24 @@
+.submitButton {
+  display: flex;
+  width: 320px;
+  height: 50px;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  border-radius: var(--border-radius-sm);
+  cursor: pointer;
+  margin-bottom: 20px;
+}
+
+.primary {
+  background-color: var(--success-color);
+}
+
+.secondary {
+  background-color: var(--danger-color);
+}
+
+.submitButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

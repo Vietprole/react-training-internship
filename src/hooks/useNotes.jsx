@@ -16,20 +16,20 @@ function useNotes(isDone) {
 
   useEffect(() => {
     const fetchData = async () => {
-      try {
-        let notes = await getNotes(user.id);
-
-        notes.forEach((note) => {
-          note.createdAt = convertStringToDate(note.createdAt);
-        });
-
-        setNotes(notes);
-      } catch (error) {
-        console.error("Error fetching notes:", error);
-        // If no note found for an user, json-server return error instead of empty array
-        // so we need to set empty note array manually
+      let notes = await getNotes(user.id);
+      // If no note found for an user, json-server return error instead of empty array
+      // so we need to set empty note array manually
+      if (!notes) {
+        console.log(notes)
         setNotes([]);
+        return;
       }
+
+      notes.forEach((note) => {
+        note.createdAt = convertStringToDate(note.createdAt);
+      });
+
+      setNotes(notes);
     };
 
     fetchData();

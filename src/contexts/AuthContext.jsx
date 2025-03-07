@@ -1,4 +1,4 @@
-import { createContext, useState, useEffect, useCallback } from "react";
+import { createContext, useState, useEffect, useCallback, useMemo } from "react";
 import PropTypes from "prop-types";
 import { useNavigate } from "react-router";
 import authAPI from "../services/api/auth";
@@ -13,7 +13,7 @@ const AuthProvider = ({ children }) => {
   const [token, setToken] = useState(localStorage.getItem("token") || "");
   const navigate = useNavigate();
 
-  const login = async (userData) => {
+  const login = useCallback(async (userData) => {
     try {
       const response = await authAPI.login(userData);
       if (response.user) {
@@ -28,7 +28,7 @@ const AuthProvider = ({ children }) => {
     } catch (e) {
       console.error(e);
     }
-  };
+  }, [navigate]);
 
   const logout = useCallback(() => {
     setUser(null);
@@ -80,8 +80,15 @@ const AuthProvider = ({ children }) => {
     };
   }, [token, logout]);
 
+  const authContextValue = useMemo(() => ({
+    token,
+    user,
+    login,
+    logout
+  }), [token, user, login, logout]);
+
   return (
-    <AuthContext.Provider value={{ token, user, login, logout }}>
+    <AuthContext.Provider value={authContextValue}>
       {children}
     </AuthContext.Provider>
   );

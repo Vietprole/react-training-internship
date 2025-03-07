@@ -136,24 +136,6 @@ describe("NoteDetailModal", () => {
     });
   });
 
-  test("reverts to last saved description when save fails", async () => {
-    const descriptionInput = screen.getByText(/Test Description/i);
-    await user.clear(descriptionInput);
-    await user.type(descriptionInput, "New Description");
-
-
-    // Mock the error before clicking
-    updateNote.mockRejectedValueOnce(new Error("Error"));
-
-    const saveButton = screen.getByText(/Save/i);
-    await user.click(saveButton);
-
-    // Add more time to wait
-    await waitFor(() => {
-      expect(screen.getByText(/Test Description/i)).toBeInTheDocument();
-    });
-  });
-
   test("reverts to last saved description when cancel button is clicked", async () => {
     const descriptionInput = screen.getByText(/Test Description/i);
     await user.clear(descriptionInput);
