@@ -5,13 +5,10 @@ import SignUpIcon from "/assets/signup-icon.svg";
 import Logo from "../../components/Logo/Logo";
 import styles from "./Login.module.css";
 import AuthenticationForm from "../../components/AuthenticationForm/AuthenticationForm";
+import Button from "../../components/Button/Button";
 
 function Login() {
   const navigate = useNavigate();
-
-  function handleSignUpButtonClick() {
-    navigate("/signup");
-  }
 
   return (
     <div className={styles.container}>
@@ -23,20 +20,16 @@ function Login() {
           alt="App name icon"
         />
       </div>
-      <AuthenticationForm isLoginMode={true}/>
+      <AuthenticationForm isLoginMode={true} />
       <div className={styles.separator}>or sign up here</div>
-      <button
-        className={styles.signUpButton}
-        type="button"
-        onClick={handleSignUpButtonClick}
-      >
+      <Button variant="secondary" onClick={() => navigate("/signup")}>
         <img
           className={styles.signUpIcon}
           src={SignUpIcon}
           alt="Sign up icon"
         />
         Sign up
-      </button>
+      </Button>
     </div>
   );
 }

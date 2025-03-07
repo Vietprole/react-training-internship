@@ -6,6 +6,8 @@ import useAuth from "../../hooks/useAuth";
 import authAPI from "../../services/api/auth";
 import SubmitIcon from "/assets/submit-icon.svg";
 import styles from "./AuthenticationForm.module.css";
+import Button from "../Button/Button";
+import Input from "../Input/Input";
 
 const emailSchema = v.pipe(
   v.string("Email must be a string"),
@@ -13,7 +15,7 @@ const emailSchema = v.pipe(
   v.email("Please enter a valid email address")
 );
 
-const passwordSchema = v.pipe(
+const passwordSchemaForSignup = v.pipe(
   v.string("Password must be a string"),
   v.minLength(8, "Password must be at least 8 characters long"),
   v.regex(
@@ -42,7 +44,7 @@ function AuthenticationForm({ isLoginMode }) {
     let result = false;
     const passwordSchemaInUse = isLoginMode
       ? passwordSchemaForLogin
-      : passwordSchema;
+      : passwordSchemaForSignup;
 
     const emailResult = v.safeParse(emailSchema, formData.email);
     const passwordResult = v.safeParse(passwordSchemaInUse, formData.password);
@@ -103,8 +105,7 @@ function AuthenticationForm({ isLoginMode }) {
 
   return (
     <form action="">
-      <input
-        className={styles.email}
+      <Input
         type="text"
         placeholder="Type your email"
         name="email"
@@ -118,8 +119,7 @@ function AuthenticationForm({ isLoginMode }) {
       >
         {errors.email}
       </span>
-      <input
-        className={styles.password}
+      <Input
         type="password"
         placeholder="Type your password"
         name="password"
@@ -133,15 +133,13 @@ function AuthenticationForm({ isLoginMode }) {
       >
         {errors.password}
       </span>
-      <button
-        className={styles.submitButton}
-        type="button"
+      <Button
         onClick={handleSubmitButtonClick}
         disabled={isSubmitting}
       >
         <img className={styles.submitIcon} src={SubmitIcon} alt="Submit icon" />
         {isLoginMode ? "Sign in note.me" : "Sign up"}
-      </button>
+      </Button>
     </form>
   );
 }

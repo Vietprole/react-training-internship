@@ -7,6 +7,7 @@ import { useOutletContext } from "react-router";
 function NewNote({ variant, onCreate }) {
   const { setIsNewNoteDisplayed } = useOutletContext();
   const textAreaRef = useRef(null);
+
   const handleBlur = () => {
     const title = textAreaRef.current.value.trim();
     setIsNewNoteDisplayed(false);
