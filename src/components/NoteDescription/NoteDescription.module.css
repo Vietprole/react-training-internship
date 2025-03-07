@@ -41,3 +41,9 @@
   border-radius: var(--border-radius-md);
   cursor: pointer;
 }
+
+.saveButton:disabled,
+.cancelButton:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}

@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from "react";
 import { getNoteById, updateNote } from "../services/api/note";
 
-const useNoteDetail = ({noteId, onTitleUpdate}) => {
+const useNoteDetail = ({ noteId, onTitleUpdate }) => {
   const [note, setNote] = useState();
   const [isLoading, setIsLoading] = useState(true);
   const commentInputRef = useRef(null);
@@ -50,23 +50,21 @@ const useNoteDetail = ({noteId, onTitleUpdate}) => {
     }
   };
 
-  const handleAddComment = () => {
-    try {
-      const commentText = commentInputRef.current.value;
-      if (!commentText.trim()) return; // Don't add empty comments
+  const handleAddComment = async () => {
+    const commentText = commentInputRef.current.value;
+    if (!commentText.trim()) return; // Don't add empty comments
 
-      const updatedNote = {
-        ...note,
-        comments: [...note.comments, commentText],
-      };
-      setNote(updatedNote);
-      updateNote(note.id, updatedNote);
+    const updatedNote = {
+      ...note,
+      comments: [...note.comments, commentText],
+    };
 
-      // Clear input after adding
-      commentInputRef.current.value = "";
-    } catch (error) {
-      console.error(error);
-    }
+    const result = await updateNote(note.id, updatedNote);
+    if (!result) return;
+
+    setNote(updatedNote);
+    // Clear input after adding
+    commentInputRef.current.value = "";
   };
 
   return {

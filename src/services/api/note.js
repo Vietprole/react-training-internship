@@ -20,7 +20,7 @@ const getNotes = async (userId) => {
 
     return parsedResponse;
   } catch (error) {
-    console.log(error);
+    console.error(error);
     // Add id to prevent duplicate
     toast.error("Failed to fetch notes", { id: "getNotesError" });
   }
@@ -46,7 +46,7 @@ const getNoteById = async (noteId) => {
 
     return parsedResponse;
   } catch (error) {
-    console.log(error);
+    console.error(error);
     toast.error("Failed to fetch note with id: " + noteId, {
       id: "getNoteByIdError",
     });
@@ -76,7 +76,7 @@ const createNote = async (note) => {
     toast.success("Note created successfully", { id: "createNoteSuccess" });
     return parsedResponse;
   } catch (error) {
-    console.log(error);
+    console.error(error);
     toast.error("Failed to create note", { id: "createNoteError" });
   }
 };
@@ -104,7 +104,7 @@ const updateNote = async (noteId, note) => {
     toast.success("Note updated successfully", { id: "updateNoteSuccess" });
     return parsedResponse;
   } catch (error) {
-    console.log(error);
+    console.error(error);
     toast.error("Failed to update note", { id: "updateNoteError" });
   }
 };
@@ -128,7 +128,7 @@ const deleteNote = async (noteId) => {
     toast.success("Note deleted successfully", { id: "deleteNoteSuccess" });
     return parsedResponse;
   } catch (error) {
-    console.log(error);
+    console.error(error);
     toast.error("Failed to delete note", { id: "deleteNoteError" });
   }
 };

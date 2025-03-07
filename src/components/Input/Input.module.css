@@ -1,4 +1,4 @@
-input {
+.input {
   display: block;
   width: 320px;
   border: var(--input-color) 1px solid;
