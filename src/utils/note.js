@@ -18,7 +18,7 @@ function filterNotesBySearchPhraseAndDoneStatus(notes, searchPhrase, isDone) {
   // Return empty array if no note pass the filter
   return notes.filter(
     (note) =>
-      note.title.includes(searchPhrase) && (!isDone || note.isDone)
+      note.title.toLowerCase().includes(searchPhrase.toLowerCase()) && (!isDone || note.isDone)
   );
 }
 
