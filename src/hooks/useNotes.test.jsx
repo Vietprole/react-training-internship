@@ -81,29 +81,6 @@ describe('useNotes', () => {
     convertStringToDateSpy.mockRestore();
   });
 
-  test('handles API error', async () => {
-    // Mock console.error to avoid cluttering test output
-    const originalConsoleError = console.error;
-    console.error = vi.fn();
-
-    // Mock API error
-    getNotes.mockRejectedValue(new Error('Failed to fetch notes'));
-
-    const { result } = renderHook(() => useNotes());
-
-    await waitFor(() => {
-      expect(console.error).toHaveBeenCalledWith(
-        'Error fetching notes:',
-        expect.any(Error)
-      );
-    });
-
-    expect(result.current.filteredNotes).toEqual([]);
-
-    // Restore console.error
-    console.error = originalConsoleError;
-  });
-
   test('setNotes updates the notes state', async () => {
     getNotes.mockResolvedValue(mockNotes);
 

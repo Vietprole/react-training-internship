@@ -40,7 +40,9 @@ function AuthenticationForm({ isLoginMode }) {
   // Validate the form fields, set errors for display if any
   const validate = (formData) => {
     let result = false;
-    const passwordSchemaInUse = isLoginMode ? passwordSchemaForLogin : passwordSchema;
+    const passwordSchemaInUse = isLoginMode
+      ? passwordSchemaForLogin
+      : passwordSchema;
 
     const emailResult = v.safeParse(emailSchema, formData.email);
     const passwordResult = v.safeParse(passwordSchemaInUse, formData.password);
@@ -87,20 +89,15 @@ function AuthenticationForm({ isLoginMode }) {
 
     if (result) {
       setIsSubmitting(true);
-      try {
-        if (isLoginMode) {
-          await login(formData);
-        } else {
-          const response = await authAPI.signup(formData);
-          if (response.user) {
-            navigate("/login");
-          }
+      if (isLoginMode) {
+        await login(formData);
+      } else {
+        const response = await authAPI.signup(formData);
+        if (response.user) {
+          navigate("/login");
         }
-      } catch (error) {
-        console.error(error);
-      } finally {
-        setIsSubmitting(false);
       }
+      setIsSubmitting(false);
     }
   }
 
